@@ -9,6 +9,7 @@ require 'ironboard/user_id_parser'
 require 'ironboard/username_parser'
 require 'ironboard/repo_parser'
 require 'ironboard/file_finder'
+require 'ironboard/spec_type_parser'
 
 require 'ironboard/rspec/runner'
 

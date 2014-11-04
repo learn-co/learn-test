@@ -1,10 +1,20 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+require 'ironboard'
+
 SERVICE_URL = 'http://ironbroker.flatironschool.com'
 SERVICE_ENDPOINT = '/e/flatiron_rspec/build/ironboard'
 
-require 'ironboard'
-require 'optparse'
+spec_type = Ironboard::SpecTypeParser.new.spec_type
+if spec_type == "jasmine"
+  puts "JASMINE!"
+elsif spec_type == "rspec"
+  puts "RSPEC!"
+else
+  puts "This directory doesn't appear to have any specs in it."
+end
+
 
 #username = Ironboard::UsernameParser.get_username
 #user_id = Ironboard::UserIdParser.get_user_id
@@ -12,4 +22,3 @@ require 'optparse'
 #runner = Ironboard::RSpec::Runner.new(username, user_id, repo, ARGV)
 #runner.run
 
-puts Dir.entries('.').inspect
