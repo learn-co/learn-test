@@ -1,0 +1,7 @@
+# A list of javascript files required for the project, in dependency order
+javascripts:
+  files:
+    - relative/path/to/a/file/here
+  specs:
+    - relative/path/to/a/spec/file
+
