@@ -49,9 +49,9 @@ module Ironboard
 
       def run_jasmine
         if browser
-          system("open #{Ironboard::FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
+          system("open #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html")
         else
-          system("phantomjs #{Ironboard::FileFinder.location_to_dir('runners')}/run-jasmine.js #{Ironboard::FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html")
+          system("phantomjs #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/run-jasmine.js #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html")
         end
       end
 
@@ -93,7 +93,7 @@ module Ironboard
       end
 
       def make_runner_html
-        template = ERB.new(File.read("#{Ironboard::FileFinder.location_to_dir('templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
+        template = ERB.new(File.read("#{Ironboard::FileFinder.location_to_dir('jasmine/templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
 
         yaml = YAML.load(File.read('requires.yml'))["javascripts"]
         required_files = yaml["files"]
@@ -103,7 +103,7 @@ module Ironboard
           required_specs.map {|s| "#{FileUtils.pwd}/#{s}"}
         )
 
-        File.open("#{Ironboard::FileFinder.location_to_dir('runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
+        File.open("#{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
           f << template.result(binding)
         end
       end

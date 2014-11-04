@@ -4,19 +4,55 @@ require 'optparse'
 require 'ironboard'
 
 spec_type = Ironboard::SpecTypeParser.new.spec_type
+username = Ironboard::UsernameParser.get_username
+user_id = Ironboard::UserIdParser.get_user_id
+repo = Ironboard::RepoParser.get_repo
 
 if spec_type == "jasmine"
   SERVICE_URL = 'http://ironbroker.flatironschool.com'
   SERVICE_ENDPOINT = '/e/flatiron_jasmine/build/ironboard'
 
+  options = {}
+  OptionParser.new do |opts|
+    opts.banner = "Usage: ironboard [options]"
 
+    opts.on("-n", "--[no-]color", "Turn off color output") do |c|
+      options[:color] = c
+    end
+
+    opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
+      options[:local] = l
+    end
+
+    opts.on("-b", "--browser", "Run tests in browser") do |b|
+      options[:browser] = b
+    end
+
+    opts.on("-o", "--out FILE") do |o|
+      options[:out] = o
+    end
+
+    opts.on("-s", "--skip") do |s|
+      options[:skip] = s
+    end
+  end.parse!
+
+  if ARGV.any? { |arg| arg == "init" }
+    Ironboard::Jasmine::Initializer.run
+  else
+    if !options[:skip]
+      Ironboard::Jasmine::PhantomChecker.check_installation
+    else
+      username = "jasmine-flatiron"
+      user_id = "none"
+    end
+
+    Ironboard::Jasmine::Runner.run(username, user_id, repo, options)
+  end
 elsif spec_type == "rspec"
   SERVICE_URL = 'http://ironbroker.flatironschool.com'
   SERVICE_ENDPOINT = '/e/flatiron_rspec/build/ironboard'
 
-  username = Ironboard::UsernameParser.get_username
-  user_id = Ironboard::UserIdParser.get_user_id
-  repo = Ironboard::RepoParser.get_repo
   runner = Ironboard::RSpec::Runner.new(username, user_id, repo, ARGV)
   runner.run
 else
