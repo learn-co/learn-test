@@ -13,8 +13,11 @@ module Ironboard
 
       if files.include?('requires.yml')
         "jasmine"
-      elsif files.include?('spec') && Dir.entries('./spec').include?('spec_helper.rb')
-        "rspec"
+      elsif files.include?('spec')
+        spec_files = Dir.entries('./spec')
+        if spec_files.include?('spec_helper.rb') || spec_files.include?('rails_helper.rb')
+          "rspec"
+        end
       end
     end
   end
