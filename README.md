@@ -8,7 +8,7 @@ School's Ironboard.
 Add the Flatiron School gem server to your list of sources:
 
 ```
-$ gem sources -a http://flatiron:33west26@flatironschool.com
+$ gem sources -a http://flatiron:33west26@gems.flatironschool.com
 ```
 
 And then install with:
@@ -20,7 +20,7 @@ $ gem install ironboard
 Alternatively, add this line to your application's Gemfile:
 
 ```ruby
-gem 'ironboard', source: 'http://flatiron:33west26@flatironschool.com'
+gem 'ironboard', source: 'http://flatiron:33west26@gems.flatironschool.com'
 ```
 
 And then execute:
