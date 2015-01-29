@@ -14,6 +14,7 @@ module Ironboard
       end
 
       def initialize(username, user_id, repo_name, options)
+        @current_test_path = FileUtils.pwd
         @no_color = !!options[:color]
         @color_opt = !no_color ? "" : "NoColor"
         @local = !!options[:local]
@@ -99,8 +100,8 @@ module Ironboard
         required_files = yaml["files"]
         required_specs = yaml["specs"]
 
-        @javascripts = required_files.map {|f| "#{FileUtils.pwd}/#{f}"}.concat(
-          required_specs.map {|s| "#{FileUtils.pwd}/#{s}"}
+        @javascripts = required_files.map {|f| "#{@current_test_path}/#{f}"}.concat(
+          required_specs.map {|s| "#{@current_test_path}/#{s}"}
         )
 
         File.open("#{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
@@ -109,7 +110,7 @@ module Ironboard
       end
 
       def test_xml_files
-        Dir.entries(FileUtils.pwd).keep_if { |f| f.match(/TEST/) }
+        Dir.entries(@current_test_path).keep_if { |f| f.match(/TEST/) }
       end
 
       def clean_up
