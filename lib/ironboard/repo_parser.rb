@@ -11,8 +11,7 @@ module Ironboard
       end
 
       url = repo.remote.url
-
-      url.match(/(?:https:\/\/|git@).*\/(.+)(?:\.git)/)[1]
+      url.match(/(?:https:\/\/|git@).*\/(.+?)(?:\.git)?$/)[1]
     end
 
     def self.die
