@@ -12,11 +12,13 @@ module Ironboard
       files = Dir.entries('.')
 
       if files.include?('requires.yml')
-        "jasmine"
+        'jasmine'
+      elsif files.any? {|f| f.match(/.*.py$/) }
+        'python_unittest'
       elsif files.include?('spec')
         spec_files = Dir.entries('./spec')
         if spec_files.include?('spec_helper.rb') || spec_files.include?('rails_helper.rb')
-          "rspec"
+          'rspec'
         end
       end
     end

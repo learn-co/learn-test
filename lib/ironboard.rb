@@ -17,6 +17,8 @@ require 'ironboard/jasmine/phantom_checker'
 require 'ironboard/jasmine/initializer'
 require 'ironboard/jasmine/runner'
 
+require 'ironboard/python_unittest/runner'
+
 module Ironboard
 end
 
