@@ -20,7 +20,7 @@ module Ironboard
 
       def check
         if !python_installed? || !correct_python_version?
-          puts "Please install python 2.7.x"
+          puts "Please install python 2.7.x or 3.x.x"
           exit
         end
       end
@@ -32,7 +32,7 @@ module Ironboard
       def correct_python_version?
         output = Open3.popen3('python', '--version')
         version = output[2].read.strip
-        !!version.match(/2.7.*/)
+        !!version.match(/ 2.7.*| 3.*/)
       end
     end
 
