@@ -49,8 +49,11 @@ module Ironboard
       end
 
       def run_jasmine
-        if browser
-          system("open #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html")
+        if browser        
+          # system("open #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html --args allow-file-access-from-files")        
+          chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html\" --allow-file-access-from-files"
+          # This should give me back to the prompt - u can use & but a flag to send it to the background would be better.
+          system(chrome_with_file_access_command) 
         else
           system("phantomjs #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/run-jasmine.js #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html")
         end

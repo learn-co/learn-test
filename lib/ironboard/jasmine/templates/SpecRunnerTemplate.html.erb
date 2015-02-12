@@ -12,11 +12,14 @@
   <script type="text/javascript" src="../console.js"></script>
   <script type="text/javascript" src="../formatters/jasmine2-junit.js"></script>
   <script type="text/javascript" src="../boot.js"></script>
+  <script type="text/javascript" src="../jquery-1.8.0.min.js"></script>
+  <script type="text/javascript" src="../jquery-ui-1.8.23.custom.min.js"></script>
+  <script type="text/javascript" src="../jasmine-jquery.js"></script>
+
 
   <script>
     var currentTestPath = "<%= @current_test_path %>";
-    // jasmine.getFixtures().fixturesPath = "<%= @current_test_path %>";
-    // debugger
+    jasmine.getFixtures().fixturesPath = "<%= @current_test_path %>";
   </script>
 
   <% @javascripts.each do |js_file| %>
