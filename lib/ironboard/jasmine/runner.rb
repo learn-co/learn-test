@@ -2,6 +2,7 @@ require 'crack'
 require 'erb'
 require 'yaml'
 require 'json'
+require 'pry'
 
 module Ironboard
   module Jasmine
@@ -100,12 +101,14 @@ module Ironboard
         template = ERB.new(File.read("#{Ironboard::FileFinder.location_to_dir('jasmine/templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
 
         yaml = YAML.load(File.read('requires.yml'))["javascripts"]
+
         required_files = yaml["files"]
         required_specs = yaml["specs"]
 
-        @javascripts = required_files.map {|f| "#{@current_test_path}/#{f}"}.concat(
-          required_specs.map {|s| "#{@current_test_path}/#{s}"}
-        )
+        @javascripts = []
+        @javascripts << (required_files && required_files.map {|f| "#{@current_test_path}/#{f}"})
+        @javascripts << (required_specs && required_specs.map {|f| "#{@current_test_path}/#{f}"} )
+        @javascripts.flatten!.compact!
 
         File.open("#{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
           f << template.result(binding)
