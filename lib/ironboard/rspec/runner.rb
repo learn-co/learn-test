@@ -46,6 +46,12 @@ module Ironboard
         else
           options.unshift('--format documentation')
         end
+
+        # Don't pass the test/local flag from ironboard binary to rspec runner.
+        options.delete("--test")
+        options.delete("-t")
+        options.delete("-l")
+        options.delete("--local")
       end
 
       def read_dot_rspec
