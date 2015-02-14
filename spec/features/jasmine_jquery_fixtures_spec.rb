@@ -1,5 +1,3 @@
-require 'pry'
-
 describe "Running a Jasmine jQuery Specs with Fixtures" do
   context 'without a browser through PhantomJS' do
     it 'runs the spec with 0 failures' do

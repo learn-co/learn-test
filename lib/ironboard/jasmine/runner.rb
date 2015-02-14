@@ -2,7 +2,6 @@ require 'crack'
 require 'erb'
 require 'yaml'
 require 'json'
-require 'pry'
 
 module Ironboard
   module Jasmine
