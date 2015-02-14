@@ -8,35 +8,40 @@ SERVICE_URL = 'http://ironbroker.flatironschool.com'
 spec_type = Ironboard::SpecTypeParser.new.spec_type
 username = Ironboard::UsernameParser.get_username
 user_id = Ironboard::UserIdParser.get_user_id
-repo = Ironboard::RepoParser.get_repo
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: ironboard [options]"
+
+  opts.on("-n", "--[no-]color", "Turn off color output") do |c|
+    options[:color] = c
+  end
+
+  opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
+    options[:local] = l
+  end
+
+  opts.on("-b", "--browser", "Run tests in browser") do |b|
+    options[:browser] = b
+  end
+
+  opts.on("-o", "--out FILE") do |o|
+    options[:out] = o
+  end
+
+  opts.on("-s", "--skip") do |s|
+    options[:skip] = s
+  end
+
+  opts.on("-t", "--test", "Run the tests in development mode") do |t|
+    options[:test] = t
+  end  
+end.parse!
+
+repo = options[:test] ? "a-sample-test" : Ironboard::RepoParser.get_repo 
 
 if spec_type == "jasmine"
   SERVICE_ENDPOINT = '/e/flatiron_jasmine/build/ironboard'
-
-  options = {}
-  OptionParser.new do |opts|
-    opts.banner = "Usage: ironboard [options]"
-
-    opts.on("-n", "--[no-]color", "Turn off color output") do |c|
-      options[:color] = c
-    end
-
-    opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
-      options[:local] = l
-    end
-
-    opts.on("-b", "--browser", "Run tests in browser") do |b|
-      options[:browser] = b
-    end
-
-    opts.on("-o", "--out FILE") do |o|
-      options[:out] = o
-    end
-
-    opts.on("-s", "--skip") do |s|
-      options[:skip] = s
-    end
-  end.parse!
 
   if ARGV.any? { |arg| arg == "init" }
     Ironboard::Jasmine::Initializer.run
@@ -53,7 +58,7 @@ if spec_type == "jasmine"
 elsif spec_type == "rspec"
   SERVICE_ENDPOINT = '/e/flatiron_rspec/build/ironboard'
 
-  runner = Ironboard::RSpec::Runner.new(username, user_id, repo, ARGV)
+  runner = Ironboard::RSpec::Runner.new(username, user_id, repo, options)
   runner.run
 elsif spec_type == 'python_unittest'
   SERVICE_ENDPOINT = '/e/flatiron_unittest/build/ironboard'
@@ -61,11 +66,8 @@ elsif spec_type == 'python_unittest'
   Ironboard::PythonUnittest::RequirementsChecker.check_installation
   Ironboard::PythonUnittest::NoseInstaller.install
 
-  runner = Ironboard::PythonUnittest::Runner.new(username, user_id, repo, ARGV)
+  runner = Ironboard::PythonUnittest::Runner.new(username, user_id, repo, options)
   runner.run
 else
   puts "This directory doesn't appear to have any specs in it."
 end
-
-
-
