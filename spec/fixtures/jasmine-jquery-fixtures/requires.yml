@@ -1,0 +1,4 @@
+# A list of javascript files required for the project, in dependency order
+javascripts:
+  specs:
+    - spec/jasmine-jquery-fixtures-spec.js

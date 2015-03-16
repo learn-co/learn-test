@@ -8,7 +8,10 @@ SERVICE_URL = 'http://ironbroker.flatironschool.com'
 spec_type = Ironboard::SpecTypeParser.new.spec_type
 username = Ironboard::UsernameParser.get_username
 user_id = Ironboard::UserIdParser.get_user_id
-repo = Ironboard::RepoParser.get_repo
+
+repo = ARGV.include?("--test") ? 
+  "git@github.com:flatiron-school/a-sample-repo.git" : 
+  Ironboard::RepoParser.get_repo  
 
 if spec_type == "jasmine"
   SERVICE_ENDPOINT = '/e/flatiron_jasmine/build/ironboard'
@@ -35,6 +38,9 @@ if spec_type == "jasmine"
 
     opts.on("-s", "--skip") do |s|
       options[:skip] = s
+    end 
+    opts.on("-t", "--test") do |t|
+      options[:test] = t
     end
   end.parse!
 

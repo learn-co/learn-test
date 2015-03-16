@@ -14,6 +14,7 @@ module Ironboard
       end
 
       def initialize(username, user_id, repo_name, options)
+        @current_test_path = FileUtils.pwd
         @no_color = !!options[:color]
         @color_opt = !no_color ? "" : "NoColor"
         @local = !!options[:local]
@@ -48,8 +49,11 @@ module Ironboard
       end
 
       def run_jasmine
-        if browser
-          system("open #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html")
+        if browser        
+          # system("open #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html --args allow-file-access-from-files")        
+          chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html\" --allow-file-access-from-files"
+          # This should give me back to the prompt - u can use & but a flag to send it to the background would be better.
+          system(chrome_with_file_access_command) 
         else
           system("phantomjs #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/run-jasmine.js #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html")
         end
@@ -96,12 +100,14 @@ module Ironboard
         template = ERB.new(File.read("#{Ironboard::FileFinder.location_to_dir('jasmine/templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
 
         yaml = YAML.load(File.read('requires.yml'))["javascripts"]
+
         required_files = yaml["files"]
         required_specs = yaml["specs"]
 
-        @javascripts = required_files.map {|f| "#{FileUtils.pwd}/#{f}"}.concat(
-          required_specs.map {|s| "#{FileUtils.pwd}/#{s}"}
-        )
+        @javascripts = []
+        @javascripts << (required_files && required_files.map {|f| "#{@current_test_path}/#{f}"})
+        @javascripts << (required_specs && required_specs.map {|f| "#{@current_test_path}/#{f}"} )
+        @javascripts.flatten!.compact!
 
         File.open("#{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
           f << template.result(binding)
@@ -109,7 +115,7 @@ module Ironboard
       end
 
       def test_xml_files
-        Dir.entries(FileUtils.pwd).keep_if { |f| f.match(/TEST/) }
+        Dir.entries(@current_test_path).keep_if { |f| f.match(/TEST/) }
       end
 
       def clean_up

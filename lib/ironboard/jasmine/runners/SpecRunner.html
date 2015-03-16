@@ -12,21 +12,21 @@
   <script type="text/javascript" src="../console.js"></script>
   <script type="text/javascript" src="../formatters/jasmine2-junit.js"></script>
   <script type="text/javascript" src="../boot.js"></script>
-
   <script type="text/javascript" src="../jquery-1.8.0.min.js"></script>
   <script type="text/javascript" src="../jquery-ui-1.8.23.custom.min.js"></script>
   <script type="text/javascript" src="../jasmine-jquery.js"></script>
 
+
   <script>
-    var currentTestPath = "<%= @current_test_path %>";
-    jasmine.getFixtures().fixturesPath = "<%= @current_test_path %>";
+    var currentTestPath = "/Users/avi/ib-gem/spec/fixtures/jasmine-jquery-fixtures";
+    jasmine.getFixtures().fixturesPath = "/Users/avi/ib-gem/spec/fixtures/jasmine-jquery-fixtures";
   </script>
 
-  <% @javascripts.each do |js_file| %>
-    <script type="text/javascript" src="<%= js_file %>"></script>
-  <% end %>
+  
+    <script type="text/javascript" src="/Users/avi/ib-gem/spec/fixtures/jasmine-jquery-fixtures/spec/jasmine-jquery-fixtures-spec.js"></script>
+  
 
-  <script type="text/javascript" src="../helpers/ConsoleHelperNoColor.js"></script>
+  <script type="text/javascript" src="../helpers/ConsoleHelper.js"></script>
 </head>
 
 <body>
