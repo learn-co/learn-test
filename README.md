@@ -1,7 +1,7 @@
-# Ironboard
+# Learn
 
 Runs RSpec and Jasmine test suites and uploads the results to Flatiron
-School's Ironboard.
+School's Learn.
 
 ## Installation
 
@@ -14,13 +14,13 @@ $ gem sources -a http://flatiron:33west26@gems.flatironschool.com
 And then install with:
 
 ```
-$ gem install ironboard
+$ gem install learn
 ```
 
 Alternatively, add this line to your application's Gemfile:
 
 ```ruby
-gem 'ironboard', source: 'http://flatiron:33west26@gems.flatironschool.com'
+gem 'learn', source: 'http://flatiron:33west26@gems.flatironschool.com'
 ```
 
 And then execute:
@@ -32,7 +32,7 @@ And then execute:
 From within a directory with either an RSpec or Jasmine test suite, run:
 
 ```
-$ ironboard
+$ learn
 ```
 
 ## Contributing
