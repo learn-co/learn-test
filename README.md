@@ -1,26 +1,19 @@
-# Learn
+# learn-co
 
-Runs RSpec and Jasmine test suites and uploads the results to Flatiron
-School's Learn.
+Runs RSpec, Jasmine, and Python Unit Test test suites and uploads the results to Learn.
 
 ## Installation
 
-Add the Flatiron School gem server to your list of sources:
+Install with:
 
 ```
-$ gem sources -a http://flatiron:33west26@gems.flatironschool.com
-```
-
-And then install with:
-
-```
-$ gem install learn
+$ gem install learn-co
 ```
 
 Alternatively, add this line to your application's Gemfile:
 
 ```ruby
-gem 'learn', source: 'http://flatiron:33west26@gems.flatironschool.com'
+gem 'learn-co'
 ```
 
 And then execute:
@@ -29,7 +22,7 @@ And then execute:
 
 ## Usage
 
-From within a directory with either an RSpec or Jasmine test suite, run:
+From within a directory with an RSpec, Jasmine, or Python Unit Test test suite, run:
 
 ```
 $ learn
