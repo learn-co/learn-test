@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'ironboard/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "ironboard"
+  spec.name          = "learn"
   spec.version       = Ironboard::VERSION
   spec.authors       = ["Logan Hasson"]
   spec.email         = ["logan.hasson@gmail.com"]
