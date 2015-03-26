@@ -6,10 +6,10 @@ require 'learn/version'
 Gem::Specification.new do |spec|
   spec.name          = "learn-co"
   spec.version       = Learn::VERSION
-  spec.authors       = ["Logan Hasson"]
-  spec.email         = ["logan.hasson@gmail.com"]
-  spec.summary       = %q{Runs RSpec and Jasmine builds and pushes JSON output to Learn.}
-  spec.homepage      = "http://github.com/flatiron-labs/learn-gem"
+  spec.authors       = ["Flatiron School"]
+  spec.email         = ["info@flatironschool.com"]
+  spec.summary       = %q{Runs RSpec, Jasmine, and Python Unit Test builds and pushes JSON output to Learn.}
+  spec.homepage      = "http://learn.co"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
