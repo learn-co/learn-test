@@ -1,6 +1,6 @@
 require 'open-uri'
 
-module Ironboard
+module Learn
   class GithubInteractor
     attr_reader :username, :user_id
 

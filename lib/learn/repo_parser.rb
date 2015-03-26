@@ -1,6 +1,6 @@
 require 'git'
 
-module Ironboard
+module Learn
   class RepoParser
     def self.get_repo
       begin

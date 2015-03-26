@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in ironboard.gemspec
+# Specify your gem's dependencies in learn.gemspec
 gemspec

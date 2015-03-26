@@ -1,6 +1,6 @@
 require 'netrc'
 
-module Ironboard
+module Learn
   class NetrcInteractor
     attr_reader :username, :user_id, :netrc
 

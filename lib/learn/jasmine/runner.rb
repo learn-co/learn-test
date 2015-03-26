@@ -3,7 +3,7 @@ require 'erb'
 require 'yaml'
 require 'json'
 
-module Ironboard
+module Learn
   module Jasmine
     class Runner
       attr_reader :no_color, :local, :browser, :conn, :color_opt, :out
@@ -49,13 +49,13 @@ module Ironboard
       end
 
       def run_jasmine
-        if browser        
-          # system("open #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html --args allow-file-access-from-files")        
-          chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html\" --allow-file-access-from-files"
+        if browser
+          # system("open #{Learn::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html --args allow-file-access-from-files")
+          chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{Learn::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html\" --allow-file-access-from-files"
           # This should give me back to the prompt - u can use & but a flag to send it to the background would be better.
-          system(chrome_with_file_access_command) 
+          system(chrome_with_file_access_command)
         else
-          system("phantomjs #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/run-jasmine.js #{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html")
+          system("phantomjs #{Learn::FileFinder.location_to_dir('jasmine/runners')}/run-jasmine.js #{Learn::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html")
         end
       end
 
@@ -97,7 +97,7 @@ module Ironboard
       end
 
       def make_runner_html
-        template = ERB.new(File.read("#{Ironboard::FileFinder.location_to_dir('jasmine/templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
+        template = ERB.new(File.read("#{Learn::FileFinder.location_to_dir('jasmine/templates')}/SpecRunnerTemplate#{color_opt}.html.erb"))
 
         yaml = YAML.load(File.read('requires.yml'))["javascripts"]
 
@@ -109,7 +109,7 @@ module Ironboard
         @javascripts << (required_specs && required_specs.map {|f| "#{@current_test_path}/#{f}"} )
         @javascripts.flatten!.compact!
 
-        File.open("#{Ironboard::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
+        File.open("#{Learn::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html", 'w+') do |f|
           f << template.result(binding)
         end
       end

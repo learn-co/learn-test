@@ -1,4 +1,4 @@
-module Ironboard
+module Learn
   module RSpec
     class Runner
       attr_accessor :parsed_output, :json_output, :formatted_results
@@ -47,7 +47,7 @@ module Ironboard
           options.unshift('--format documentation')
         end
 
-        # Don't pass the test/local flag from ironboard binary to rspec runner.
+        # Don't pass the test/local flag from learn binary to rspec runner.
         options.delete("--test")
         options.delete("-t")
         options.delete("-l")

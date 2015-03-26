@@ -1,4 +1,4 @@
-module Ironboard
+module Learn
   module PythonUnittest
     class NoseInstaller
       def self.install

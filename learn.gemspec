@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'ironboard/version'
+require 'learn/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "learn"
-  spec.version       = Ironboard::VERSION
+  spec.version       = Learn::VERSION
   spec.authors       = ["Logan Hasson"]
   spec.email         = ["logan.hasson@gmail.com"]
-  spec.summary       = %q{Runs RSpec and Jasmine builds and pushes JSON output to Ironboard.}
-  spec.homepage      = "http://github.com/flatiron-labs/ironboard-gem"
+  spec.summary       = %q{Runs RSpec and Jasmine builds and pushes JSON output to Learn.}
+  spec.homepage      = "http://github.com/flatiron-labs/learn-gem"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
