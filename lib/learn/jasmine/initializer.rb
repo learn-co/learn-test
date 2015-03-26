@@ -1,4 +1,4 @@
-module Ironboard
+module Learn
   module Jasmine
     class Initializer
       def self.run

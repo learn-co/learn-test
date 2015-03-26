@@ -1,4 +1,4 @@
-module Ironboard
+module Learn
   module Jasmine
     class PhantomChecker
       def self.check_installation

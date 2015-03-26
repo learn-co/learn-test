@@ -1,4 +1,4 @@
-module Ironboard
+module Learn
   module PythonUnittest
     class Runner
       attr_accessor :parsed_output, :json_output, :formatted_results

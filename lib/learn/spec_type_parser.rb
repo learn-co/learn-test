@@ -1,4 +1,4 @@
-module Ironboard
+module Learn
   class SpecTypeParser
     attr_reader :spec_type
 

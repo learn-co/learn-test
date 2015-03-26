@@ -1,6 +1,6 @@
 require 'open3'
 
-module Ironboard
+module Learn
   module PythonUnittest
     class RequirementsChecker
       def self.check_installation

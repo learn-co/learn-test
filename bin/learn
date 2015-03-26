@@ -1,24 +1,22 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
-require 'ironboard'
+require 'learn'
 
 SERVICE_URL = 'http://ironbroker.flatironschool.com'
 
-spec_type = Ironboard::SpecTypeParser.new.spec_type
-username = Ironboard::UsernameParser.get_username
-user_id = Ironboard::UserIdParser.get_user_id
+spec_type = Learn::SpecTypeParser.new.spec_type
+username = Learn::UsernameParser.get_username
+user_id = Learn::UserIdParser.get_user_id
 
-repo = ARGV.include?("--test") ? 
-  "git@github.com:flatiron-school/a-sample-repo.git" : 
-  Ironboard::RepoParser.get_repo  
+repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : Learn::RepoParser.get_repo
 
 if spec_type == "jasmine"
   SERVICE_ENDPOINT = '/e/flatiron_jasmine/build/ironboard'
 
   options = {}
   OptionParser.new do |opts|
-    opts.banner = "Usage: ironboard [options]"
+    opts.banner = "Usage: learn [options]"
 
     opts.on("-n", "--[no-]color", "Turn off color output") do |c|
       options[:color] = c
@@ -38,36 +36,37 @@ if spec_type == "jasmine"
 
     opts.on("-s", "--skip") do |s|
       options[:skip] = s
-    end 
+    end
+
     opts.on("-t", "--test") do |t|
       options[:test] = t
     end
   end.parse!
 
   if ARGV.any? { |arg| arg == "init" }
-    Ironboard::Jasmine::Initializer.run
+    Learn::Jasmine::Initializer.run
   else
     if !options[:skip]
-      Ironboard::Jasmine::PhantomChecker.check_installation
+      Learn::Jasmine::PhantomChecker.check_installation
     else
       username = "jasmine-flatiron"
       user_id = "none"
     end
 
-    Ironboard::Jasmine::Runner.run(username, user_id, repo, options)
+    Learn::Jasmine::Runner.run(username, user_id, repo, options)
   end
 elsif spec_type == "rspec"
   SERVICE_ENDPOINT = '/e/flatiron_rspec/build/ironboard'
 
-  runner = Ironboard::RSpec::Runner.new(username, user_id, repo, ARGV)
+  runner = Learn::RSpec::Runner.new(username, user_id, repo, ARGV)
   runner.run
 elsif spec_type == 'python_unittest'
   SERVICE_ENDPOINT = '/e/flatiron_unittest/build/ironboard'
 
-  Ironboard::PythonUnittest::RequirementsChecker.check_installation
-  Ironboard::PythonUnittest::NoseInstaller.install
+  Learn::PythonUnittest::RequirementsChecker.check_installation
+  Learn::PythonUnittest::NoseInstaller.install
 
-  runner = Ironboard::PythonUnittest::Runner.new(username, user_id, repo, ARGV)
+  runner = Learn::PythonUnittest::Runner.new(username, user_id, repo, ARGV)
   runner.run
 else
   puts "This directory doesn't appear to have any specs in it."

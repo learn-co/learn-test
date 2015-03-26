@@ -1,4 +1,4 @@
-module Ironboard
+module Learn
   class FileFinder
     def self.location_to_dir(dir_name)
       new.location_to_dir(dir_name)

@@ -1,7 +1,7 @@
-module Ironboard
+module Learn
   class UserIdParser
     def self.get_user_id
-      parser = Ironboard::NetrcInteractor.new
+      parser = Learn::NetrcInteractor.new
       parser.user_id
     end
   end
