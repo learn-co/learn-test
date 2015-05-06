@@ -6,8 +6,11 @@ require 'learn'
 SERVICE_URL = 'http://ironbroker.flatironschool.com'
 
 spec_type = Learn::SpecTypeParser.new.spec_type
-username = Learn::UsernameParser.get_username
-user_id = Learn::UserIdParser.get_user_id
+
+unless spec_type == 'jasmine'
+  username = Learn::UsernameParser.get_username
+  user_id = Learn::UserIdParser.get_user_id
+end
 
 repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : Learn::RepoParser.get_repo
 
@@ -48,6 +51,8 @@ if spec_type == "jasmine"
   else
     if !options[:skip]
       Learn::Jasmine::PhantomChecker.check_installation
+      username = Learn::UsernameParser.get_username
+      user_id = Learn::UserIdParser.get_user_id
     else
       username = "jasmine-flatiron"
       user_id = "none"
@@ -71,6 +76,3 @@ elsif spec_type == 'python_unittest'
 else
   puts "This directory doesn't appear to have any specs in it."
 end
-
-
-
