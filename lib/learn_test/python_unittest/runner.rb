@@ -1,4 +1,4 @@
-module Learn
+module LearnTest
   module PythonUnittest
     class Runner
       attr_accessor :parsed_output, :json_output, :formatted_results

@@ -1,4 +1,4 @@
-module Learn
+module LearnTest
   module PythonUnittest
     class NoseInstaller
       def self.install

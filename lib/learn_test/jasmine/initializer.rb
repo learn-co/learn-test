@@ -1,4 +1,4 @@
-module Learn
+module LearnTest
   module Jasmine
     class Initializer
       def self.run

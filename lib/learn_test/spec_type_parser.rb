@@ -1,4 +1,4 @@
-module Learn
+module LearnTest
   class SpecTypeParser
     attr_reader :spec_type
 

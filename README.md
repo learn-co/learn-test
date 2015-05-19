@@ -1,4 +1,4 @@
-# learn-co
+# learn-test
 
 Runs RSpec, Jasmine, and Python Unit Test test suites and uploads the results to Learn.
 
@@ -7,13 +7,13 @@ Runs RSpec, Jasmine, and Python Unit Test test suites and uploads the results to
 Install with:
 
 ```
-$ gem install learn-co
+$ gem install learn-test
 ```
 
 Alternatively, add this line to your application's Gemfile:
 
 ```ruby
-gem 'learn-co'
+gem 'learn-test'
 ```
 
 And then execute:
@@ -25,12 +25,12 @@ And then execute:
 From within a directory with an RSpec, Jasmine, or Python Unit Test test suite, run:
 
 ```
-$ learn
+$ learn-test
 ```
 
 ## Contributing
 
-1. Fork it ( https://github.com/flatiron-labs/learn-gem/fork )
+1. Fork it ( https://github.com/flatiron-labs/learn-test/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

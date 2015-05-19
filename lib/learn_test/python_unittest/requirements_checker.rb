@@ -1,6 +1,6 @@
 require 'open3'
 
-module Learn
+module LearnTest
   module PythonUnittest
     class RequirementsChecker
       def self.check_installation

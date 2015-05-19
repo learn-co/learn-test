@@ -1,6 +1,6 @@
 require 'git'
 
-module Learn
+module LearnTest
   class RepoParser
     def self.get_repo
       begin

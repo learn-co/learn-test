@@ -1,7 +1,7 @@
-module Learn
+module LearnTest
   class UserIdParser
     def self.get_user_id
-      parser = Learn::NetrcInteractor.new
+      parser = LearnTest::NetrcInteractor.new
       parser.user_id
     end
   end

@@ -1,6 +1,6 @@
 require 'netrc'
 
-module Learn
+module LearnTest
   class NetrcInteractor
     attr_reader :username, :user_id, :netrc
 

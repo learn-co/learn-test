@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'learn/version'
+require 'learn_test/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "learn-co"
-  spec.version       = Learn::VERSION
+  spec.name          = "learn-test"
+  spec.version       = LearnTest::VERSION
   spec.authors       = ["Flatiron School"]
   spec.email         = ["info@flatironschool.com"]
   spec.summary       = %q{Runs RSpec, Jasmine, and Python Unit Test builds and pushes JSON output to Learn.}

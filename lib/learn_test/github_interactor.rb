@@ -1,6 +1,6 @@
 require 'open-uri'
 
-module Learn
+module LearnTest
   class GithubInteractor
     attr_reader :username, :user_id
 
