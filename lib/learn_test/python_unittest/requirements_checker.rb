@@ -30,8 +30,8 @@ module LearnTest
       end
 
       def correct_python_version?
-        output = Open3.popen3('python', '--version')
-        version = output[2].read.strip
+        output = Open3.popen2e('python', '--version')
+        version = output[1].read.strip
         !!version.match(/ 2.7.*| 3.*/)
       end
     end
