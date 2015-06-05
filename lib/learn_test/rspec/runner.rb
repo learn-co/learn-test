@@ -83,16 +83,20 @@ module LearnTest
             test_suite: [{
               framework: 'rspec',
               formatted_output: parsed_output,
-              duration: parsed_output[:summary] ? parsed_output[:summary][:duration] : nil
+              duration: parsed_output ? parsed_output[:summary][:duration] : nil
             }]
           },
-          examples: parsed_output[:summary] ? parsed_output[:summary][:example_count] : nil,
-          passing_count: parsed_output[:summary] ? parsed_output[:summary][:example_count] - parsed_output[:summary][:failure_count] - parsed_output[:summary][:pending_count] : nil,
-          pending_count: parsed_output[:summary] ? parsed_output[:summary][:pending_count] : nil,
-          failure_count: parsed_output[:summary] ? parsed_output[:summary][:failure_count] : nil,
-          failure_descriptions: parsed_output[:examples].select do |example|
-            example[:status] == "failed"
-          end.map { |ex| ex[:full_description] }.join(";")
+          examples: parsed_output ? parsed_output[:summary][:example_count] : nil,
+          passing_count: parsed_output ? parsed_output[:summary][:example_count] - parsed_output[:summary][:failure_count] - parsed_output[:summary][:pending_count] : nil,
+          pending_count: parsed_output ? parsed_output[:summary][:pending_count] : nil,
+          failure_count: parsed_output ? parsed_output[:summary][:failure_count] : nil,
+          failure_descriptions: if parsed_output
+            parsed_output[:examples].select do |example|
+              example[:status] == "failed"
+            end.map { |ex| ex[:full_description] }.join(";")
+          else
+            nil
+          end
         })
       end
 
