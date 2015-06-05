@@ -83,13 +83,13 @@ module LearnTest
             test_suite: [{
               framework: 'rspec',
               formatted_output: parsed_output,
-              duration: parsed_output[:summary][:duration]
+              duration: parsed_output[:summary] ? parsed_output[:summary][:duration] : nil
             }]
           },
-          examples: parsed_output[:summary][:example_count],
-          passing_count: parsed_output[:summary][:example_count] - parsed_output[:summary][:failure_count] - parsed_output[:summary][:pending_count],
-          pending_count: parsed_output[:summary][:pending_count],
-          failure_count: parsed_output[:summary][:failure_count],
+          examples: parsed_output[:summary] ? parsed_output[:summary][:example_count] : nil,
+          passing_count: parsed_output[:summary] ? parsed_output[:summary][:example_count] - parsed_output[:summary][:failure_count] - parsed_output[:summary][:pending_count] : nil,
+          pending_count: parsed_output[:summary] ? parsed_output[:summary][:pending_count] : nil,
+          failure_count: parsed_output[:summary] ? parsed_output[:summary][:failure_count] : nil,
           failure_descriptions: parsed_output[:examples].select do |example|
             example[:status] == "failed"
           end.map { |ex| ex[:full_description] }.join(";")
