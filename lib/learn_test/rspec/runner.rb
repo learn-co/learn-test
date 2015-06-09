@@ -86,16 +86,16 @@ module LearnTest
               duration: parsed_output ? parsed_output[:summary][:duration] : nil
             }]
           },
-          examples: parsed_output ? parsed_output[:summary][:example_count] : nil,
-          passing_count: parsed_output ? parsed_output[:summary][:example_count] - parsed_output[:summary][:failure_count] - parsed_output[:summary][:pending_count] : nil,
-          pending_count: parsed_output ? parsed_output[:summary][:pending_count] : nil,
-          failure_count: parsed_output ? parsed_output[:summary][:failure_count] : nil,
+          examples: parsed_output ? parsed_output[:summary][:example_count] : 1,
+          passing_count: parsed_output ? parsed_output[:summary][:example_count] - parsed_output[:summary][:failure_count] - parsed_output[:summary][:pending_count] : 0,
+          pending_count: parsed_output ? parsed_output[:summary][:pending_count] : 0,
+          failure_count: parsed_output ? parsed_output[:summary][:failure_count] : 1,
           failure_descriptions: if parsed_output
             parsed_output[:examples].select do |example|
               example[:status] == "failed"
             end.map { |ex| ex[:full_description] }.join(";")
           else
-            nil
+            'A syntax error prevented RSpec from running.'
           end
         })
       end
