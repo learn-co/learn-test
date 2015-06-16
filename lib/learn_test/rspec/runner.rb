@@ -67,11 +67,11 @@ module LearnTest
       end
 
       def set_json_output
-        self.json_output = File.read('.results.json')
+        self.json_output = File.exists?('.results.json') ? File.read('.results.json') : nil
       end
 
       def jsonify
-        self.parsed_output = Oj.load(json_output, symbol_keys: true)
+        self.parsed_output = json_output ? Oj.load(json_output, symbol_keys: true) : nil
       end
 
       def format_results
@@ -101,10 +101,14 @@ module LearnTest
       end
 
       def push_results
-        connection.post do |req|
-          req.url SERVICE_ENDPOINT
-          req.headers['Content-Type'] = 'application/json'
-          req.body = Oj.dump(formatted_results, mode: :compat)
+        begin
+          connection.post do |req|
+            req.url SERVICE_ENDPOINT
+            req.headers['Content-Type'] = 'application/json'
+            req.body = Oj.dump(formatted_results, mode: :compat)
+          end
+        rescue Faraday::ConnectionFailed
+          puts 'There was a problem connecting to Learn. Not pushing test results.'
         end
       end
 

@@ -6,7 +6,7 @@ module LearnTest
       begin
         repo = Git.open(FileUtils.pwd)
       rescue
-        puts "Not a valid Git repository"
+        puts "You don't appear to be in a Learn lesson's directory. Please cd to an appropriate directory and try again."
         die
       end
 
