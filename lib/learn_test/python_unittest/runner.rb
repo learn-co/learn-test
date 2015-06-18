@@ -12,7 +12,7 @@ module LearnTest
         @json_output = ""
         @parsed_output = nil
         @formatted_results = {}
-        @keep_results = options.include?('--keep')
+        @keep_results = !!options.delete('--keep')
         @connection = Faraday.new(url: SERVICE_URL) do |faraday|
           faraday.adapter Faraday.default_adapter
         end
