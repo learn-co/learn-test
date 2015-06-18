@@ -2,7 +2,7 @@ module LearnTest
   module PythonUnittest
     class Runner
       attr_accessor :parsed_output, :json_output, :formatted_results
-      attr_reader   :username, :user_id, :repo_name, :options, :connection
+      attr_reader   :username, :user_id, :repo_name, :options, :connection, :keep_results
 
       def initialize(username, user_id, repo_name, options)
         @username = username
@@ -12,6 +12,7 @@ module LearnTest
         @json_output = ""
         @parsed_output = nil
         @formatted_results = {}
+        @keep_results = options.include?('--keep')
         @connection = Faraday.new(url: SERVICE_URL) do |faraday|
           faraday.adapter Faraday.default_adapter
         end
@@ -26,6 +27,10 @@ module LearnTest
           push_results
           cleanup
         end
+      end
+
+      def keep_results?
+        keep_results
       end
 
       def run_nose
@@ -81,7 +86,7 @@ module LearnTest
       end
 
       def cleanup
-        FileUtils.rm('.results.json')
+        FileUtils.rm('.results.json') unless keep_results?
       end
     end
   end

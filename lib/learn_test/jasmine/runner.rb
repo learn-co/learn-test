@@ -6,7 +6,7 @@ require 'json'
 module LearnTest
   module Jasmine
     class Runner
-      attr_reader :no_color, :local, :browser, :conn, :color_opt, :out
+      attr_reader :no_color, :local, :browser, :conn, :color_opt, :out, :keep_results
       attr_accessor :json_results
 
       def self.run(username, user_id, repo_name, options)
@@ -20,6 +20,7 @@ module LearnTest
         @local = !!options[:local]
         @browser = !!options[:browser]
         @out = options[:out]
+        @keep_results = options[:keep]
         @json_results = {
           username: username,
           github_user_id:user_id,
@@ -73,8 +74,9 @@ module LearnTest
           set_passing_test_count
         end
 
-        if out
-          write_json_output
+        if out || keep_results
+          output_file = out ? out : '.results.json'
+          write_json_output(output_file: output_file)
         end
       end
 
@@ -82,8 +84,8 @@ module LearnTest
         json_results[:passing_count] = json_results[:tests] - json_results[:failures] - json_results[:errors]
       end
 
-      def write_json_output
-        File.open(out, 'w+') do |f|
+      def write_json_output(output_file:)
+        File.open(output_file, 'w+') do |f|
           f.write(json_results.to_json)
         end
       end
@@ -126,4 +128,3 @@ module LearnTest
     end
   end
 end
-
