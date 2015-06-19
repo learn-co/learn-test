@@ -1,7 +1,7 @@
 module LearnTest
   module RSpec
     class Runner
-      attr_accessor :parsed_output, :json_output, :formatted_results
+      attr_accessor :parsed_output, :json_output, :formatted_results, :keep_results
       attr_reader :username, :user_id, :repo_name, :options, :connection
 
       def initialize(username, user_id, repo_name, options)
@@ -52,6 +52,8 @@ module LearnTest
         options.delete("-t")
         options.delete("-l")
         options.delete("--local")
+
+        self.keep_results = !!options.delete('--keep')
       end
 
       def read_dot_rspec
@@ -113,7 +115,11 @@ module LearnTest
       end
 
       def cleanup
-        FileUtils.rm('.results.json')
+        FileUtils.rm('.results.json') unless keep_results?
+      end
+
+      def keep_results?
+        keep_results
       end
     end
   end

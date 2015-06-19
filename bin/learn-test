@@ -44,6 +44,10 @@ if spec_type == "jasmine"
     opts.on("-t", "--test") do |t|
       options[:test] = t
     end
+
+    opts.on('--keep', "Don't delete test output files") do |k|
+      options[:keep] = true
+    end
   end.parse!
 
   if ARGV.any? { |arg| arg == "init" }
