@@ -115,7 +115,7 @@ module LearnTest
       end
 
       def cleanup
-        FileUtils.rm('.results.json') unless keep_results?
+        FileUtils.rm('.results.json') unless keep_results? || !File.exist?('.results.json')
       end
 
       def keep_results?
