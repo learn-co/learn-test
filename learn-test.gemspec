@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Flatiron School"]
   spec.email         = ["learn@flatironschool.com"]
   spec.summary       = %q{Runs RSpec, Jasmine, and Python Unit Test builds and pushes JSON output to Learn.}
-  spec.homepage      = "https://learn.co"
+  spec.homepage      = "https://github.com/learn-co/learn-test"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
