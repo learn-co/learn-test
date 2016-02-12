@@ -52,7 +52,11 @@ module LearnTest
       def run_jasmine
         if browser
           # system("open #{LearnTest::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html --args allow-file-access-from-files")
-          chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{LearnTest::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html\" --allow-file-access-from-files"
+          if running_on_linux?
+            chrome_with_file_access_command = "\"/usr/bin/google-chrome\" \"#{LearnTest::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html\" --allow-file-access-from-files"
+          else
+            chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{LearnTest::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_opt}.html\" --allow-file-access-from-files"
+          end
           # This should give me back to the prompt - u can use & but a flag to send it to the background would be better.
           system(chrome_with_file_access_command)
         else
@@ -124,6 +128,9 @@ module LearnTest
         test_xml_files.each do |file|
           FileUtils.rm(file)
         end
+      end
+      def running_on_linux?
+        !!RUBY_PLATFORM.match(/linux/)
       end
     end
   end
