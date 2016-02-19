@@ -12,24 +12,24 @@ module LearnTest
       def configure
         if format_option_present?
           if dot_rspec.any? {|dot_opt| dot_opt.match(/--format|-f/)}
-            options << dot_rspec.reject {|dot_opt| dot_opt.match(/--format|-f/)}
+            argv << dot_rspec.reject {|dot_opt| dot_opt.match(/--format|-f/)}
           else
-            options << dot_rspec
+            argv << dot_rspec
           end
-          options.flatten!
+          argv.flatten!
         else
-          options.unshift('--format documentation')
+          argv.unshift('--format documentation')
         end
 
         # Don't pass the test/local flag from learn binary to rspec runner.
-        options.delete("--test")
-        options.delete("-t")
-        options.delete("-l")
-        options.delete("--local")
+        argv.delete("--test")
+        argv.delete("-t")
+        argv.delete("-l")
+        argv.delete("--local")
       end
 
       def run
-        system("rspec #{options.join(' ')} --format j --out .results.json")
+        system("rspec #{argv.join(' ')} --format j --out .results.json")
       end
 
       def output
@@ -67,7 +67,11 @@ module LearnTest
       end
 
       def format_option_present?
-        options.include?('--format') || options.include?('-f')
+        options[:format]
+      end
+
+      def argv
+        options[:argv]
       end
 
       def dot_rspec
