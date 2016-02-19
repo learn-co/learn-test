@@ -6,18 +6,16 @@ module LearnTest
     def initialize(repo, options = {})
       @repo = repo
       @options = options
-      die if strategies.empty?
+      die if !strategy
     end
 
     def run
-      strategies.each do |strategy|
-        strategy.check_dependencies
-        strategy.configure
-        strategy.run
-        if !help_option_present? && strategy.push_results?
-          push_results(strategy)
-          strategy.cleanup unless keep_results?
-        end
+      strategy.check_dependencies
+      strategy.configure
+      strategy.run
+      if !help_option_present? && strategy.push_results?
+        push_results(strategy)
+        strategy.cleanup unless keep_results?
       end
     end
 
@@ -29,6 +27,10 @@ module LearnTest
       @keep_results ||= options[:keep] || !!options.delete('--keep')
     end
 
+    def strategy
+      @strategy ||= strategies.map{ |s| s.new(self) }.detect(&:detect)
+    end
+
     private
 
     def connection
@@ -38,7 +40,11 @@ module LearnTest
     end
 
     def strategies
-      @strategies ||= LearnTest::Strategies.constants.map{ |s| LearnTest::Strategies.const_get(s).new(self) }.select{ |s| s.detect }
+      [
+        LearnTest::Strategies::Rspec,
+        LearnTest::Strategies::Jasmine,
+        LearnTest::Strategies::PythonUnittest
+      ]
     end
 
     def push_results(strategy)
