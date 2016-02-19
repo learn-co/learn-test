@@ -6,7 +6,7 @@ module LearnTest
     def initialize(repo, options = {})
       @repo = repo
       @options = options
-      die! if strategies.empty?
+      die if strategies.empty?
     end
 
     def run
@@ -57,7 +57,7 @@ module LearnTest
       options.include?('-h') || options.include?('--help')
     end
 
-    def exit!
+    def die
       puts "This directory doesn't appear to have any specs in it."
       exit
     end
