@@ -1,5 +1,5 @@
 require 'spec_helper'
-RSpec.describe Learn::RepoParser do
+RSpec.describe LearnTest::RepoParser do
   context "URLs from github" do
     let!(:remote) { OpenStruct.new(:url => nil)}
     let!(:repo) { OpenStruct.new(:remote => remote)}
