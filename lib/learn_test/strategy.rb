@@ -43,5 +43,9 @@ module LearnTest
     def user_id
       @user_id ||= LearnTest::UserIdParser.get_user_id
     end
+
+    def argv
+      options[:argv]
+    end
   end
 end

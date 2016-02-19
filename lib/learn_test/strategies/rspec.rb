@@ -70,10 +70,6 @@ module LearnTest
         options[:format]
       end
 
-      def argv
-        options[:argv]
-      end
-
       def dot_rspec
         @dot_rspec ||= File.readlines('.rspec').map(&:strip) if File.exist?('.rspec')
       end
