@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
-require 'learn_test'
+require_relative '../lib/learn_test'
 
 SERVICE_URL = 'http://ironbroker.flatironschool.com'
 
