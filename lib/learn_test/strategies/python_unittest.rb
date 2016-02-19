@@ -8,6 +8,10 @@ module LearnTest
         '/e/flatiron_unittest/build/ironboard'
       end
 
+      def detect
+        runner.files.any? {|f| f.match(/.*.py$/) }
+      end
+
       def check_dependencies
         LearnTest::PythonUnittest::RequirementsChecker.check_installation
         LearnTest::PythonUnittest::NoseInstaller.install

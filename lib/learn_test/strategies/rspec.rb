@@ -5,6 +5,10 @@ module LearnTest
         '/e/flatiron_rspec/build/ironboard'
       end
 
+      def detect
+        runner.files.include?('spec') && (spec_files.include?('spec_helper.rb') || spec_files.include?('rails_helper.rb'))
+      end
+
       def configure
         if format_option_present?
           if dot_rspec.any? {|dot_opt| dot_opt.match(/--format|-f/)}
@@ -57,6 +61,10 @@ module LearnTest
       end
 
       private
+
+      def spec_files
+        @spec_files ||= Dir.entries('./spec')
+      end
 
       def format_option_present?
         options.include?('--format') || options.include?('-f')

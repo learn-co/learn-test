@@ -13,6 +13,10 @@ module LearnTest
         '/e/flatiron_jasmine/build/ironboard'
       end
 
+      def detect
+        runner.files.include?('requires.yml')
+      end
+
       def check_dependencies
         LearnTest::Jasmine::PhantomChecker.check_installation
       end

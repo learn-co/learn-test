@@ -9,7 +9,6 @@ require_relative 'learn_test/user_id_parser'
 require_relative 'learn_test/username_parser'
 require_relative 'learn_test/repo_parser'
 require_relative 'learn_test/file_finder'
-require_relative 'learn_test/spec_type_parser'
 require_relative 'learn_test/runner'
 require_relative 'learn_test/strategy'
 

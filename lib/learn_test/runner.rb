@@ -21,6 +21,10 @@ module LearnTest
       end
     end
 
+    def files
+      @files ||= Dir.entries('.')
+    end
+
     def keep_results?
       @keep_results ||= options[:keep] || !!options.delete('--keep')
     end
@@ -34,19 +38,7 @@ module LearnTest
     end
 
     def strategies
-      @strategies ||= detect_strategies.map{ |s| s.new(self) }
-    end
-
-    def detect_strategies
-      spec_type = LearnTest::SpecTypeParser.new.spec_type
-
-      strategies = {
-        jasmine: LearnTest::Strategies::Jasmine,
-        rspec: LearnTest::Strategies::Rspec,
-        python_unittest: LearnTest::Strategies::PythonUnittest
-      }
-
-      [strategies[spec_type.to_sym]]
+      @strategies ||= LearnTest::Strategies.constants.map{ |s| LearnTest::Strategies.const_get(s).new(self) }.select{ |s| s.detect }
     end
 
     def push_results(strategy)
