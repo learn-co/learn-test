@@ -4,6 +4,12 @@ module LearnTest
       attr_accessor :parsed_output, :json_output, :formatted_results, :keep_results
       attr_reader :username, :user_id, :repo_name, :options, :connection
 
+      def self.run(repo, options)
+        username = LearnTest::UsernameParser.get_username
+        user_id = LearnTest::UserIdParser.get_user_id
+        new(username, user_id, repo, options).run
+      end
+
       def initialize(username, user_id, repo_name, options)
         @username = username
         @user_id = user_id

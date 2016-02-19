@@ -9,8 +9,20 @@ module LearnTest
       attr_reader :no_color, :local, :browser, :conn, :color_opt, :out, :keep_results
       attr_accessor :json_results
 
-      def self.run(username, user_id, repo_name, options)
-        new(username, user_id, repo_name, options).run
+      def self.run(repo, options)
+        if options[:init]
+          LearnTest::Jasmine::Initializer.run
+        else
+          if !options[:skip]
+            LearnTest::Jasmine::PhantomChecker.check_installation
+            username = LearnTest::UsernameParser.get_username
+            user_id = LearnTest::UserIdParser.get_user_id
+          else
+            username = "jasmine-flatiron"
+            user_id = "none"
+          end
+          new(username, user_id, repo, options).run
+        end
       end
 
       def initialize(username, user_id, repo_name, options)
