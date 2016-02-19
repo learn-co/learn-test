@@ -15,8 +15,6 @@ end
 repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
 
 if spec_type == "jasmine"
-  SERVICE_ENDPOINT = '/e/flatiron_jasmine/build/ironboard'
-
   options = {}
   OptionParser.new do |opts|
     opts.banner = "Usage: learn [options]"
@@ -56,10 +54,8 @@ if spec_type == "jasmine"
 
   LearnTest::Jasmine::Runner.run(repo, options)
 elsif spec_type == "rspec"
-  SERVICE_ENDPOINT = '/e/flatiron_rspec/build/ironboard'
   LearnTest::RSpec::Runner.run(repo, ARGV)
 elsif spec_type == 'python_unittest'
-  SERVICE_ENDPOINT = '/e/flatiron_unittest/build/ironboard'
   LearnTest::PythonUnittest::Runner.run(repo, ARGV)
 else
   puts "This directory doesn't appear to have any specs in it."

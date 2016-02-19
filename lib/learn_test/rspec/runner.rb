@@ -10,6 +10,10 @@ module LearnTest
         new(username, user_id, repo, options).run
       end
 
+      def service_endpoint
+        '/e/flatiron_rspec/build/ironboard'
+      end
+
       def initialize(username, user_id, repo_name, options)
         @username = username
         @user_id = user_id
@@ -111,7 +115,7 @@ module LearnTest
       def push_results
         begin
           connection.post do |req|
-            req.url SERVICE_ENDPOINT
+            req.url(service_endpoint)
             req.headers['Content-Type'] = 'application/json'
             req.body = Oj.dump(formatted_results, mode: :compat)
           end

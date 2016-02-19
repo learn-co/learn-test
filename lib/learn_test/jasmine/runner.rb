@@ -9,6 +9,10 @@ module LearnTest
       attr_reader :no_color, :local, :browser, :conn, :color_opt, :out, :keep_results
       attr_accessor :json_results
 
+      def service_endpoint
+        '/e/flatiron_jasmine/build/ironboard'
+      end
+
       def self.run(repo, options)
         if options[:init]
           LearnTest::Jasmine::Initializer.run
@@ -104,7 +108,7 @@ module LearnTest
 
       def push_to_flatiron
         conn.post do |req|
-          req.url SERVICE_ENDPOINT
+          req.url(service_endpoint)
           req.headers['Content-Type'] = 'application/json'
           req.body = json_results.to_json
         end

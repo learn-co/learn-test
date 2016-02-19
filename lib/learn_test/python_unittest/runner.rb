@@ -85,9 +85,13 @@ module LearnTest
         end.map { |ex| ex[:tb] }.join(';')
       end
 
+      def service_endpoint
+        '/e/flatiron_unittest/build/ironboard'
+      end
+
       def push_results
         connection.post do |req|
-          req.url SERVICE_ENDPOINT
+          req.url(service_endpoint)
           req.headers['Content-Type'] = 'application/json'
           req.body = Oj.dump(formatted_results, mode: :compat)
         end
