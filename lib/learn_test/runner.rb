@@ -12,12 +12,17 @@ module LearnTest
       strategies.each do |strategy|
         strategy.check_dependencies
         strategy.configure
+        strategy.init if options[:init]
         strategy.run
-        if !help_option_present?
+        if !help_option_present? && strategy.push_results?
           push_results(strategy)
           strategy.cleanup unless keep_results?
         end
       end
+    end
+
+    def keep_results?
+      @keep_results ||= options[:keep] || !!options.delete('--keep')
     end
 
     private
@@ -54,10 +59,6 @@ module LearnTest
       rescue Faraday::ConnectionFailed
         puts 'There was a problem connecting to Learn. Not pushing test results.'
       end
-    end
-
-    def keep_results?
-      @keep_results ||= !!options.delete('--keep')
     end
 
     def help_option_present?

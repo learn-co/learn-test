@@ -29,6 +29,10 @@ module LearnTest
       output
     end
 
+    def push_results?
+      true
+    end
+
     def cleanup
     end
 
