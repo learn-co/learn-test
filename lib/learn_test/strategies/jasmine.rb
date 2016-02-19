@@ -18,7 +18,7 @@ module LearnTest
       end
 
       def check_dependencies
-        LearnTest::Jasmine::PhantomChecker.check_installation
+        LearnTest::Jasmine::PhantomChecker.check_installation unless options[:skip]
       end
 
       def run
