@@ -3,58 +3,48 @@
 require 'optparse'
 require_relative '../lib/learn_test'
 
-def jasmine_options
-  options = {}
-  OptionParser.new do |opts|
-    opts.banner = "Usage: learn [options]"
+options = {}
 
-    opts.on("-n", "--[no-]color", "Turn off color output") do |c|
-      options[:color] = c
-    end
+OptionParser.new do |opts|
+  opts.banner = "Usage: learn [options]"
 
-    opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
-      options[:local] = l
-    end
+  opts.on("-n", "--[no-]color", "Turn off color output") do |c|
+    options[:color] = c
+  end
 
-    opts.on("-b", "--browser", "Run tests in browser") do |b|
-      options[:browser] = b
-    end
+  opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
+    options[:local] = l
+  end
 
-    opts.on("-o", "--out FILE") do |o|
-      options[:out] = o
-    end
+  opts.on("-b", "--browser", "Run tests in browser") do |b|
+    options[:browser] = b
+  end
 
-    opts.on("-s", "--skip") do |s|
-      options[:skip] = s
-    end
+  opts.on("-o", "--out FILE") do |o|
+    options[:out] = o
+  end
 
-    opts.on("-t", "--test") do |t|
-      options[:test] = t
-    end
+  opts.on("-s", "--skip") do |s|
+    options[:skip] = s
+  end
 
-    opts.on('--keep', "Don't delete test output files") do |k|
-      options[:keep] = true
-    end
-  end.parse!
+  opts.on("-t", "--test") do |t|
+    options[:test] = t
+  end
+
+  opts.on('--keep', "Don't delete test output files") do |k|
+    options[:keep] = true
+  end
 
   if ARGV.any? { |arg| arg == "init" }
     options[:init] = true
   end
 
-  options
-end
-
+  options[:argv] = ARGV
+end.parse!
 
 SERVICE_URL = 'http://ironbroker.flatironschool.com'
-
 repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
-
 spec_type = LearnTest::SpecTypeParser.new.spec_type
-
-if spec_type == "jasmine"
-  options = jasmine_options
-else
-  options = ARGV
-end
 
 LearnTest::Runner.new(repo, options).run
