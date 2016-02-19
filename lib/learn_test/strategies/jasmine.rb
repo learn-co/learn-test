@@ -49,7 +49,7 @@ module LearnTest
         !local? && !browser?
       end
 
-      def clean_up
+      def cleanup
         test_xml_files.each do |file|
           FileUtils.rm(file)
         end
