@@ -12,7 +12,6 @@ module LearnTest
       strategies.each do |strategy|
         strategy.check_dependencies
         strategy.configure
-        strategy.init if options[:init]
         strategy.run
         if !help_option_present? && strategy.push_results?
           push_results(strategy)
