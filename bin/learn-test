@@ -3,18 +3,7 @@
 require 'optparse'
 require_relative '../lib/learn_test'
 
-SERVICE_URL = 'http://ironbroker.flatironschool.com'
-
-spec_type = LearnTest::SpecTypeParser.new.spec_type
-
-unless spec_type == 'jasmine'
-  username = LearnTest::UsernameParser.get_username
-  user_id = LearnTest::UserIdParser.get_user_id
-end
-
-repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
-
-if spec_type == "jasmine"
+def jasmine_options
   options = {}
   OptionParser.new do |opts|
     opts.banner = "Usage: learn [options]"
@@ -52,11 +41,20 @@ if spec_type == "jasmine"
     options[:init] = true
   end
 
-  LearnTest::Jasmine::Runner.run(repo, options)
-elsif spec_type == "rspec"
-  LearnTest::RSpec::Runner.run(repo, ARGV)
-elsif spec_type == 'python_unittest'
-  LearnTest::PythonUnittest::Runner.run(repo, ARGV)
-else
-  puts "This directory doesn't appear to have any specs in it."
+  options
 end
+
+
+SERVICE_URL = 'http://ironbroker.flatironschool.com'
+
+repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
+
+spec_type = LearnTest::SpecTypeParser.new.spec_type
+
+if spec_type == "jasmine"
+  options = jasmine_options
+else
+  options = ARGV
+end
+
+LearnTest::Runner.new(repo, options).run
