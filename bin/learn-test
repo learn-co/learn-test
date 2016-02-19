@@ -1,82 +1,51 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
-require 'learn_test'
+require_relative '../lib/learn_test'
 
-SERVICE_URL = 'http://ironbroker.flatironschool.com'
+options = {}
 
-spec_type = LearnTest::SpecTypeParser.new.spec_type
+OptionParser.new do |opts|
+  opts.banner = "Usage: learn [options]"
 
-unless spec_type == 'jasmine'
-  username = LearnTest::UsernameParser.get_username
-  user_id = LearnTest::UserIdParser.get_user_id
-end
+  opts.on("-n", "--[no-]color", "Turn off color output") do |c|
+    options[:color] = c
+  end
 
-repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
+  opts.on("-f", "--format") do |f|
+    options[:format] = f
+  end
 
-if spec_type == "jasmine"
-  SERVICE_ENDPOINT = '/e/flatiron_jasmine/build/ironboard'
+  opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
+    options[:local] = l
+  end
 
-  options = {}
-  OptionParser.new do |opts|
-    opts.banner = "Usage: learn [options]"
+  opts.on("-b", "--browser", "Run tests in browser") do |b|
+    options[:browser] = b
+  end
 
-    opts.on("-n", "--[no-]color", "Turn off color output") do |c|
-      options[:color] = c
-    end
+  opts.on("-o", "--out FILE") do |o|
+    options[:out] = o
+  end
 
-    opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
-      options[:local] = l
-    end
+  opts.on("-s", "--skip") do |s|
+    options[:skip] = s
+  end
 
-    opts.on("-b", "--browser", "Run tests in browser") do |b|
-      options[:browser] = b
-    end
+  opts.on("-t", "--test") do |t|
+    options[:test] = t
+  end
 
-    opts.on("-o", "--out FILE") do |o|
-      options[:out] = o
-    end
-
-    opts.on("-s", "--skip") do |s|
-      options[:skip] = s
-    end
-
-    opts.on("-t", "--test") do |t|
-      options[:test] = t
-    end
-
-    opts.on('--keep', "Don't delete test output files") do |k|
-      options[:keep] = true
-    end
-  end.parse!
+  opts.on('--keep', "Don't delete test output files") do |k|
+    options[:keep] = true
+  end
 
   if ARGV.any? { |arg| arg == "init" }
-    LearnTest::Jasmine::Initializer.run
-  else
-    if !options[:skip]
-      LearnTest::Jasmine::PhantomChecker.check_installation
-      username = LearnTest::UsernameParser.get_username
-      user_id = LearnTest::UserIdParser.get_user_id
-    else
-      username = "jasmine-flatiron"
-      user_id = "none"
-    end
-
-    LearnTest::Jasmine::Runner.run(username, user_id, repo, options)
+    options[:init] = true
   end
-elsif spec_type == "rspec"
-  SERVICE_ENDPOINT = '/e/flatiron_rspec/build/ironboard'
 
-  runner = LearnTest::RSpec::Runner.new(username, user_id, repo, ARGV)
-  runner.run
-elsif spec_type == 'python_unittest'
-  SERVICE_ENDPOINT = '/e/flatiron_unittest/build/ironboard'
+  options[:argv] = ARGV
+end.parse!
 
-  LearnTest::PythonUnittest::RequirementsChecker.check_installation
-  LearnTest::PythonUnittest::NoseInstaller.install
-
-  runner = LearnTest::PythonUnittest::Runner.new(username, user_id, repo, ARGV)
-  runner.run
-else
-  puts "This directory doesn't appear to have any specs in it."
-end
+repo = options[:test] ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
+LearnTest::Runner.new(repo, options).run

@@ -12,7 +12,7 @@ module LearnTest
 
       def install_nose
         if !nose_installed?
-          `pip install nose`
+          `easy_install nose`
         end
       end
 
