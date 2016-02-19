@@ -43,7 +43,6 @@ OptionParser.new do |opts|
   options[:argv] = ARGV
 end.parse!
 
-SERVICE_URL = 'http://ironbroker.flatironschool.com'
 repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
 spec_type = LearnTest::SpecTypeParser.new.spec_type
 

@@ -1,6 +1,7 @@
 module LearnTest
   class Runner
     attr_reader :repo, :options
+    SERVICE_URL = 'http://ironbroker.flatironschool.com'
 
     def initialize(repo, options = {})
       @repo = repo
