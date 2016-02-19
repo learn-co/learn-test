@@ -36,6 +36,11 @@ OptionParser.new do |opts|
     options[:test] = t
   end
 
+  opts.on("-v", "--version") do |v|
+    puts LearnTest::VERSION
+    exit
+  end
+
   opts.on('--keep', "Don't delete test output files") do |k|
     options[:keep] = true
   end
