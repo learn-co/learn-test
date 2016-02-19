@@ -10,7 +10,7 @@ module LearnTest
   module Strategies
     class Jasmine < LearnTest::Strategy
       def service_endpoint
-        '/e/flatiron_jasmine/build/ironboard'
+        '/e/flatiron_jasmine'
       end
 
       def detect

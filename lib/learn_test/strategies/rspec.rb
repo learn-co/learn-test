@@ -2,7 +2,7 @@ module LearnTest
   module Strategies
     class Rspec < LearnTest::Strategy
       def service_endpoint
-        '/e/flatiron_rspec/build/ironboard'
+        '/e/flatiron_rspec'
       end
 
       def detect

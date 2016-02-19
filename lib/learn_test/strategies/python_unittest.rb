@@ -5,7 +5,7 @@ module LearnTest
   module Strategies
     class PythonUnittest < LearnTest::Strategy
       def service_endpoint
-        '/e/flatiron_unittest/build/ironboard'
+        '/e/flatiron_unittest'
       end
 
       def detect
