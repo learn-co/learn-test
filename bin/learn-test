@@ -47,5 +47,5 @@ OptionParser.new do |opts|
   options[:argv] = ARGV
 end.parse!
 
-repo = ARGV.include?("--test") ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
+repo = options[:test] ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
 LearnTest::Runner.new(repo, options).run
