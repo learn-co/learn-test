@@ -3,7 +3,6 @@ require 'erb'
 require 'yaml'
 require 'json'
 
-require_relative 'jasmine/phantom_checker'
 require_relative 'jasmine/initializer'
 
 module LearnTest
@@ -18,7 +17,7 @@ module LearnTest
       end
 
       def check_dependencies
-        LearnTest::Jasmine::PhantomChecker.check_installation unless options[:skip]
+        Dependencies::PhantomJS.new.execute unless options[:skip]
       end
 
       def run

@@ -10,8 +10,11 @@ require_relative 'learn_test/username_parser'
 require_relative 'learn_test/repo_parser'
 require_relative 'learn_test/file_finder'
 require_relative 'learn_test/runner'
-require_relative 'learn_test/strategy'
 
+require_relative 'learn_test/dependency'
+require_relative 'learn_test/dependencies/phantomjs'
+
+require_relative 'learn_test/strategy'
 require_relative 'learn_test/strategies/jasmine'
 require_relative 'learn_test/strategies/python_unittest'
 require_relative 'learn_test/strategies/rspec'
