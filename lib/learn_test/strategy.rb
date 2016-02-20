@@ -47,5 +47,10 @@ module LearnTest
     def argv
       options[:argv]
     end
+
+    def die(message)
+      puts "\033[31m#{message}\033[0m\n"
+      exit
+    end
   end
 end
