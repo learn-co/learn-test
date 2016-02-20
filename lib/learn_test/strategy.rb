@@ -49,7 +49,7 @@ module LearnTest
     end
 
     def die(message)
-      puts "\033[31m#{message}\033[0m\n"
+      puts message.red
       exit
     end
   end

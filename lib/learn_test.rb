@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'faraday'
 require 'oj'
+require 'colorize'
 
 require_relative 'learn_test/version'
 require_relative 'learn_test/netrc_interactor'

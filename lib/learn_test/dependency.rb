@@ -25,7 +25,7 @@ module LearnTest
     end
 
     def print_installing(name)
-      puts "Installing missing dependency #{name}..."
+      puts "Installing missing dependency #{name}...".green
     end
   end
 end
