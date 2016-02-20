@@ -7,9 +7,21 @@ module LearnTest
 
       def install
         print_installing('protractor')
-        `npm install -g protractor`
-        puts 'Updating webdriver-manager...'
-        `webdriver-manager update`
+        run_install('npm install -g protractor')
+        puts 'Updating webdriver-manager...'.green
+        run_install('webdriver-manager update')
+      end
+
+      def run_install(command)
+        Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+          while out = stdout.gets do
+            puts out
+          end
+
+          while err = stderr.gets do
+            puts err
+          end
+        end
       end
     end
   end
