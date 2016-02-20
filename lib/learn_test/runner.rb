@@ -43,6 +43,7 @@ module LearnTest
       [
         LearnTest::Strategies::Rspec,
         LearnTest::Strategies::Jasmine,
+        LearnTest::Strategies::Karma,
         LearnTest::Strategies::Protractor,
         LearnTest::Strategies::PythonUnittest
       ]
