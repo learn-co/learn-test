@@ -48,6 +48,24 @@ module LearnTest
         File.exists?('.results.json') ? Oj.load(File.read('.results.json'), symbol_keys: true) : nil
       end
 
+      def results
+        @results ||= {
+          username: username,
+          github_user_id: user_id,
+          repo_name: runner.repo,
+          build: {
+            test_suite: [{
+              framework: 'protractor',
+              formatted_output: output,
+              duration: 0.0
+            }]
+          },
+          tests: 0,
+          errors: 0,
+          failures: 0
+        }
+      end
+
       def cleanup
         FileUtils.rm('.results.json') if File.exist?('.results.json')
       end
