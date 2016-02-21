@@ -30,7 +30,7 @@ module LearnTest
 
           if wait_thr. value.exitstatus != 0
             if @missing_karma
-              die("You appear to be missing karma in your npm dependencies. Try running `npm install`\nIf the issue persists, check if karma is in the package.json.")
+              die("You appear to be missing karma in your local node modules. Try running `npm install`.\nIf the issue persists, check if karma is specified as a dependency in the package.json.")
             end
           end
         end
