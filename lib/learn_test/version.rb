@@ -1,3 +1,3 @@
 module LearnTest
-  VERSION = '1.2.26'
+  VERSION = '2.0.0.pre'
 end
