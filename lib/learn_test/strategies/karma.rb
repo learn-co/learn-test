@@ -14,7 +14,9 @@ module LearnTest
       end
 
       def run
-        Open3.popen3('karma start') do |stdin, stdout, stderr, wait_thr|
+        karma_config = LearnTest::FileFinder.location_to_dir('strategies/karma/karma.conf.js')
+
+        Open3.popen3("karma start #{karma_config}") do |stdin, stdout, stderr, wait_thr|
           while out = stdout.gets do
             puts out
           end
