@@ -37,7 +37,11 @@ module LearnTest
       end
 
       def output
-        {}
+        File.exists?('.results.json') ? Oj.load(File.read('.results.json'), symbol_keys: true) : nil
+      end
+
+      def cleanup
+        FileUtils.rm('.results.json') if File.exist?('.results.json')
       end
     end
   end
