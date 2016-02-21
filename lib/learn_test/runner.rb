@@ -57,7 +57,7 @@ module LearnTest
           req.body = Oj.dump(strategy.results, mode: :compat)
         end
       rescue Faraday::ConnectionFailed
-        puts 'There was a problem connecting to Learn. Not pushing test results.'
+        puts 'There was a problem connecting to Learn. Not pushing test results.'.red
       end
     end
 
