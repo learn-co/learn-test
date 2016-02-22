@@ -26,5 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "faraday", "~> 0.9"
   spec.add_runtime_dependency "crack"
   spec.add_runtime_dependency "jasmine"
+  spec.add_runtime_dependency "colorize"
 end
 

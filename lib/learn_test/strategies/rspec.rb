@@ -57,7 +57,7 @@ module LearnTest
       end
 
       def cleanup
-        FileUtils.rm('.results.json') unless !File.exist?('.results.json')
+        FileUtils.rm('.results.json') if File.exist?('.results.json')
       end
 
       private

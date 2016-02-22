@@ -47,5 +47,10 @@ module LearnTest
     def argv
       options[:argv]
     end
+
+    def die(message)
+      puts message.red
+      exit
+    end
   end
 end
