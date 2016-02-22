@@ -31,6 +31,12 @@ module LearnTest
       def phantom_installed_on_linux?
         phantom_installed?
       end
+      def self.check_installation
+        new.check_installation
+      end
+
+      def check_installation
+      end
 
       def phantom_installed_by_brew?
         !`brew ls --versions phantomjs`.empty?
