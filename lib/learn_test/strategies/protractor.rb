@@ -12,6 +12,7 @@ module LearnTest
       end
 
       def check_dependencies
+        Dependencies::NodeJS.new.execute
         Dependencies::Protractor.new.execute
       end
 

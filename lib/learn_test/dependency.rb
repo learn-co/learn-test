@@ -37,6 +37,10 @@ module LearnTest
         while err = stderr.gets do
           puts err
         end
+
+        if wait_thr.value.exitstatus != 0
+          die("There was an error running #{command}")
+        end
       end
     end
   end
