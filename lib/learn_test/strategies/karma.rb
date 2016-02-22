@@ -37,7 +37,7 @@ module LearnTest
       end
 
       def output
-        File.exists?('.results.json') ? Oj.load(File.read('.results.json'), symbol_keys: true) : nil
+        @output ||= File.exists?('.results.json') ? Oj.load(File.read('.results.json'), symbol_keys: true) : nil
       end
 
       def results
@@ -52,9 +52,9 @@ module LearnTest
               duration: 0.0
             }]
           },
-          test: 0,
-          errors: 0,
-          failures: 0
+          examples: output[:summary][:success] + output[:summary][:failed],
+          passing_count: output[:summary][:success],
+          failure_count: output[:summary][:failed]
         }
       end
 
