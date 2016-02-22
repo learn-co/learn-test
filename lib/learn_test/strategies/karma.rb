@@ -10,6 +10,7 @@ module LearnTest
       end
 
       def check_dependencies
+        Dependencies::NodeJS.new.execute
         Dependencies::Karma.new.execute
       end
 
