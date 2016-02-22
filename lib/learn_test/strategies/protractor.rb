@@ -4,7 +4,7 @@ module LearnTest
   module Strategies
     class Protractor < LearnTest::Strategy
       def service_endpoint
-        '/e/protractor'
+        '/e/flatiron_protractor'
       end
 
       def detect

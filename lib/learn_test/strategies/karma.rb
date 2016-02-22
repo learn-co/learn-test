@@ -2,7 +2,7 @@ module LearnTest
   module Strategies
     class Karma < LearnTest::Strategy
       def service_endpoint
-        '/e/karma'
+        '/e/flatiron_karma'
       end
 
       def detect
