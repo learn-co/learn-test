@@ -56,17 +56,39 @@ module LearnTest
             test_suite: [{
               framework: 'protractor',
               formatted_output: output,
-              duration: 0.0
+              duration: duration
             }]
           },
-          tests: 0,
-          errors: 0,
-          failures: 0
+          examples: passing_count + failure_count,
+          passing_count: passing_count,
+          failure_count: failure_count
         }
       end
 
       def cleanup
         FileUtils.rm('.results.json') if File.exist?('.results.json')
+      end
+
+      private
+
+      def passing_count
+        @passing_count ||= output.inject(0) do |count, test|
+          count += 1 if test[:assertions].all?{ |a| a[:passed] }
+          count
+        end
+      end
+
+      def failure_count
+        @failure_count ||= output.inject(0) do |count, test|
+          count += 1 if !test[:assertions].all? { |a| a[:passed] }
+          count
+        end
+      end
+
+      def duration
+        @duration ||= output.inject(0) do |count, test|
+          count += test[:duration]
+        end
       end
     end
   end
