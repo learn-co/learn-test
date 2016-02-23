@@ -16,17 +16,8 @@ module LearnTest
         Dependencies::Protractor.new.execute
       end
 
-      def selenium_not_running?
-        process = `ps aux | grep selenium`.split("\n").detect{ |p| p.include?('chromedriver') }
-        if process
-          @selenium_pid = process.split[1].to_i
-          return false
-        end
-        return true
-      end
-
       def run
-        if selenium_not_running?
+        if !selenium_running?
           stdin, stdout, stderr, wait_thr = Open3.popen3('webdriver-manager start')
           @pid = wait_thr.pid
 
@@ -63,7 +54,7 @@ module LearnTest
         end
 
         safe_kill(@pid)
-        safe_kill(@selenium_pid) if !selenium_not_running?
+        safe_kill(@selenium_pid) if selenium_running?
       end
 
       def output
@@ -120,6 +111,16 @@ module LearnTest
         rescue
         end
       end
+
+      def selenium_running?
+        process = `ps aux | grep selenium`.split("\n").detect{ |p| p.include?('chromedriver') }
+        if process
+          @selenium_pid = process.split[1].to_i
+          return true
+        end
+        return false
+      end
+
     end
   end
 end
