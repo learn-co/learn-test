@@ -15,25 +15,11 @@ module LearnTest
       end
 
       def run
-        karma_config = LearnTest::FileFinder.location_to_dir('strategies/karma/karma.conf.js')
-
-        Open3.popen3("karma start #{karma_config}") do |stdin, stdout, stderr, wait_thr|
-          while out = stdout.gets do
-            puts out
-          end
-
-          while err = stderr.gets do
-            if err.include?('Cannot find local Karma!')
-              @missing_karma = true
-            end
-            puts err
-          end
-
-          if wait_thr.value.exitstatus != 0
-            if @missing_karma
-              die("You appear to be missing karma in your local node modules. Try running `npm install`.\nIf the issue persists, check if karma is specified as a dependency in the package.json.")
-            end
-          end
+        run_karma
+        if @missing_karma
+          puts "Installing local karma dependencies...".green
+          run_install('npm install')
+          run_karma
         end
       end
 
@@ -61,6 +47,29 @@ module LearnTest
 
       def cleanup
         FileUtils.rm('.results.json') if File.exist?('.results.json')
+      end
+
+      private
+
+      def run_karma
+        karma_config = LearnTest::FileFinder.location_to_dir('strategies/karma/karma.conf.js')
+        Open3.popen3("karma start #{karma_config}") do |stdin, stdout, stderr, wait_thr|
+          while out = stdout.gets do
+            puts out
+          end
+
+          while err = stderr.gets do
+            if err.include?('Cannot find local Karma!')
+              die_missing_local_karma if @missing_karma
+              @missing_karma = true
+            end
+            puts err
+          end
+        end
+      end
+
+      def die_missing_local_karma
+        die("You appear to be missing karma in your local node modules. Try running `npm install`.\nIf the issue persists, make sure karma is specified as a dependency in the package.json")
       end
     end
   end

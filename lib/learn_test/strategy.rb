@@ -52,5 +52,21 @@ module LearnTest
       puts message.red
       exit
     end
+
+    def run_install(command)
+      Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+        while out = stdout.gets do
+          puts out
+        end
+
+        while err = stderr.gets do
+          puts err
+        end
+
+        if wait_thr.value.exitstatus != 0
+          die("There was an error running #{command}")
+        end
+      end
+    end
   end
 end
