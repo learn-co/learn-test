@@ -15,8 +15,8 @@ module LearnTest
       strategy.run
       if !help_option_present? && strategy.push_results?
         push_results(strategy)
-        strategy.cleanup unless keep_results?
       end
+      strategy.cleanup unless keep_results?
     end
 
     def files

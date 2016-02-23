@@ -17,6 +17,23 @@ module LearnTest
       end
 
       def run
+        if !selenium_running?
+          stdin, stdout, stderr, wait_thr = Open3.popen3('webdriver-manager start')
+          @pid = wait_thr.pid
+
+          @server_started = false
+
+          while !@server_started && line = stderr.gets do
+            puts line
+            if line.include?('Selenium Server is up and running')
+              @server_started = true
+              stdin.close
+              stdout.close
+              stderr.close
+            end
+          end
+        end
+
         Open3.popen3('protractor conf.js --resultJsonOutputFile .results.json') do |stdin, stdout, stderr, wait_thr|
           while line = stdout.gets do
             if line.include?('Error: Cannot find module')
@@ -26,22 +43,18 @@ module LearnTest
           end
 
           while stderr_line = stderr.gets do
-            if stderr_line.include?('ECONNREFUSED')
-              @webdriver_not_running = true
-            end
             puts stderr_line
           end
 
           if wait_thr.value.exitstatus != 0
-            if @webdriver_not_running
-              die('Webdriver manager does not appear to be running. Run `webdriver-manager start` to start it.')
-            end
-
             if @modules_missing
               die("You appear to be missing npm dependencies. Try running `npm install`\nIf the issue persists, check the package.json")
             end
           end
         end
+
+        safe_kill(@pid)
+        safe_kill(@selenium_pid) if selenium_running?
       end
 
       def output
@@ -91,6 +104,23 @@ module LearnTest
           count += test[:duration]
         end
       end
+
+      def safe_kill(pid)
+        begin
+          Process.kill('HUP', pid)
+        rescue
+        end
+      end
+
+      def selenium_running?
+        process = `ps aux | grep selenium`.split("\n").detect{ |p| p.include?('chromedriver') }
+        if process
+          @selenium_pid = process.split[1].to_i
+          return true
+        end
+        return false
+      end
+
     end
   end
 end
