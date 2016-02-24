@@ -1,6 +1,6 @@
 describe "Running a Jasmine jQuery Specs with Fixtures" do
   context 'without a browser through PhantomJS' do
-    it 'runs the spec with 0 failures' do
+    xit 'runs the spec with 0 failures' do
       output = `cd ./spec/fixtures/jasmine-jquery-fixtures && ./../../../bin/learn-test --local --test`
 
       expect(output).to include('1 spec, 0 failures')
