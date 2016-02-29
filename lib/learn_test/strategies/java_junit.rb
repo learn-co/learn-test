@@ -9,7 +9,6 @@ module LearnTest
       end
 
       def detect
-        puts "DETECTING"
         runner.files.any? { |f| f.match(/^javacs\-lab\d+$/) }
       end
 
@@ -93,7 +92,7 @@ module LearnTest
       end
 
       def test_xml_files
-        Dir.entries(test_path).select { |f| f.match(/^TEST\-.+\.xml$/) }
+        Dir.entries(test_path).select { |f| f.match(/^TEST\-.+\.xml$/) }.map { |f| "#{test_path}/#{f}" }
       end
     end
   end
