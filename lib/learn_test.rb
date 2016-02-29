@@ -17,6 +17,8 @@ require_relative 'learn_test/dependencies/nodejs'
 require_relative 'learn_test/dependencies/phantomjs'
 require_relative 'learn_test/dependencies/karma'
 require_relative 'learn_test/dependencies/protractor'
+require_relative 'learn_test/dependencies/java'
+require_relative 'learn_test/dependencies/ant'
 
 require_relative 'learn_test/strategy'
 require_relative 'learn_test/strategies/jasmine'
@@ -24,6 +26,7 @@ require_relative 'learn_test/strategies/python_unittest'
 require_relative 'learn_test/strategies/rspec'
 require_relative 'learn_test/strategies/karma'
 require_relative 'learn_test/strategies/protractor'
+require_relative 'learn_test/strategies/java_junit'
 
 module LearnTest
 end
