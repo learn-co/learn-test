@@ -27,6 +27,7 @@ require_relative 'learn_test/strategies/rspec'
 require_relative 'learn_test/strategies/karma'
 require_relative 'learn_test/strategies/protractor'
 require_relative 'learn_test/strategies/java_junit'
+require_relative 'learn_test/strategies/mocha'
 
 module LearnTest
 end
