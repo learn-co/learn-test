@@ -18,6 +18,7 @@ module LearnTest
       end
 
       def run
+        clean_old_results
         run_ant
         make_json
       end
@@ -46,8 +47,14 @@ module LearnTest
 
       private
 
+      def clean_old_results
+        if Dir.entries(lab_dir).any? { |f| f == 'junit' }
+          system("rm -rf #{lab_dir}/junit")
+        end
+      end
+
       def run_ant
-        system('ant test -buildfile javacs*/build.xml')
+        system('ant clean -buildfile javacs*/build.xml && ant build -buildfile javacs*/build.xml && ant test -buildfile javacs*/build.xml')
       end
 
       def test_path
@@ -55,28 +62,36 @@ module LearnTest
       end
 
       def lab_dir
-        @lab_dir ||= Dir.entries('.').detect {|f| f.match(/^javacs\-lab\d+$/)}
+        @lab_dir ||= Dir.entries('.').detect { |f| f.match(/^javacs\-lab\d+$/) }
       end
 
       def make_json
-        test_xml_files.each do |f|
-          parsed = JSON.parse(Crack::XML.parse(File.read(f)).to_json)['testsuite']
-          next if !parsed
+        if File.exists?(test_path)
+          test_xml_files.each do |f|
+            parsed = JSON.parse(Crack::XML.parse(File.read(f)).to_json)['testsuite']
+            next if !parsed
 
-          parsed['testcase'].each do |test_case|
-            results[:build][:test_suite][0][:formatted_output] << test_case
+            if parsed['testcase']
+              parsed['testcase'].each do |test_case|
+                results[:build][:test_suite][0][:formatted_output] << test_case
+              end
+            end
+
+            test_count    = parsed['tests'].to_i
+            skipped_count = parsed['skipped'].to_i
+            error_count   = parsed['errors'].to_i
+            failure_count = parsed['failures'].to_i
+            duration      = parsed['time'].to_f
+
+            results[:examples] += test_count
+            results[:passing_count] += (test_count - skipped_count - error_count - failure_count)
+            results[:failure_count] += (error_count + failure_count)
+            results[:build][:test_suite][0][:duration] = duration
           end
-
-          test_count    = parsed['tests'].to_i
-          skipped_count = parsed['skipped'].to_i
-          error_count   = parsed['errors'].to_i
-          failure_count = parsed['failures'].to_i
-          duration      = parsed['time'].to_f
-
-          results[:examples] += test_count
-          results[:passing_count] += (test_count - skipped_count - error_count - failure_count)
-          results[:failure_count] += (error_count + failure_count)
-          results[:build][:test_suite][0][:duration] = duration
+        else
+          results[:examples]      = 1
+          results[:failure_count] = 1
+          results[:passing_count] = 0
         end
 
         if runner.keep_results?
