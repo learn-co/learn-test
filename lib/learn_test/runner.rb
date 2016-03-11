@@ -41,8 +41,8 @@ module LearnTest
 
     def strategies
       [
-        LearnTest::Strategies::Rspec,
         LearnTest::Strategies::Jasmine,
+        LearnTest::Strategies::Rspec,
         LearnTest::Strategies::Karma,
         LearnTest::Strategies::Protractor,
         LearnTest::Strategies::JavaJunit,
