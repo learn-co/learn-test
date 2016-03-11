@@ -2,7 +2,7 @@ module LearnTest
   module Dependencies
     class Ant < LearnTest::Dependency
       def missing?
-        if mingw32?
+        if win?
           `where ant`.empty?
         else
           `which ant`.empty?
@@ -10,7 +10,7 @@ module LearnTest
       end
 
       def install
-        if mingw32?
+        if win?
           die('Please install Ant.')
         else
           puts('Checking for homebrew...'.green)

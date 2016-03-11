@@ -24,8 +24,8 @@ module LearnTest
       !!RUBY_PLATFORM.match(/darwin/)
     end
 
-    def mingw32?
-      !!RUBY_PLATFORM.match(/mingw32/)
+    def win?
+      !!RUBY_PLATFORM.match(/mswin|mingw|cygwin/)
     end
 
     def print_installing(name)
