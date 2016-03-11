@@ -10,7 +10,7 @@ module LearnTest
       end
 
       def install
-        if win?
+        if win? || !mac?
           die('Please install Ant.')
         else
           puts('Checking for homebrew...'.green)
