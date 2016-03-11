@@ -29,8 +29,7 @@ module LearnTest
       end
 
       def run
-        run_install('npm install')
-        run_install('npm install mocha-multi')
+        install_mocha_multi
         run_mocha
       end
 
@@ -64,6 +63,12 @@ module LearnTest
 
       def run_mocha
         system("multi='json=.results.json spec=-' node_modules/mocha/bin/mocha test -R mocha-multi")
+      end
+
+      def install_mocha_multi
+        if !File.exists?('node_modules/mocha-multi')
+          run_install('npm install mocha-multi')
+        end
       end
     end
   end
