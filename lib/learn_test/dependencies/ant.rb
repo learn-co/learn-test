@@ -2,15 +2,23 @@ module LearnTest
   module Dependencies
     class Ant < LearnTest::Dependency
       def missing?
-        `which ant`.empty?
+        if mingw32?
+          `where ant`.empty?
+        else
+          `which ant`.empty?
+        end
       end
 
       def install
-        puts('Checking for homebrew...'.green)
-        die('You must have Homebrew installed') unless brew_installed?
-        puts('Updating brew...'.green)
-        print_installing('ant')
-        run_install('brew install ant')
+        if mingw32?
+          die('Please install Ant.')
+        else
+          puts('Checking for homebrew...'.green)
+          die('You must have Homebrew installed') unless brew_installed?
+          puts('Updating brew...'.green)
+          print_installing('ant')
+          run_install('brew install ant')
+        end
       end
 
       private

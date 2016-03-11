@@ -54,7 +54,9 @@ module LearnTest
       end
 
       def run_ant
-        system('ant clean -buildfile javacs*/build.xml && ant build -buildfile javacs*/build.xml && ant test -buildfile javacs*/build.xml')
+        javacs_dir = Dir.entries('.').detect { |f| !!f.match(/javacs/) }
+
+        system("ant clean -buildfile #{javacs_dir}/build.xml && ant build -buildfile #{javacs_dir}/build.xml && ant test -buildfile #{javacs_dir}/build.xml")
       end
 
       def test_path

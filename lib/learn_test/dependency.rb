@@ -24,6 +24,10 @@ module LearnTest
       !!RUBY_PLATFORM.match(/darwin/)
     end
 
+    def mingw32?
+      !!RUBY_PLATFORM.match(/mingw32/)
+    end
+
     def print_installing(name)
       puts "Installing missing dependency #{name}...".green
     end

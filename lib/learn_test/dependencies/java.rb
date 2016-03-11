@@ -2,7 +2,11 @@ module LearnTest
   module Dependencies
     class Java < LearnTest::Dependency
       def missing?
-        `which java`.empty?
+        if mingw32?
+          `where java`.empty?
+        else
+          `which java`.empty?
+        end
       end
 
       def install
