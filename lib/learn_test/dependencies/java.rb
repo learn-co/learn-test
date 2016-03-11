@@ -2,7 +2,7 @@ module LearnTest
   module Dependencies
     class Java < LearnTest::Dependency
       def missing?
-        `which java`.empty?
+        `where java`.empty?
       end
 
       def install

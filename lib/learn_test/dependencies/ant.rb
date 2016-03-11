@@ -2,7 +2,7 @@ module LearnTest
   module Dependencies
     class Ant < LearnTest::Dependency
       def missing?
-        `which ant`.empty?
+        `where ant`.empty?
       end
 
       def install

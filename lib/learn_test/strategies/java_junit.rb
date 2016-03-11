@@ -54,7 +54,7 @@ module LearnTest
       end
 
       def run_ant
-        system('ant clean -buildfile javacs*/build.xml && ant build -buildfile javacs*/build.xml && ant test -buildfile javacs*/build.xml')
+        system("ant clean -buildfile javacs-lab02/build.xml && ant build -buildfile javacs-lab02/build.xml && ant test -buildfile javacs-lab02/build.xml")
       end
 
       def test_path
