@@ -21,6 +21,11 @@ module LearnTest
         end
       end
 
+      def die(message)
+        puts message
+        exit
+      end
+
       private
 
       def brew_installed?

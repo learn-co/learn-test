@@ -25,6 +25,11 @@ module LearnTest
           run_install('brew install selenium-server-standalone')
         end
       end
+
+      def die(message)
+        puts message
+        exit
+      end
     end
   end
 end

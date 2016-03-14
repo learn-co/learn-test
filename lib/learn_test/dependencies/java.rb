@@ -12,6 +12,11 @@ module LearnTest
       def install
         die('Please install Java')
       end
+
+      def die(message)
+        puts message
+        exit
+      end
     end
   end
 end
