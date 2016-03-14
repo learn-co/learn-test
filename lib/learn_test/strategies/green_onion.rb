@@ -1,12 +1,10 @@
-require 'yaml'
-
 module LearnTest
   module Strategies
     class GreenOnion < LearnTest::Strategy
       attr_reader :rspec_runner
 
-      def initialize
-        @rspec_runner = Strategies::Rspec.new
+      def initialize(runner)
+        @rspec_runner = Strategies::Rspec.new(runner)
         super
       end
 
@@ -23,6 +21,7 @@ module LearnTest
       end
 
       def check_dependencies
+        Dependencies::Firefox.new.execute
         Dependencies::Imagemagick.new.execute
         Dependencies::SeleniumServer.new.execute
       end
@@ -50,7 +49,7 @@ module LearnTest
       end
 
       def yaml
-        @yaml ||= YAML.parse(File.read('.learn'))
+        @yaml ||= YAML.load(File.read('.learn'))
       end
     end
   end

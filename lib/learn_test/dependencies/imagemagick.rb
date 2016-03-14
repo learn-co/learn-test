@@ -2,12 +2,21 @@ module LearnTest
   module Dependencies
     class Imagemagick < LearnTest::Dependency
       def missing?
-        convert = `which convert`
+        if win?
+          convert = `where convert`
+        else
+          convert = `which convert`
+        end
+
         convert.empty? || convert.match(/not found/i)
       end
 
       def install
-        brew = `which brew`
+        if win?
+          brew = false
+        else
+          brew = `which brew`
+        end
 
         if brew.empty? || brew.match(/not found/i)
           die('Please install ImageMagick'.red)

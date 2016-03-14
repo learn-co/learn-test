@@ -21,6 +21,7 @@ require_relative 'learn_test/dependencies/java'
 require_relative 'learn_test/dependencies/ant'
 require_relative 'learn_test/dependencies/imagemagick'
 require_relative 'learn_test/dependencies/selenium_server'
+require_relative 'learn_test/dependencies/firefox'
 
 require_relative 'learn_test/strategy'
 require_relative 'learn_test/strategies/jasmine'
