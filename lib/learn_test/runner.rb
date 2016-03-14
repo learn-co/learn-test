@@ -42,6 +42,7 @@ module LearnTest
     def strategies
       [
         LearnTest::Strategies::Jasmine,
+        LearnTest::Strategies::GreenOnion,
         LearnTest::Strategies::Rspec,
         LearnTest::Strategies::Karma,
         LearnTest::Strategies::Protractor,
