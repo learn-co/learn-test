@@ -24,6 +24,7 @@ module LearnTest
         Dependencies::Firefox.new.execute
         Dependencies::Imagemagick.new.execute
         Dependencies::SeleniumServer.new.execute
+        Dependencies::GreenOnion.new.execute
       end
 
       def run
