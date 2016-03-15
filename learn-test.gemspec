@@ -29,5 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "colorize"
   spec.add_runtime_dependency "webrick", "~> 1.3.1"
   spec.add_runtime_dependency "rainbow", "= 1.99.2"
+  spec.add_runtime_dependency "selenium-webdriver", "~> 2.52.0"
 end
 
