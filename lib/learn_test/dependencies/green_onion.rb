@@ -9,11 +9,6 @@ module LearnTest
         print_installing('green_onion')
         run_install('gem install green_onion -v 0.1.4')
       end
-
-      def die(message)
-        puts message
-        exit
-      end
     end
   end
 end
