@@ -21,10 +21,10 @@ module LearnTest
       end
 
       def check_dependencies
-        Dependencies::Firefox.new.execute
         Dependencies::Imagemagick.new.execute
         Dependencies::SeleniumServer.new.execute
         Dependencies::GreenOnion.new.execute
+        Dependencies::Firefox.new.execute
       end
 
       def run
