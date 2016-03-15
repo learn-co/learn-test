@@ -9,7 +9,7 @@ module LearnTest
       end
 
       def service_endpoint
-        '/e/green_onion'
+        '/e/flatiron_rspec'
       end
 
       def detect
