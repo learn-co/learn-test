@@ -24,7 +24,6 @@ module LearnTest
         Dependencies::Imagemagick.new.execute
         Dependencies::SeleniumServer.new.execute
         Dependencies::GreenOnion.new.execute
-        Dependencies::SeleniumWebdriver.new.execute
         Dependencies::Firefox.new.execute
       end
 
