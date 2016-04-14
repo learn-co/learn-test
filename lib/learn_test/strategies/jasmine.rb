@@ -109,10 +109,15 @@ module LearnTest
 
       def run_jasmine
         if browser?
-          # system("open #{LearnTest::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_option}.html --args allow-file-access-from-files")
-          chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{Dir.pwd}/tmpTestSupport/SpecRunner#{color_option}.html\" --allow-file-access-from-files"
-          # This should give me back to the prompt - u can use & but a flag to send it to the background would be better.
-          system(chrome_with_file_access_command)
+          chrome_on_mac_path ="\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\""
+          chrome_on_linux_path = "google-chrome"
+          jasmine_lab_path_for_chrome = "\"#{Dir.pwd}/tmpTestSupport/SpecRunner#{color_option}.html\" --allow-file-access-from-files"
+
+          if RUBY_PLATFORM.include?("linux")
+            system("#{chrome_on_linux_path} #{jasmine_lab_path_for_chrome}")
+          else
+            system("#{chrome_on_mac_path} #{jasmine_lab_path_for_chrome}")
+          end
         else
           system("phantomjs #{LearnTest::FileFinder.location_to_dir('strategies/jasmine/runners')}/run-jasmine.js #{Dir.pwd}/tmpTestSupport/SpecRunner#{color_option}.html")
         end
