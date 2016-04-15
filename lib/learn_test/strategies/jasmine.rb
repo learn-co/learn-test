@@ -56,6 +56,9 @@ module LearnTest
         test_xml_files.each do |file|
           FileUtils.rm(file)
         end
+
+        sleep 1 if browser?
+        FileUtils.rm_rf("#{Dir.pwd}/tmpTestSupport")
       end
 
       def username
@@ -81,20 +84,37 @@ module LearnTest
         @javascripts << (required_specs && required_specs.map {|f| "#{test_path}/#{f}"} )
         @javascripts.flatten!.compact!
 
-        File.open("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine/runners')}/SpecRunner#{color_option}.html",
-                  'w+') do |f|
+        copy_support_files
+
+        File.open("#{Dir.pwd}/tmpTestSupport/SpecRunner#{color_option}.html", "w+") do |f|
           f << template.result(binding)
         end
+      end
+
+      def copy_support_files
+        FileUtils.mkdir("#{Dir.pwd}/tmpTestSupport") if !File.exist?("#{Dir.pwd}/tmpTestSupport")
+
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/jasmine.js","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/jasmine-html.js","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/console.js","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/boot.js","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/jquery-1.8.0.min.js","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/jquery-ui-1.8.23.custom.min.js","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/jasmine-jquery.js","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/jasmine.css","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine')}/jasmine_favicon.png","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine/formatters')}/jasmine2-junit.js","#{Dir.pwd}/tmpTestSupport/")
+        FileUtils.cp("#{LearnTest::FileFinder.location_to_dir('strategies/jasmine/helpers')}/ConsoleHelper.js","#{Dir.pwd}/tmpTestSupport/")
       end
 
       def run_jasmine
         if browser?
           # system("open #{LearnTest::FileFinder.location_to_dir('jasmine/runners')}/SpecRunner#{color_option}.html --args allow-file-access-from-files")
-          chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{LearnTest::FileFinder.location_to_dir('strategies/jasmine/runners')}/SpecRunner#{color_option}.html\" --allow-file-access-from-files"
+          chrome_with_file_access_command = "\"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome\" \"#{Dir.pwd}/tmpTestSupport/SpecRunner#{color_option}.html\" --allow-file-access-from-files"
           # This should give me back to the prompt - u can use & but a flag to send it to the background would be better.
           system(chrome_with_file_access_command)
         else
-          system("phantomjs #{LearnTest::FileFinder.location_to_dir('strategies/jasmine/runners')}/run-jasmine.js #{LearnTest::FileFinder.location_to_dir('strategies/jasmine/runners')}/SpecRunner#{color_option}.html")
+          system("phantomjs #{LearnTest::FileFinder.location_to_dir('strategies/jasmine/runners')}/run-jasmine.js #{Dir.pwd}/tmpTestSupport/SpecRunner#{color_option}.html")
         end
       end
 
