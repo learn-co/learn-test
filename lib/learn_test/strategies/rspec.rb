@@ -29,7 +29,7 @@ module LearnTest
       end
 
       def run
-        system("rspec #{argv.join(' ')} --format j --out .results.json")
+        system("#{bundle_command}rspec #{argv.join(' ')} --format j --out .results.json")
       end
 
       def output
@@ -61,6 +61,10 @@ module LearnTest
       end
 
       private
+
+      def bundle_command
+        File.exist?('Gemfile') ? 'bundle exec ' : ''
+      end
 
       def spec_files
         @spec_files ||= Dir.entries('./spec')
