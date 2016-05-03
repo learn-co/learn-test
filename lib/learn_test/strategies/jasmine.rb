@@ -57,8 +57,7 @@ module LearnTest
           FileUtils.rm(file)
         end
 
-        sleep 1 if browser?
-        FileUtils.rm_rf("#{Dir.pwd}/tmpTestSupport")
+        FileUtils.rm_rf("#{Dir.pwd}/tmpTestSupport") if !browser?
       end
 
       def username
