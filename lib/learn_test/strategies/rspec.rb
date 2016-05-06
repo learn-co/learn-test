@@ -63,7 +63,7 @@ module LearnTest
       private
 
       def bundle_command
-        File.exist?('Gemfile') && !!File.read('Gemfile').match(/('|")rspec('|")/) ? 'bundle exec ' : ''
+        File.exist?('Gemfile') && !!File.read('Gemfile').match(/('|")rspec(-.+)?('|")/) ? 'bundle exec ' : ''
       end
 
       def spec_files
