@@ -29,7 +29,6 @@ module LearnTest
       end
 
       def run
-        install_mocha_multi
         run_mocha
       end
 
@@ -62,12 +61,29 @@ module LearnTest
       private
 
       def run_mocha
-        system("multi='json=.results.json spec=-' node_modules/mocha/bin/mocha test -R mocha-multi")
+        package = Oj.load(File.read('package.json'), symbol_keys: true)
+
+        npm_install
+
+        command = if (package[:scripts] && package[:scripts][:test] || "").include?(".results.json")
+          "npm test"
+        else
+          install_mocha_multi
+          "node_modules/.bin/mocha -R mocha-multi --reporter-options spec=-,json=.results.json"
+        end
+
+        system(command)
       end
 
       def install_mocha_multi
         if !File.exists?('node_modules/mocha-multi')
           run_install('npm install mocha-multi')
+        end
+      end
+
+      def npm_install
+        if !File.exists?('node_modules')
+          run_install('npm install')
         end
       end
     end

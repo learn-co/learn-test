@@ -11,4 +11,6 @@
 *.so
 *.o
 *.a
+.ruby-version
 mkmf.log
+learn-test-*.gem
