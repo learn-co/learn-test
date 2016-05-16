@@ -45,6 +45,10 @@ OptionParser.new do |opts|
     options[:keep] = true
   end
 
+  opts.on('--fail-fast', 'Stop running test suite on first failed test') do |f|
+    options[:fail_fast] = f
+  end
+
   if ARGV.any? { |arg| arg == "init" }
     options[:init] = true
   end
