@@ -21,6 +21,10 @@ module LearnTest
           argv.unshift('--format documentation')
         end
 
+        if fail_fast_option_present?
+          argv << '--fail-fast'
+        end
+
         # Don't pass the test/local flag from learn binary to rspec runner.
         argv.delete("--test")
         argv.delete("-t")
@@ -72,6 +76,10 @@ module LearnTest
 
       def format_option_present?
         options[:format]
+      end
+
+      def fail_fast_option_present?
+        options[:fail_fast]
       end
 
       def dot_rspec
