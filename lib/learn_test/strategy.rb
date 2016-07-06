@@ -44,6 +44,10 @@ module LearnTest
       @user_id ||= LearnTest::UserIdParser.get_user_id
     end
 
+    def learn_oauth_token
+      @learn_oauth_token ||= LearnTest::LearnOauthTokenParser.get_learn_oauth_token
+    end
+
     def argv
       options[:argv]
     end

@@ -34,6 +34,7 @@ module LearnTest
         @results ||= {
           username: username,
           github_user_id: user_id,
+          learn_oauth_token: learn_oauth_token,
           repo_name: runner.repo,
           build: {
             test_suite: [{
@@ -66,6 +67,10 @@ module LearnTest
 
       def user_id
         options[:skip] ? "none" : super
+      end
+
+      def learn_oauth_token
+        options[:skip] ? nil : super
       end
 
       private
