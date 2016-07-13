@@ -18,6 +18,7 @@ require_relative 'learn_test/dependencies/phantomjs'
 require_relative 'learn_test/dependencies/karma'
 require_relative 'learn_test/dependencies/protractor'
 require_relative 'learn_test/dependencies/java'
+require_relative 'learn_test/dependencies/csharp'
 require_relative 'learn_test/dependencies/ant'
 require_relative 'learn_test/dependencies/imagemagick'
 require_relative 'learn_test/dependencies/selenium_server'
@@ -31,8 +32,12 @@ require_relative 'learn_test/strategies/rspec'
 require_relative 'learn_test/strategies/karma'
 require_relative 'learn_test/strategies/protractor'
 require_relative 'learn_test/strategies/java_junit'
+
+require_relative 'learn_test/strategies/csharp_nunit'
+
 require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/green_onion'
 
 module LearnTest
 end
+
