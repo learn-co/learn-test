@@ -5,7 +5,7 @@ module LearnTest
       username = parser.username
       user_id = parser.user_id
 
-      if !username || user_id == 'none'
+      if !LearnTest::LearnOauthTokenParser.get_learn_oauth_token && (!username || user_id == 'none')
         print "Enter your github username: "
         username = gets.strip
         user_id = LearnTest::GithubInteractor.get_user_id_for(username)

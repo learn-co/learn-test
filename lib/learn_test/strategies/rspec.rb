@@ -44,6 +44,7 @@ module LearnTest
         {
           username: username,
           github_user_id: user_id,
+          learn_oauth_token: learn_oauth_token,
           repo_name: runner.repo,
           build: {
             test_suite: [{
