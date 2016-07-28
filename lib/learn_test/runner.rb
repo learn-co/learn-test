@@ -53,6 +53,7 @@ module LearnTest
 
     def strategies
       [
+        LearnTest::Strategies::CSharpNunit,
         LearnTest::Strategies::Jasmine,
         LearnTest::Strategies::GreenOnion,
         LearnTest::Strategies::Rspec,
