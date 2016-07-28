@@ -11,7 +11,7 @@ module LearnTest
       end
 
       if url = repo.remote.url
-        url.match(/(?:https:\/\/|git@).*\/(.+?)(?:\.git)?$/)[1]
+        url.match(/(?:https?:\/\/|git@).*\/(.+?)(?:\.git)?$/)[1]
       else
         puts "You don't appear to be in a Learn lesson's directory. Please cd to an appropriate directory and try again."
         die
