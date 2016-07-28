@@ -11,7 +11,6 @@ require_relative 'learn_test/username_parser'
 require_relative 'learn_test/repo_parser'
 require_relative 'learn_test/file_finder'
 require_relative 'learn_test/runner'
-
 require_relative 'learn_test/dependency'
 require_relative 'learn_test/dependencies/nodejs'
 require_relative 'learn_test/dependencies/phantomjs'
@@ -24,7 +23,6 @@ require_relative 'learn_test/dependencies/imagemagick'
 require_relative 'learn_test/dependencies/selenium_server'
 require_relative 'learn_test/dependencies/firefox'
 require_relative 'learn_test/dependencies/green_onion'
-
 require_relative 'learn_test/strategy'
 require_relative 'learn_test/strategies/jasmine'
 require_relative 'learn_test/strategies/python_unittest'
@@ -32,12 +30,9 @@ require_relative 'learn_test/strategies/rspec'
 require_relative 'learn_test/strategies/karma'
 require_relative 'learn_test/strategies/protractor'
 require_relative 'learn_test/strategies/java_junit'
-
 require_relative 'learn_test/strategies/csharp_nunit'
-
 require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/green_onion'
 
 module LearnTest
 end
-

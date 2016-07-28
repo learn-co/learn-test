@@ -3,7 +3,6 @@ require 'json'
 
 module LearnTest
   module Strategies
-
     class CSharpNunit < LearnTest::Strategy
       def service_endpoint
         '/e/flatiron_csharp_nunit'
@@ -49,7 +48,6 @@ module LearnTest
       def cleanup
         FileUtils.rm("TestResult.xml") if File.exist?("TestResult.xml")
       end
-
     end
   end
 end
