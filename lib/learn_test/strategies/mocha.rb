@@ -59,12 +59,20 @@ module LearnTest
         FileUtils.rm('.results.json') if File.exist?('.results.json')
       end
 
+      def missing_dependencies?(package)
+        return true if !File.exists?("node_modules")
+
+        [:dependencies, :devDependencies, :peerDependencies].any? do |d|
+          (package[d] || {}).any? { |p, v| !File.exists?("node_modules/#{p}") }
+        end
+      end
+
       private
 
       def run_mocha
         package = Oj.load(File.read('package.json'), symbol_keys: true)
 
-        npm_install
+        npm_install(package)
 
         command = if (package[:scripts] && package[:scripts][:test] || "").include?(".results.json")
           "npm test"
@@ -82,10 +90,8 @@ module LearnTest
         end
       end
 
-      def npm_install
-        if !File.exists?('node_modules')
-          run_install('npm install')
-        end
+      def npm_install(package)
+        run_install('npm install') if missing_dependencies?(package)
       end
     end
   end
