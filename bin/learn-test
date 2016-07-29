@@ -16,7 +16,7 @@ OptionParser.new do |opts|
     options[:format] = f
   end
 
-  opts.on("-l", "--local", "Don't push results to Flatiron LMS") do |l|
+  opts.on("-l", "--local", "Don't push results to Learn") do |l|
     options[:local] = l
   end
 
