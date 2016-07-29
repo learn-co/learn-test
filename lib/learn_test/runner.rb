@@ -15,7 +15,7 @@ module LearnTest
       strategy.check_dependencies
       strategy.configure
       strategy.run
-      if !help_option_present? && strategy.push_results?
+      if !help_option_present? && strategy.push_results? && !local_test_run?
         push_results(strategy)
       end
       strategy.cleanup unless keep_results?
@@ -82,6 +82,10 @@ module LearnTest
 
     def help_option_present?
       options.include?('-h') || options.include?('--help')
+    end
+
+    def local_test_run?
+      options.include?('-h') || options.include?('--local')
     end
 
     def die
