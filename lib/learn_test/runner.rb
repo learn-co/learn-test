@@ -19,6 +19,23 @@ module LearnTest
         push_results(strategy)
       end
       strategy.cleanup unless keep_results?
+
+      check_endpoint
+    end
+
+    def check_endpoint
+      local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
+        faraday.adapter(Faraday.default_adapter)
+      end
+
+      response = local_connection.get do |req|
+        req.url('/api/metrics.json')
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
+      end
+
+      puts response.body
+      puts response.env.response_headers
     end
 
     def files
@@ -76,7 +93,7 @@ module LearnTest
           req.body = Oj.dump(results, mode: :compat)
         end
       rescue Faraday::ConnectionFailed
-        puts 'There was a problem connecting to Learn. Not pushing test results.'.red
+        puts 'There was a problem connecting to Learn. Not pushing test results.'
       end
     end
 
