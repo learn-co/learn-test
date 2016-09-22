@@ -22,6 +22,15 @@ module LearnTest
       strategy.cleanup unless keep_results?
 
       update_profile
+      ask_a_question
+    end
+
+    def ask_a_question
+      # is profile info available?
+      # does profile data indicate we should aaq?
+      # if so, prompt
+      # if student responds no,  then (lowest priority) report result to learn
+      # if student resopnds yes, then (lowest priority) report result to learn and open AAQ
     end
 
     def update_profile
