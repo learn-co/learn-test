@@ -31,9 +31,16 @@ module LearnTest
       end
     end
 
+    def read_profile
+      return nil unless File.exists?(profile_path)
+
+      JSON.parse(File.read(profile_path))
+    end
+
     def profile_needs_update?
-      # absent or stale
-      true
+      profile = read_profile
+      return true if profile.nil?
+      profile['generated_at'].to_i < (Time.now.to_i - 86400)
     end
 
     def request_profile
