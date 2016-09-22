@@ -4,6 +4,7 @@ module LearnTest
   class Runner
     attr_reader :repo, :options
     SERVICE_URL = 'http://ironbroker-v2.flatironschool.com'
+    PROFILE_PATH = "#{ENV['HOME']}/.learn_profile"
 
     def initialize(repo, options = {})
       @repo = repo
@@ -20,10 +21,22 @@ module LearnTest
       end
       strategy.cleanup unless keep_results?
 
-      check_endpoint
+      update_profile
     end
 
-    def check_endpoint
+    def update_profile
+      if profile_needs_update?
+        profile = request_profile
+        write_profile(profile)
+      end
+    end
+
+    def profile_needs_update?
+      # absent or stale
+      true
+    end
+
+    def request_profile
       local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
         faraday.adapter(Faraday.default_adapter)
       end
@@ -34,8 +47,13 @@ module LearnTest
         req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
       end
 
-      puts response.body
-      puts response.env.response_headers
+      response.body
+    end
+
+    def write_profile(profile)
+      f = File.open(profile_path, 'w+')
+      f.write(profile)
+      f.close
     end
 
     def files
@@ -51,6 +69,10 @@ module LearnTest
     end
 
     private
+
+    def profile_path
+      PROFILE_PATH
+    end
 
     def augment_results!(results)
       if File.exist?("#{FileUtils.pwd}/.learn")

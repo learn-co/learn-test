@@ -3,6 +3,8 @@ module LearnTest
     attr_reader :runner, :options
 
     def initialize(runner)
+      @before_hooks = []
+      @after_hooks  = []
       @runner  = runner
       @options = runner.options
     end
