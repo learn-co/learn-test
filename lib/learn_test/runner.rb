@@ -5,6 +5,7 @@ module LearnTest
     attr_reader :repo, :options
     SERVICE_URL = 'http://ironbroker-v2.flatironschool.com'
     PROFILE_PATH = "#{ENV['HOME']}/.learn_profile"
+    HISTORY_PATH = "#{Dir.pwd}/.learn_history"
 
     def initialize(repo, options = {})
       @repo = repo
@@ -19,18 +20,65 @@ module LearnTest
       if !help_option_present? && strategy.push_results? && !local_test_run?
         push_results(strategy)
       end
+      results = strategy.results
       strategy.cleanup unless keep_results?
 
       update_profile
-      ask_a_question
+      write_test_data_to_profile
+      ask_a_question(results)
     end
 
-    def ask_a_question
-      # is profile info available?
-      # does profile data indicate we should aaq?
-      # if so, prompt
-      # if student responds no,  then (lowest priority) report result to learn
-      # if student resopnds yes, then (lowest priority) report result to learn and open AAQ
+    def write_test_data_to_profile
+      # incrementing test runs
+      # incrementing time taken
+    end
+
+    def ask_a_question(results)
+      if ask_a_question_triggered?(results)
+        response = ''
+        until response == 'y' || response == 'n'
+          puts "Would you like to ask a question? y/n"
+          response = STDIN.gets.chomp.downcase
+        end
+
+        if response == 'y'
+          `open http://localhost:3000/lessons/current?question_id=new`
+        else
+          'Ok, happy learning!'
+        end
+        # log the response to learn history and send the response to Learn
+        log_response
+        sync_response_to_learn(response)
+      end
+    end
+
+    def sync_response_to_learn(response)
+      #send request to endpoint, create struggleprompted
+      #prompted_at, user response, threshold, lab, user
+    end
+
+    def log_response
+      f = File.open(history_path, 'a')
+      f.write("aaq"+"\n")
+      f.close
+    end
+
+    def ask_a_question_triggered?(results)
+      profile = read_profile
+      return false if profile.nil?
+
+      history = read_history
+      return false if history.index('aaq')
+      return false if results[:failure_count] == 0
+
+      # check if detection is on for this lab, if it's in the returned lesson_ids hash]
+      # look up the lab by its remote repo name 
+      # threshold = profile["program"]["lessons"][repo]["event_triggers"]
+      # user_metric = profile["program"]["lessons"]["progress"]["test_runs_stuff"]
+      # test runs, calculate what percentile someone's in for test runs or time taken
+      # if test_runs_percentile exceeds 1 std of mean 
+      # read profile and see if tests aren't passing && minimum detection threshold passed
+      true
     end
 
     def update_profile
@@ -46,6 +94,12 @@ module LearnTest
       JSON.parse(File.read(profile_path))
     end
 
+    def read_history
+      return "" unless File.exists?(history_path)
+
+      File.read(history_path)
+    end
+
     def profile_needs_update?
       profile = read_profile
       return true if profile.nil?
@@ -57,13 +111,17 @@ module LearnTest
         faraday.adapter(Faraday.default_adapter)
       end
 
-      response = local_connection.get do |req|
-        req.url('/api/metrics.json')
-        req.headers['Content-Type'] = 'application/json'
-        req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
-      end
+      begin
+        response = local_connection.get do |req|
+          req.url('/api/metrics.json')
+          req.headers['Content-Type'] = 'application/json'
+          req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
+        end
 
-      response.body
+        response.body
+      rescue Faraday::ConnectionFailed
+        'Error: connection failed'
+      end
     end
 
     def write_profile(profile)
@@ -85,6 +143,10 @@ module LearnTest
     end
 
     private
+
+    def history_path
+      HISTORY_PATH
+    end
 
     def profile_path
       PROFILE_PATH
