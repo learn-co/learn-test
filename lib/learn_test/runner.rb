@@ -23,30 +23,33 @@ module LearnTest
       results = strategy.results
       strategy.cleanup unless keep_results?
 
-      update_profile
-      write_test_data_to_profile
       ask_a_question(results)
     end
 
-    def write_test_data_to_profile
-      # incrementing test runs
-      # incrementing time taken
-    end
 
     def ask_a_question(results)
       if ask_a_question_triggered?(results)
         response = ''
         until response == 'y' || response == 'n'
-          puts "Would you like to ask a question? y/n"
-          response = STDIN.gets.chomp.downcase
+          puts <<-PROMPT
+      /||
+     //||
+    // ||
+   ||||||||||
+       || //   Would you like to talk to a Learn Expert?
+       ||//
+       ||/
+      PROMPT
+      print '(y/n): '
+        response = STDIN.gets.chomp.downcase
         end
 
         if response == 'y'
-          `open http://localhost:3000/lessons/current?question_id=new`
+          `open https://qa.learn.flatironschool.com/lessons/current?question_id=new`
         else
           'Ok, happy learning!'
         end
-        # log the response to learn history and send the response to Learn
+
         log_response
         sync_response_to_learn(response)
       end
@@ -58,76 +61,53 @@ module LearnTest
     end
 
     def log_response
-      f = File.open(history_path, 'a')
-      f.write("aaq"+"\n")
+      history = read_history
+      history["aaq"] = true
+      write_history(history)
+    end
+
+    def read_history
+      if File.exists?(history_path)
+        JSON.parse(File.read(history_path))
+      else
+        { "aaq" => false }
+      end
+    end
+
+    def write_history(history)
+      f = File.open(history_path, 'w+')
+      f.write(history.to_json)
       f.close
     end
 
     def ask_a_question_triggered?(results)
-      profile = read_profile
-      return false if profile.nil?
-
       history = read_history
-      return false if history.index('aaq')
+      return false if history["aaq"] == true
       return false if results[:failure_count] == 0
 
-      # check if detection is on for this lab, if it's in the returned lesson_ids hash]
-      # look up the lab by its remote repo name 
-      # threshold = profile["program"]["lessons"][repo]["event_triggers"]
-      # user_metric = profile["program"]["lessons"]["progress"]["test_runs_stuff"]
-      # test runs, calculate what percentile someone's in for test runs or time taken
-      # if test_runs_percentile exceeds 1 std of mean 
-      # read profile and see if tests aren't passing && minimum detection threshold passed
-      true
+      get_api_cli_aaq["payload"]["aaq_trigger"]
     end
 
-    def update_profile
-      if profile_needs_update?
-        profile = request_profile
-        write_profile(profile)
-      end
-    end
-
-    def read_profile
-      return nil unless File.exists?(profile_path)
-
-      JSON.parse(File.read(profile_path))
-    end
-
-    def read_history
-      return "" unless File.exists?(history_path)
-
-      File.read(history_path)
-    end
-
-    def profile_needs_update?
-      profile = read_profile
-      return true if profile.nil?
-      profile['generated_at'].to_i < (Time.now.to_i - 86400)
-    end
-
-    def request_profile
+    def get_api_cli_aaq
       local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
         faraday.adapter(Faraday.default_adapter)
       end
 
       begin
         response = local_connection.get do |req|
-          req.url('/api/metrics.json')
+          req.url('/api/cli/aaq.json')
           req.headers['Content-Type'] = 'application/json'
           req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
         end
 
-        response.body
+        JSON.parse(response.body)
       rescue Faraday::ConnectionFailed
-        'Error: connection failed'
+        { "payload":
+          {
+            "aaq_trigger": false
+          }
+        }
       end
-    end
-
-    def write_profile(profile)
-      f = File.open(profile_path, 'w+')
-      f.write(profile)
-      f.close
     end
 
     def files
