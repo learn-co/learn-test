@@ -89,15 +89,16 @@ module LearnTest
     end
 
     def get_api_cli_aaq
-      local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
+      local_connection ||= Faraday.new(url: 'https://qa.learn.flatironschool.com') do |faraday|
         faraday.adapter(Faraday.default_adapter)
       end
 
       begin
         response = local_connection.get do |req|
-          req.url('/api/cli/aaq.json')
+          req.url("/api/cli/aaq.json?repo_name=#{repo}")
           req.headers['Content-Type'] = 'application/json'
           req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
+
         end
 
         JSON.parse(response.body)
