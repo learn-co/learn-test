@@ -1,4 +1,5 @@
 require 'yaml'
+require 'socket'
 
 module LearnTest
   class Runner
@@ -45,7 +46,7 @@ module LearnTest
         end
 
         if response == 'y'
-          `open https://qa.learn.flatironschool.com/lessons/current?question_id=new`
+          browser_open('https://qa.learn.flatironschool.com/lessons/current?question_id=new')
         else
           'Ok, happy learning!'
         end
@@ -124,6 +125,22 @@ module LearnTest
     end
 
     private
+
+    def browser_open(url)
+      if ide_environment?
+        ide_client.browser_open(url)
+      else
+        `open #{url}`
+      end
+    end
+
+    def ide_client
+      @ide_client ||= LearnTest::Ide::Client.new
+    end
+
+    def ide_environment?
+      Socket.gethostname.end_with? '.students.learn.co'
+    end
 
     def history_path
       HISTORY_PATH
