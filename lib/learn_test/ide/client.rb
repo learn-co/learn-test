@@ -5,8 +5,8 @@ module LearnTest::Ide
 
   class Client
     def browser_open(url)
-      File.open("#{ide_user_home}/.fs_changes.log", 'a') do |f|
-        f.puts "chrome BROWSER_OPEN #{url}"
+      File.open("#{ide_user_home}/.custom_commands.log", 'a') do |f|
+        f.puts({ command: 'browser_open', url: url }.to_json)
       end
     end
 
