@@ -64,6 +64,7 @@ module LearnTest
     def log_response
       history = read_history
       history["aaq"] = true
+      ignore_history
       write_history(history)
     end
 
@@ -125,6 +126,15 @@ module LearnTest
     end
 
     private
+
+    def ignore_history
+      File.open('.git/info/exclude', 'a+') do |f|
+        contents = f.read
+        unless contents.match(/\.learn_history/)
+          f.puts('.learn_history')
+        end
+      end
+    end
 
     def browser_open(url)
       if ide_environment?
