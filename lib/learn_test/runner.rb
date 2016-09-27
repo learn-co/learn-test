@@ -29,6 +29,9 @@ module LearnTest
 
     def ask_a_question(results)
       if ask_a_question_triggered?(results)
+        history = read_history
+        uuid = history["uuid"]
+
         response = ''
         until response == 'y' || response == 'n'
           puts <<-PROMPT
@@ -45,32 +48,20 @@ module LearnTest
         end
 
         if response == 'y'
-          `open https://qa.learn.flatironschool.com/lessons/current?question_id=new`
+          `open "http://localhost:3000/lessons/current?question_id=new&cli_event=#{uuid}"`
         else
           'Ok, happy learning!'
         end
-
-        log_response
-        sync_response_to_learn(response)
       end
-    end
-
-    def sync_response_to_learn(response)
-      #send request to endpoint, create struggleprompted
-      #prompted_at, user response, threshold, lab, user
-    end
-
-    def log_response
-      history = read_history
-      history["aaq"] = true
-      write_history(history)
     end
 
     def read_history
       if File.exists?(history_path)
         JSON.parse(File.read(history_path))
       else
-        { "aaq" => false }
+        { "aaq" => false,
+          "uuid" => ''
+        }
       end
     end
 
@@ -85,11 +76,13 @@ module LearnTest
       return false if history["aaq"] == true
       return false if results[:failure_count] == 0
 
-      get_api_cli_aaq["payload"]["aaq_trigger"]
+      intervention_data = get_api_cli_aaq["payload"]
+      write_history(intervention_data)
+      intervention_data["aaq_trigger"]
     end
 
     def get_api_cli_aaq
-      local_connection ||= Faraday.new(url: 'https://qa.learn.flatironschool.com') do |faraday|
+      local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
         faraday.adapter(Faraday.default_adapter)
       end
 
