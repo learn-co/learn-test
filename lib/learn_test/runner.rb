@@ -73,6 +73,7 @@ module LearnTest
     end
 
     def ask_a_question_triggered?(results)
+      return false if windows_environment?
       history = read_history
       return false if history["aaq_trigger"] == true
       return false if results[:failure_count] == 0
@@ -131,6 +132,8 @@ module LearnTest
     def browser_open(url)
       if ide_environment?
         ide_client.browser_open(url)
+      elsif linux_environment?
+        `xdg-open "#{url}"`
       else
         `open "#{url}"`
       end
@@ -142,6 +145,14 @@ module LearnTest
 
     def ide_environment?
       Socket.gethostname.end_with? '.students.learn.co'
+    end
+
+    def linux_environment?
+      RUBY_PLATFORM =~ /linux/
+    end
+
+    def windows_environment?
+      RUBY_PLATFORM =~ /mswin32/ || RUBY_PLATFORM =~ /mingw32/
     end
 
     def history_path
