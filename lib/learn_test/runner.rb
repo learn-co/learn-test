@@ -47,6 +47,45 @@ module LearnTest
 
     private
 
+    def ignore_history
+      File.open('.git/info/exclude', 'a+') do |f|
+        contents = f.read
+        unless contents.match(/\.learn_history/)
+          f.puts('.learn_history')
+        end
+      end
+    end
+
+    def browser_open(url)
+      if ide_environment?
+        ide_client.browser_open(url)
+      elsif linux_environment?
+        `xdg-open "#{url}"`
+      else
+        `open "#{url}"`
+      end
+    end
+
+    def ide_client
+      @ide_client ||= LearnTest::Ide::Client.new
+    end
+
+    def ide_environment?
+      Socket.gethostname.end_with? '.students.learn.co'
+    end
+
+    def linux_environment?
+      RUBY_PLATFORM =~ /linux/
+    end
+
+    def history_path
+      HISTORY_PATH
+    end
+
+    def profile_path
+      PROFILE_PATH
+    end
+
     def augment_results!(results)
       if File.exist?("#{FileUtils.pwd}/.learn")
         dot_learn = YAML.load(File.read("#{FileUtils.pwd}/.learn"))
