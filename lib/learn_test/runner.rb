@@ -1,4 +1,5 @@
 require 'yaml'
+require 'socket'
 
 module LearnTest
   class Runner
@@ -48,7 +49,7 @@ module LearnTest
         end
 
         if response == 'y'
-          `open "http://localhost:3000/lessons/current?question_id=new&cli_event=#{uuid}"`
+          browser_open("http://localhost:3000/lessons/current?question_id=new&cli_event=#{uuid}")
         else
           'Ok, happy learning!'
         end
@@ -73,10 +74,11 @@ module LearnTest
 
     def ask_a_question_triggered?(results)
       history = read_history
-      return false if history["aaq"] == true
+      return false if history["aaq_trigger"] == true
       return false if results[:failure_count] == 0
 
       intervention_data = get_api_cli_aaq["payload"]
+      ignore_history
       write_history(intervention_data)
       intervention_data["aaq_trigger"]
     end
@@ -91,7 +93,6 @@ module LearnTest
           req.url("/api/cli/aaq.json?repo_name=#{repo}")
           req.headers['Content-Type'] = 'application/json'
           req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
-
         end
 
         JSON.parse(response.body)
@@ -117,6 +118,31 @@ module LearnTest
     end
 
     private
+
+    def ignore_history
+      File.open('.git/info/exclude', 'a+') do |f|
+        contents = f.read
+        unless contents.match(/\.learn_history/)
+          f.puts('.learn_history')
+        end
+      end
+    end
+
+    def browser_open(url)
+      if ide_environment?
+        ide_client.browser_open(url)
+      else
+        `open "#{url}"`
+      end
+    end
+
+    def ide_client
+      @ide_client ||= LearnTest::Ide::Client.new
+    end
+
+    def ide_environment?
+      Socket.gethostname.end_with? '.students.learn.co'
+    end
 
     def history_path
       HISTORY_PATH
