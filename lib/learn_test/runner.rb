@@ -102,7 +102,7 @@ module LearnTest
 
       begin
         response = local_connection.get do |req|
-          req.url("/api/cli/aaq.json?repo_name=#{repo}")
+          req.url("/api/cli/prompt.json?repo_name=#{repo}")
           req.headers['Content-Type'] = 'application/json'
           req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
         end
