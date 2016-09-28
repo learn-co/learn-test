@@ -33,6 +33,40 @@ module LearnTest
       LearnTest::Profile.new(strategy.learn_oauth_token)
     end
 
+    def ask_a_question_triggered?(results)
+      return false if windows_environment?
+      history = read_history
+      return false if history["aaq_trigger"] == true
+      return false if results[:failure_count] == 0
+
+      intervention_data = get_api_cli_aaq["payload"]
+      ignore_history
+      write_history(intervention_data)
+      intervention_data["aaq_trigger"]
+    end
+
+    def get_api_cli_aaq
+      local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
+        faraday.adapter(Faraday.default_adapter)
+      end
+
+      begin
+        response = local_connection.get do |req|
+          req.url("/api/cli/aaq.json?repo_name=#{repo}")
+          req.headers['Content-Type'] = 'application/json'
+          req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
+        end
+
+        JSON.parse(response.body)
+      rescue Faraday::ConnectionFailed
+        { "payload":
+          {
+            "aaq_trigger": false
+          }
+        }
+      end
+    end
+
     def files
       @files ||= Dir.entries('.')
     end
@@ -76,6 +110,10 @@ module LearnTest
 
     def linux_environment?
       RUBY_PLATFORM =~ /linux/
+    end
+
+    def windows_environment?
+      RUBY_PLATFORM =~ /mswin32/ || RUBY_PLATFORM =~ /mingw32/
     end
 
     def history_path
