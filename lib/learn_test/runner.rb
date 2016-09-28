@@ -24,6 +24,7 @@ module LearnTest
       results = strategy.results
       strategy.cleanup unless keep_results?
 
+      update_profile
       ask_a_question(results)
     end
 
@@ -72,7 +73,57 @@ module LearnTest
       f.close
     end
 
+    def read_profile
+      if File.exists?(profile_path)
+        JSON.parse(File.read(profile_path))
+      else
+        { "intervention" => false,
+          "generated_at" => 0
+        }
+      end
+    end
+
+    def write_profile(profile)
+      f = File.open(profile_path, 'w+')
+      f.write(profile.to_json)
+      f.close
+    end
+
+    def update_profile
+      if profile_needs_update?
+        profile = request_profile
+        write_profile(profile)
+      end
+    end
+
+    def profile_needs_update?
+      profile = read_profile
+      profile['generated_at'].to_i < (Time.now.to_i - 86400)
+    end
+
+    def request_profile
+      local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
+        faraday.adapter(Faraday.default_adapter)
+      end
+
+      begin
+        response = local_connection.get do |req|
+          req.url("/api/cli/profile.json")
+          req.headers['Content-Type'] = 'application/json'
+          req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
+        end
+
+        JSON.parse(response.body)
+      rescue Faraday::ConnectionFailed
+        {
+          "intervention": false
+        }
+      end
+    end
+
     def ask_a_question_triggered?(results)
+      profile = read_profile
+      return false if profile["intervention"] == false
       return false if windows_environment?
       history = read_history
       return false if history["aaq_trigger"] == true
@@ -91,7 +142,7 @@ module LearnTest
 
       begin
         response = local_connection.get do |req|
-          req.url("/api/cli/aaq.json?repo_name=#{repo}")
+          req.url("/api/cli/prompt.json?repo_name=#{repo}")
           req.headers['Content-Type'] = 'application/json'
           req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
         end
