@@ -20,9 +20,10 @@ module LearnTest
       ask_a_question if ask_a_question_triggered?
     end
 
-    private
-
     def ask_a_question
+      history = read_history
+      uuid = history["uuid"]
+
       response = ''
       until response == 'y' || response == 'n'
         puts <<-PROMPT
@@ -100,9 +101,10 @@ module LearnTest
     end
 
     def default_payload
-      {
-        "aaq_trigger" => false,
-        "uuid" => ''
+      { "payload":
+        {
+          "aaq_trigger": false
+        }
       }
     end
 

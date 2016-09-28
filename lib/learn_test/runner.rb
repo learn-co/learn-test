@@ -43,78 +43,8 @@ module LearnTest
       end
     end
 
-    def write_profile(profile)
-      f = File.open(profile_path, 'w+')
-      f.write(profile.to_json)
-      f.close
-    end
-
-    def update_profile
-      if profile_needs_update?
-        profile = request_profile
-        write_profile(profile)
-      end
-    end
-
-    def profile_needs_update?
-      profile = read_profile
-      profile['generated_at'].to_i < (Time.now.to_i - 86400)
-    end
-
-    def request_profile
-      local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
-        faraday.adapter(Faraday.default_adapter)
-      end
-
-      begin
-        response = local_connection.get do |req|
-          req.url("/api/cli/profile.json")
-          req.headers['Content-Type'] = 'application/json'
-          req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
-        end
-
-        JSON.parse(response.body)
-      rescue Faraday::ConnectionFailed
-        {
-          "intervention": false
-        }
-      end
-    end
-
-    def ask_a_question_triggered?(results)
-      profile = read_profile
-      return false if profile["intervention"] == false
-      return false if windows_environment?
-      history = read_history
-      return false if history["aaq_trigger"] == true
-      return false if results[:failure_count] == 0
-
-      intervention_data = get_api_cli_aaq["payload"]
-      ignore_history
-      write_history(intervention_data)
-      intervention_data["aaq_trigger"]
-    end
-
-    def get_api_cli_aaq
-      local_connection ||= Faraday.new(url: 'http://localhost:3000') do |faraday|
-        faraday.adapter(Faraday.default_adapter)
-      end
-
-      begin
-        response = local_connection.get do |req|
-          req.url("/api/cli/prompt.json?repo_name=#{repo}")
-          req.headers['Content-Type'] = 'application/json'
-          req.headers['Authorization'] = "Bearer #{strategy.learn_oauth_token}"
-        end
-
-        JSON.parse(response.body)
-      rescue Faraday::ConnectionFailed
-        { "payload":
-          {
-            "aaq_trigger": false
-          }
-        }
-      end
+    def profile
+      LearnTest::Profile.new(strategy.learn_oauth_token)
     end
 
     def files
@@ -131,49 +61,6 @@ module LearnTest
 
     private
 
-    def ignore_history
-      File.open('.git/info/exclude', 'a+') do |f|
-        contents = f.read
-        unless contents.match(/\.learn_history/)
-          f.puts('.learn_history')
-        end
-      end
-    end
-
-    def browser_open(url)
-      if ide_environment?
-        ide_client.browser_open(url)
-      elsif linux_environment?
-        `xdg-open "#{url}"`
-      else
-        `open "#{url}"`
-      end
-    end
-
-    def ide_client
-      @ide_client ||= LearnTest::Ide::Client.new
-    end
-
-    def ide_environment?
-      Socket.gethostname.end_with? '.students.learn.co'
-    end
-
-    def linux_environment?
-      RUBY_PLATFORM =~ /linux/
-    end
-
-    def windows_environment?
-      RUBY_PLATFORM =~ /mswin32/ || RUBY_PLATFORM =~ /mingw32/
-    end
-
-    def history_path
-      HISTORY_PATH
-    end
-
-    def profile_path
-      PROFILE_PATH
-    end
-
     def augment_results!(results)
       if File.exist?("#{FileUtils.pwd}/.learn")
         dot_learn = YAML.load(File.read("#{FileUtils.pwd}/.learn"))
@@ -185,7 +72,7 @@ module LearnTest
     end
 
     def connection
-      @connection ||= Faraday.new(url: SERVICE_URL) do |faraday|
+@connection ||= Faraday.new(url: SERVICE_URL) do |faraday|
         faraday.adapter  Faraday.default_adapter
       end
     end

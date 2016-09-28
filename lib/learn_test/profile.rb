@@ -40,6 +40,11 @@ module LearnTest
       end
     end
 
+    def needs_update?
+      profile = read_profile
+      profile['generated_at'].to_i < (Time.now.to_i - 86400)
+    end
+
     def write(profile)
       f = File.open(profile_path, 'w+')
       f.write(profile.to_json)
