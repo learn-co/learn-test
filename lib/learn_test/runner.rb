@@ -72,7 +72,7 @@ module LearnTest
     end
 
     def connection
-@connection ||= Faraday.new(url: SERVICE_URL) do |faraday|
+      @connection ||= Faraday.new(url: SERVICE_URL) do |faraday|
         faraday.adapter  Faraday.default_adapter
       end
     end
