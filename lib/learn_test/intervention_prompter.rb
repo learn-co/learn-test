@@ -5,7 +5,7 @@ module LearnTest
     attr_reader :results, :repo, :token, :profile
 
     HISTORY_PATH = "#{Dir.pwd}/.learn_history"
-    BASE_URL = 'http://localhost:3000'
+    BASE_URL = 'https://qa.learn.flatironschool.com'
     PROMPT_ENDPOINT = "/api/cli/prompt.json"
 
     def initialize(test_results, repo, token, profile)

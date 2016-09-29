@@ -2,7 +2,7 @@ module LearnTest
   class Profile
     attr_reader :token
     PROFILE_PATH = "#{ENV['HOME']}/.learn_profile"
-    BASE_URL = "http://localhost:3000"
+    BASE_URL = "https://qa.learn.flatironschool.com"
     PROFILE_ENDPOINT = "/api/cli/profile.json" 
 
     def initialize(token)
