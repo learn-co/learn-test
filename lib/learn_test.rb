@@ -12,6 +12,8 @@ require_relative 'learn_test/learn_oauth_token_parser'
 require_relative 'learn_test/repo_parser'
 require_relative 'learn_test/file_finder'
 require_relative 'learn_test/runner'
+require_relative 'learn_test/profile'
+require_relative 'learn_test/intervention_prompter'
 
 require_relative 'learn_test/dependency'
 require_relative 'learn_test/dependencies/nodejs'
@@ -38,6 +40,7 @@ require_relative 'learn_test/strategies/java_junit'
 require_relative 'learn_test/strategies/csharp_nunit'
 require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/green_onion'
+
 
 module LearnTest
 end

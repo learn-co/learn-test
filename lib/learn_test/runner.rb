@@ -18,7 +18,19 @@ module LearnTest
       if !help_option_present? && strategy.push_results? && !local_test_run?
         push_results(strategy)
       end
+      results = strategy.results
       strategy.cleanup unless keep_results?
+
+      profile.update
+      trigger_callbacks(results)
+    end
+
+    def trigger_callbacks(test_results)
+      LearnTest::InterventionPrompter.new(test_results, repo, strategy.learn_oauth_token, profile).execute
+    end
+
+    def profile
+      LearnTest::Profile.new(strategy.learn_oauth_token)
     end
 
     def files
@@ -76,7 +88,7 @@ module LearnTest
           req.body = Oj.dump(results, mode: :compat)
         end
       rescue Faraday::ConnectionFailed
-        puts 'There was a problem connecting to Learn. Not pushing test results.'.red
+        puts 'There was a problem connecting to Learn. Not pushing test results.'
       end
     end
 
