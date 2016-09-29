@@ -2,7 +2,7 @@ require 'yaml'
 
 module LearnTest
   class Runner
-    attr_reader :repo, :options
+    attr_reader :repo, :options, :results
     SERVICE_URL = 'http://ironbroker-v2.flatironschool.com'
 
     def initialize(repo, options = {})
@@ -18,15 +18,24 @@ module LearnTest
       if !help_option_present? && strategy.push_results? && !local_test_run?
         push_results(strategy)
       end
-      results = strategy.results
+      @results = strategy.results
       strategy.cleanup unless keep_results?
 
-      profile.update
-      trigger_callbacks(results)
+      pid = fork do
+        profile.update
+        prompter.get_data
+      end
+
+      Process.detach(pid)
+      trigger_callbacks
     end
 
-    def trigger_callbacks(test_results)
-      LearnTest::InterventionPrompter.new(test_results, repo, strategy.learn_oauth_token, profile).execute
+    def prompter
+      LearnTest::InterventionPrompter.new(results, repo, strategy.learn_oauth_token, profile)
+    end
+
+    def trigger_callbacks
+      prompter.execute
     end
 
     def profile
