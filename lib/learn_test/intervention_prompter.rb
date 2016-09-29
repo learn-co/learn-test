@@ -20,6 +20,13 @@ module LearnTest
       ask_a_question if ask_a_question_triggered?
     end
 
+    def get_data
+      unless already_triggered?
+        intervention_data = get_intervention_data["payload"]
+        write_history(intervention_data)
+      end
+    end
+
     private
 
     def ask_a_question
@@ -44,6 +51,13 @@ module LearnTest
       else
         puts "No problem. You got this."
       end
+      log_triggered_at
+    end
+
+    def log_triggered_at
+      history = read_history
+      history["aaq_triggered_at"] = Time.now.to_i
+      write_history(history)
     end
 
     def ask_a_question_url
@@ -55,18 +69,15 @@ module LearnTest
 
     def ask_a_question_triggered?
       return false unless profile.should_trigger?
-      return false if already_triggered?
-      return false if windows_environment?
-      return false if all_tests_passing?
+      return false if already_triggered? || windows_environment? || all_tests_passing?
 
-      intervention_data = get_intervention_data["payload"]
-      write_history(intervention_data)
-      intervention_data["aaq_trigger"]
+      intervention_data = read_history
+      intervention_data["aaq_trigger"] == true
     end
 
     def already_triggered?
       history = read_history
-      history["aaq_trigger"] == true
+      history["aaq_triggered_at"]
     end
 
     def all_tests_passing?
