@@ -11,7 +11,7 @@ module LearnTest
 
     def should_trigger?
       profile = read_profile
-      profile["intervention"] == true
+      profile["features"]["aaq_intervention"] == true
     end
 
     def update
@@ -25,7 +25,7 @@ module LearnTest
 
     def needs_update?
       profile = read_profile
-      profile['generated_at'].to_i < one_day_ago
+      profile["generated_at"].to_i < one_day_ago
     end
 
     def one_day_ago
@@ -67,7 +67,10 @@ module LearnTest
     end
 
     def default_payload
-      { "intervention" => false,
+      { "features" => 
+        {
+          "intervention" => false
+        },
         "generated_at" => 0
       }
     end

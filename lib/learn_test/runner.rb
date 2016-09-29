@@ -42,20 +42,6 @@ module LearnTest
       LearnTest::Profile.new(strategy.learn_oauth_token)
     end
 
-    def read_profile
-      if File.exists?(profile_path)
-        JSON.parse(File.read(profile_path))
-      else
-        { "intervention" => false,
-          "generated_at" => 0
-        }
-      end
-    end
-
-    def profile
-      LearnTest::Profile.new(strategy.learn_oauth_token)
-    end
-
     def files
       @files ||= Dir.entries('.')
     end
