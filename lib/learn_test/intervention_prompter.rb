@@ -30,18 +30,19 @@ module LearnTest
   //||
   // ||
   ||||||||||
-    || //   Would you like to talk to a Learn Expert?
+    || //    Stuck on this Lab and want some help from an Expert?
     ||//
     ||/
    PROMPT
-      print '(y/n): '
+      print 'Enter (Y/n): '
       response = STDIN.gets.chomp.downcase
       end
 
       if response == 'y'
+        puts "Good move. An Expert will be with you shortly on Ask a Question."
         browser_open(ask_a_question_url)
       else
-        print 'Ok, happy learning!'
+        puts "No problem. You got this."
       end
     end
 
