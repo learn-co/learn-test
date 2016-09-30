@@ -9,6 +9,7 @@ module LearnTest
       @repo = repo
       @options = options
       die if !strategy
+      @lesson_profile = LessonProfile.new(repo, strategy.learn_oauth_token)
     end
 
     def run
@@ -21,12 +22,7 @@ module LearnTest
       @results = strategy.results
       strategy.cleanup unless keep_results?
 
-      pid = fork do
-        profile.update
-        prompter.get_data
-      end
-
-      Process.detach(pid)
+      sync_profiles!
       trigger_callbacks
     end
 
@@ -55,6 +51,17 @@ module LearnTest
     end
 
     private
+
+    def sync_profiles!
+      pid = fork do
+        profile.update
+        lesson_profile.sync!
+      end
+
+      Process.detach(pid)
+    end
+
+    attr_reader :lesson_profile
 
     def augment_results!(results)
       if File.exist?("#{FileUtils.pwd}/.learn")
