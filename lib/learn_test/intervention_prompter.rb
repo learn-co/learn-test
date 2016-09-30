@@ -44,10 +44,11 @@ module LearnTest
       else
         puts "No problem. You got this."
       end
-      log_triggered_at
+
+      aaq_triggered!
     end
 
-    def log_triggered_at
+    def aaq_triggered!
       lesson_profile.aaq_triggered!
     end
 
