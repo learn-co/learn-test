@@ -35,7 +35,9 @@ module LearnTest
         payload = request_data["payload"]
 
         unless payload.nil?
-          self.data = payload
+          data['lid']         = payload['lid']
+          data['uuid']        = payload['uuid']
+          data['aaq_trigger'] = payload['aaq_trigger']
           write!
         end
       end
