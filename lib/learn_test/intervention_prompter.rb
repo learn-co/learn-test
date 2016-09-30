@@ -62,9 +62,10 @@ module LearnTest
 
     def ask_a_question_url
       history = read_history
+      lesson_id = history["lid"]
       uuid = history["uuid"]
 
-      base_url + "/lessons/current?question_id=new&cli_event=#{uuid}"
+      base_url + "/lessons/#{lesson_id}?question_id=new&cli_event=#{uuid}"
     end
 
     def ask_a_question_triggered?
