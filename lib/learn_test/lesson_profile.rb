@@ -100,11 +100,11 @@ module LearnTest
       if File.exists?(lesson_profile_path)
         JSON.parse(File.read(lesson_profile_path))
       else
-        new_history
+        new_profile
       end
     end
 
-    def new_history
+    def new_profile
       {
         "aaq_trigger" => false,
         "uuid" => ''
