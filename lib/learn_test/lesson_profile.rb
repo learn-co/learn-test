@@ -1,6 +1,6 @@
 module LearnTest
   class LessonProfile
-    LESSON_PROFILE_PATH = "#{Dir.pwd}/.lesson_profile"
+    LESSON_PROFILE_FILENAME = '.lesson_profile'
     BASE_URL = 'https://qa.learn.flatironschool.com'
     PROMPT_ENDPOINT = "/api/cli/prompt.json"
 
@@ -82,6 +82,15 @@ module LearnTest
 
     def lesson_profile_path
       LESSON_PROFILE_PATH
+    end
+
+    def lesson_profile_path
+      path = ENV['LESSON_PROFILE_PATH'] || Dir.pwd
+      "#{path}/#{lesson_profile_filename}"
+    end
+
+    def lesson_profile_filename
+      LESSON_PROFILE_FILENAME
     end
 
     def data
