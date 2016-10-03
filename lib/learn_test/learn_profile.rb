@@ -69,7 +69,7 @@ module LearnTest
     def default_payload
       { "features" => 
         {
-          "intervention" => false
+          "aaq_intervention" => false
         },
         "generated_at" => 0
       }
