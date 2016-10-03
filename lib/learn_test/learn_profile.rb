@@ -1,5 +1,5 @@
 module LearnTest
-  class Profile
+  class LearnProfile
     attr_reader :token
     PROFILE_PATH = "#{ENV['HOME']}/.learn_profile"
     BASE_URL = "https://qa.learn.flatironschool.com"
@@ -14,7 +14,7 @@ module LearnTest
       profile["features"]["aaq_intervention"] == true
     end
 
-    def update
+    def sync!
       if needs_update?
         profile = request_profile
         write(profile)

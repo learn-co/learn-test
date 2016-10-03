@@ -12,7 +12,7 @@ require_relative 'learn_test/learn_oauth_token_parser'
 require_relative 'learn_test/repo_parser'
 require_relative 'learn_test/file_finder'
 require_relative 'learn_test/runner'
-require_relative 'learn_test/profile'
+require_relative 'learn_test/learn_profile'
 require_relative 'learn_test/lesson_profile'
 require_relative 'learn_test/intervention_prompter'
 

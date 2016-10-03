@@ -27,15 +27,15 @@ module LearnTest
     end
 
     def prompter
-      LearnTest::InterventionPrompter.new(results, repo, strategy.learn_oauth_token, profile)
+      LearnTest::InterventionPrompter.new(results, repo, strategy.learn_oauth_token, learn_profile)
     end
 
     def trigger_callbacks
       prompter.execute
     end
 
-    def profile
-      LearnTest::Profile.new(strategy.learn_oauth_token)
+    def learn_profile
+      LearnTest::LearnProfile.new(strategy.learn_oauth_token)
     end
 
     def files
@@ -54,7 +54,7 @@ module LearnTest
 
     def sync_profiles!
       pid = fork do
-        profile.update
+        learn_profile.sync!
         lesson_profile.sync!
       end
 
