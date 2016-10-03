@@ -49,5 +49,9 @@ describe LearnTest::InterventionPrompter do
       end
     end
 
+    after do
+      profile_path = "#{ENV['HOME']}/.learn_profile"
+      FileUtils.remove_file(profile_path) if File.exist?(profile_path)
+    end
   end
 end
