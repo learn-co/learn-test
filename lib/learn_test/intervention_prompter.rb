@@ -4,13 +4,13 @@ module LearnTest
   class InterventionPrompter
     BASE_URL = 'https://qa.learn.flatironschool.com'
 
-    attr_reader :results, :repo, :token, :profile
+    attr_reader :results, :repo, :token, :learn_profile
 
-    def initialize(test_results, repo, token, profile)
+    def initialize(test_results, repo, token, learn_profile)
       @results = test_results
       @repo = repo
       @token = token
-      @profile = profile
+      @learn_profile = learn_profile
       @lesson_profile = LessonProfile.new(repo, token)
     end
 
@@ -64,7 +64,7 @@ module LearnTest
     end
 
     def ask_a_question_triggered?
-      return false unless profile.should_trigger?
+      return false unless learn_profile.should_trigger?
       return false if already_triggered? || windows_environment? || all_tests_passing?
 
       lesson_profile.aaq_triggered?
