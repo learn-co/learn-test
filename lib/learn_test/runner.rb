@@ -2,13 +2,14 @@ require 'yaml'
 
 module LearnTest
   class Runner
-    attr_reader :repo, :options
+    attr_reader :repo, :options, :results
     SERVICE_URL = 'http://ironbroker-v2.flatironschool.com'
 
     def initialize(repo, options = {})
       @repo = repo
       @options = options
       die if !strategy
+      @lesson_profile = LessonProfile.new(repo, strategy.learn_oauth_token)
     end
 
     def run
@@ -18,7 +19,23 @@ module LearnTest
       if !help_option_present? && strategy.push_results? && !local_test_run?
         push_results(strategy)
       end
+      @results = strategy.results
       strategy.cleanup unless keep_results?
+
+      sync_profiles!
+      trigger_callbacks
+    end
+
+    def prompter
+      LearnTest::InterventionPrompter.new(results, repo, strategy.learn_oauth_token, learn_profile)
+    end
+
+    def trigger_callbacks
+      prompter.execute
+    end
+
+    def learn_profile
+      LearnTest::LearnProfile.new(strategy.learn_oauth_token)
     end
 
     def files
@@ -34,6 +51,17 @@ module LearnTest
     end
 
     private
+
+    def sync_profiles!
+      pid = fork do
+        learn_profile.sync!
+        lesson_profile.sync!
+      end
+
+      Process.detach(pid)
+    end
+
+    attr_reader :lesson_profile
 
     def augment_results!(results)
       if File.exist?("#{FileUtils.pwd}/.learn")
@@ -76,7 +104,7 @@ module LearnTest
           req.body = Oj.dump(results, mode: :compat)
         end
       rescue Faraday::ConnectionFailed
-        puts 'There was a problem connecting to Learn. Not pushing test results.'.red
+        puts 'There was a problem connecting to Learn. Not pushing test results.'
       end
     end
 
