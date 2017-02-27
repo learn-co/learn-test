@@ -86,12 +86,12 @@ module LearnTest
 
       def install_mocha_multi
         if !File.exists?('node_modules/mocha-multi')
-          run_install('npm install mocha-multi')
+          run_install('npm install mocha-multi', npm_install: true)
         end
       end
 
       def npm_install(package)
-        run_install('npm install') if missing_dependencies?(package)
+        run_install('npm install', npm_install: true) if missing_dependencies?(package)
       end
     end
   end

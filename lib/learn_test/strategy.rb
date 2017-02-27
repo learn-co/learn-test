@@ -57,18 +57,25 @@ module LearnTest
       exit
     end
 
-    def run_install(command)
-      Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
-        while out = stdout.gets do
-          puts out
-        end
+    ##
+    # npm_install option added to fix the proxying of the npm install progress
+    # bar output.
+    def run_install(command, npm_install: false)
+      if npm_install
+        system(command)
+      else
+        Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+          while out = stdout.gets do
+            puts out
+          end
 
-        while err = stderr.gets do
-          puts err
-        end
+          while err = stderr.gets do
+            puts err
+          end
 
-        if wait_thr.value.exitstatus != 0
-          die("There was an error running #{command}")
+          if wait_thr.value.exitstatus != 0
+            die("There was an error running #{command}")
+          end
         end
       end
     end
