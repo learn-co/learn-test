@@ -43,6 +43,9 @@ module LearnTest
           results[:github] = dot_learn['github']
         end
       end
+
+      results[:ruby_platform] = RUBY_PLATFORM
+      results[:ide_container] = (ENV['IDE_CONTAINER'] == 'true')
     end
 
     def connection
