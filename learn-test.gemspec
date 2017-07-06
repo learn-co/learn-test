@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = LearnTest::VERSION
   spec.authors       = ["Flatiron School"]
   spec.email         = ["learn@flatironschool.com"]
-  spec.summary       = %q{Runs RSpec, Jasmine, and Python Unit Test builds and pushes JSON output to Learn.}
+  spec.summary       = %q{Runs RSpec, Jasmine, Jest, Karma, Mocha, and Python Unit Test builds and pushes JSON output to Learn.}
   spec.homepage      = "https://github.com/learn-co/learn-test"
   spec.license       = "MIT"
 
@@ -31,4 +31,3 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "rainbow", "= 1.99.2"
   spec.add_runtime_dependency "selenium-webdriver", "~> 2.52.0"
 end
-
