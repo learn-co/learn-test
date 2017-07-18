@@ -1,5 +1,3 @@
-require 'webrick'
-
 module LearnTest
   module Strategies
     class Mocha < LearnTest::Strategy
@@ -35,7 +33,7 @@ module LearnTest
       end
 
       def cleanup
-        FileUtils.rm('.learn.auth.data.json') if File.exist?('.learn.auth.data.json')
+        FileUtils.rm('learn.auth.data.json') if File.exist?('learn.auth.data.json')
       end
 
       def push_results?
@@ -51,12 +49,20 @@ module LearnTest
 
         write_auth_data_to_file
 
-        puts "To run the test suite, navigate to #{testing_address} in your browser."
-        puts "Refresh the page to rerun tests. To exit, press CTRL-C in the terminal."
+        puts "Navigate to #{testing_address} in your browser to run the test suite."
+        puts "As you write code in index.js, save your work often. With each save, the browser"
+        puts "will automatically refresh and rerun the test suite against your updated code."
+        puts "To exit, press CTRL-C in the terminal."
 
-        system open_browser unless in_IDE?
+        begin
+          system("browser-sync start --config bs-config.js")
+        rescue Interrupt
+          puts "\nExiting test suite..."
 
-        test_server.start
+          cleanup
+
+          exit
+        end
       end
 
       def missing_dependencies?(package)
@@ -71,18 +77,6 @@ module LearnTest
         run_install('npm install', npm_install: true) if missing_dependencies?(package)
       end
 
-      def open_browser
-        link = "http://localhost:8000/"
-
-        if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-          "start #{link}"
-        elsif RbConfig::CONFIG['host_os'] =~ /darwin/
-          "open #{link}"
-        elsif RbConfig::CONFIG['host_os'] =~ /linux|bsd/
-          "xdg-open #{link}"
-        end
-      end
-
       def learn_auth_data
         {
           'username' => username,
@@ -95,7 +89,7 @@ module LearnTest
       end
 
       def write_auth_data_to_file
-        File.open('.learn.auth.data.json', 'w+') do |file|
+        File.open('learn.auth.data.json', 'w+') do |file|
           File.write(file, Oj.dump(learn_auth_data))
         end
       end
@@ -106,31 +100,6 @@ module LearnTest
 
       def testing_address
         in_IDE? ? "http://#{ENV['HOST_IP']}:#{ENV['PORT']}/" : "http://localhost:8000/"
-      end
-
-      def test_server
-        repo_directory = File.expand_path('.')
-
-        no_log = WEBrick::Log.new(File.open(File::NULL, 'w'))
-
-        server = WEBrick::HTTPServer.new({
-          Port: in_IDE? ? ENV['PORT'] : 8000,
-          DocumentRoot: repo_directory,
-          Logger: no_log,
-          AccessLog: []
-        })
-
-        trap 'INT' do
-          server.shutdown
-
-          puts "\nExiting test suite..."
-
-          cleanup
-
-          exit
-        end
-
-        server
       end
     end
   end
