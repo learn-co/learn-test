@@ -6,22 +6,9 @@ module LearnTest
       end
 
       def detect
-        package = File.exists?('package.json') ? Oj.load(File.read('package.json'), symbol_keys: true) : nil
-        return false if !package
+        return false if !js_package
 
-        if package[:scripts] && package[:scripts][:test]
-          return true if package[:scripts][:test].include?('jest')
-        end
-
-        if package[:devDependencies] && package[:devDependencies][:jest]
-          return true if (package[:devDependencies][:jest].length > 0)
-        end
-
-        if package[:dependencies] && package[:dependencies][:jest]
-          return true if (package[:dependencies][:jest].length > 0)
-        end
-
-        return false
+        has_js_dependency?(:jest) ? true : false
       end
 
       def check_dependencies
@@ -59,28 +46,12 @@ module LearnTest
         FileUtils.rm('.results.json') if File.exist?('.results.json')
       end
 
-      def missing_dependencies?(package)
-        return true if !File.exists?("node_modules")
-
-        [:dependencies, :devDependencies, :peerDependencies].any? do |d|
-          (package[d] || {}).any? { |p, v| !File.exists?("node_modules/#{p}") }
-        end
-      end
-
       private
 
       def run_jest
-        package = Oj.load(File.read('package.json'), symbol_keys: true)
+        npm_install(js_package)
 
-        npm_install(package)
-
-        command = 'npm test'
-
-        system(command)
-      end
-
-      def npm_install(package)
-        run_install('npm install', npm_install: true) if missing_dependencies?(package)
+        system('npm test')
       end
 
       def duration

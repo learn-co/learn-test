@@ -6,9 +6,9 @@ module LearnTest
       end
 
       def detect
-        return false if !package
+        return false if !js_package
 
-        mocha_test_suite? ? true : false
+        (has_js_dependency?(:mocha) || in_browser?) ? true : false
       end
 
       def check_dependencies
@@ -57,14 +57,12 @@ module LearnTest
       private
 
       def run_mocha
-        package = Oj.load(File.read('package.json'), symbol_keys: true)
-
-        npm_install(package)
+        npm_install(js_package)
 
         if in_browser?
           run_browser_based_mocha
         else
-          run_node_based_mocha(package)
+          run_node_based_mocha(js_package)
         end
       end
 
@@ -93,8 +91,8 @@ module LearnTest
         end
       end
 
-      def run_node_based_mocha(package)
-        command = if (package[:scripts] && package[:scripts][:test] || "").include?(".results.json")
+      def run_node_based_mocha
+        command = if (js_package[:scripts] && js_package[:scripts][:test] || "").include?(".results.json")
           "npm test"
         else
           install_mocha_multi
@@ -102,18 +100,6 @@ module LearnTest
         end
 
         system(command)
-      end
-
-      def missing_dependencies?(package)
-        return true if !File.exist?("node_modules")
-
-        [:dependencies, :devDependencies, :peerDependencies].any? do |d|
-          (package[d] || {}).any? { |p, v| !File.exist?("node_modules/#{p}") }
-        end
-      end
-
-      def npm_install(package)
-        run_install('npm install', npm_install: true) if missing_dependencies?(package)
       end
 
       def learn_auth_data
@@ -137,20 +123,8 @@ module LearnTest
         ENV['IDE_CONTAINER'] == 'true'
       end
 
-      def package
-        @package ||= File.exist?('package.json') ? Oj.load(File.read('package.json'), symbol_keys: true) : nil
-      end
-
-      def mocha_test_suite?
-        @mocha_test_suite ||= check_package_dependencies(:mocha) || in_browser?
-      end
-
       def in_browser?
-        @in_browser ||= check_package_dependencies(:'learn-browser')
-      end
-
-      def check_package_dependencies(package_symbol)
-        [:devDependencies, :dependencies].any? { |key| package[key] && package[key][package_symbol] }
+        @in_browser ||= has_js_dependency?(:'learn-browser')
       end
 
       def browser_sync_executable?
