@@ -1,47 +1,14 @@
 module LearnTest
   module Strategies
     class Mocha < LearnTest::Strategy
-      attr_accessor :mocha_in_browser
-
       def service_endpoint
         '/e/flatiron_mocha'
       end
 
       def detect
-        package = File.exist?('package.json') ? Oj.load(File.read('package.json'), symbol_keys: true) : nil
         return false if !package
 
-        if package[:scripts] && package[:scripts][:test] && package[:scripts][:test].include?('mocha')
-          self.mocha_in_browser = false
-
-          return true
-        end
-
-        if package[:devDependencies]
-          if package[:devDependencies][:mocha]
-            self.mocha_in_browser = false
-
-            return true
-          elsif package[:devDependencies][:'learn-browser']
-            self.mocha_in_browser = true
-
-            return true
-          end
-        end
-
-        if package[:dependencies]
-          if package[:dependencies][:mocha]
-            self.mocha_in_browser = false
-
-            return true
-          elsif package[:dependencies][:'learn-browser']
-            self.mocha_in_browser = true
-
-            return true
-          end
-        end
-
-        return false
+        mocha_test_suite? ? true : false
       end
 
       def check_dependencies
@@ -53,7 +20,7 @@ module LearnTest
       end
 
       def cleanup
-        if mocha_in_browser
+        if in_browser?
           FileUtils.rm('learn.auth.data.json') if File.exist?('learn.auth.data.json')
         else
           FileUtils.rm('.results.json') if File.exist?('.results.json')
@@ -61,7 +28,7 @@ module LearnTest
       end
 
       def push_results?
-        !mocha_in_browser
+        !in_browser?
       end
 
       def results
@@ -84,7 +51,7 @@ module LearnTest
       end
 
       def output
-        @output ||= File.exists?('.results.json') ? Oj.load(File.read('.results.json'), symbol_keys: true) : nil
+        @output ||= File.exist?('.results.json') ? Oj.load(File.read('.results.json'), symbol_keys: true) : nil
       end
 
       private
@@ -94,7 +61,7 @@ module LearnTest
 
         npm_install(package)
 
-        if mocha_in_browser
+        if in_browser?
           run_browser_based_mocha
         else
           run_node_based_mocha(package)
@@ -170,6 +137,22 @@ module LearnTest
         ENV['IDE_CONTAINER'] == 'true'
       end
 
+      def package
+        @package ||= File.exist?('package.json') ? Oj.load(File.read('package.json'), symbol_keys: true) : nil
+      end
+
+      def mocha_test_suite?
+        @mocha_test_suite ||= check_package_dependencies(:mocha) || in_browser?
+      end
+
+      def in_browser?
+        @in_browser ||= check_package_dependencies(:'learn-browser')
+      end
+
+      def check_package_dependencies(package_symbol)
+        [:devDependencies, :dependencies].any? { |key| package[key] && package[key][package_symbol] }
+      end
+
       def browser_sync_executable?
         system("which browser-sync > /dev/null 2>&1")
       end
@@ -179,7 +162,7 @@ module LearnTest
       end
 
       def install_mocha_multi
-        if !File.exists?('node_modules/mocha-multi')
+        if !File.exist?('node_modules/mocha-multi')
           run_install('npm install mocha-multi', npm_install: true)
         end
       end
