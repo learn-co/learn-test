@@ -110,7 +110,13 @@ module LearnTest
         puts "To exit the test suite and return to your terminal, press CTRL-C.".red
 
         begin
-          system("browser-sync start --config node_modules/learn-browser/bs-config.js")
+          command = if browser_sync_executable?
+            "browser-sync start --config node_modules/learn-browser/bs-config.js"
+          else
+            "node_modules/browser-sync/bin/browser-sync.js start --config node_modules/learn-browser/bs-config.js"
+          end
+
+          system(command)
         rescue Interrupt
           puts "\nExiting test suite...".red
 
@@ -162,6 +168,10 @@ module LearnTest
 
       def in_IDE?
         ENV['IDE_CONTAINER'] == 'true'
+      end
+
+      def browser_sync_executable?
+        system("which browser-sync > /dev/null 2>&1")
       end
 
       def testing_address
