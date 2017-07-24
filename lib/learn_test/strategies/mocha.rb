@@ -1,6 +1,8 @@
 module LearnTest
   module Strategies
     class Mocha < LearnTest::Strategy
+      include LearnTest::JsStrategy
+
       def service_endpoint
         '/e/flatiron_mocha'
       end
@@ -57,12 +59,12 @@ module LearnTest
       private
 
       def run_mocha
-        npm_install(js_package)
+        npm_install
 
         if in_browser?
           run_browser_based_mocha
         else
-          run_node_based_mocha(js_package)
+          run_node_based_mocha
         end
       end
 

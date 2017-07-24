@@ -1,6 +1,8 @@
 module LearnTest
   module Strategies
     class Jest < LearnTest::Strategy
+      include LearnTest::JsStrategy
+
       def service_endpoint
         '/e/flatiron_jest'
       end
@@ -49,7 +51,7 @@ module LearnTest
       private
 
       def run_jest
-        npm_install(js_package)
+        npm_install
 
         system('npm test')
       end
