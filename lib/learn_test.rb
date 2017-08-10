@@ -14,17 +14,6 @@ require_relative 'learn_test/file_finder'
 require_relative 'learn_test/runner'
 
 require_relative 'learn_test/dependency'
-require_relative 'learn_test/dependencies/nodejs'
-require_relative 'learn_test/dependencies/phantomjs'
-require_relative 'learn_test/dependencies/karma'
-require_relative 'learn_test/dependencies/protractor'
-require_relative 'learn_test/dependencies/java'
-require_relative 'learn_test/dependencies/csharp'
-require_relative 'learn_test/dependencies/ant'
-require_relative 'learn_test/dependencies/imagemagick'
-require_relative 'learn_test/dependencies/selenium_server'
-require_relative 'learn_test/dependencies/firefox'
-require_relative 'learn_test/dependencies/green_onion'
 
 require_relative 'learn_test/strategy'
 require_relative 'learn_test/strategies/jasmine'
@@ -38,4 +27,17 @@ require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/green_onion'
 
 module LearnTest
+  module Dependencies
+    autoload :NodeJS,         'learn_test/dependencies/nodejs'
+    autoload :PhantomJS,      'learn_test/dependencies/phantomjs'
+    autoload :Karma,          'learn_test/dependencies/karma'
+    autoload :Protractor,     'learn_test/dependencies/protractor'
+    autoload :Java,           'learn_test/dependencies/java'
+    autoload :CSharp,         'learn_test/dependencies/csharp'
+    autoload :Ant,            'learn_test/dependencies/ant'
+    autoload :Imagemagick,    'learn_test/dependencies/imagemagick'
+    autoload :SeleniumDriver, 'learn_test/dependencies/selenium_server'
+    autoload :Firefox,        'learn_test/dependencies/firefox'
+    autoload :GreenOnion,     'learn_test/dependencies/green_onion'
+  end
 end
