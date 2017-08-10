@@ -1,6 +1,3 @@
-require 'crack'
-require 'json'
-
 module LearnTest
   module Strategies
     class CSharpNunit < LearnTest::Strategy
@@ -17,6 +14,9 @@ module LearnTest
       end
 
       def run
+        require 'crack'
+        require 'json'
+
         system("dotnet test")
         output
         cleanup
@@ -44,7 +44,7 @@ module LearnTest
           failure_count: output['test_run']['failed'],
         }
       end
-      
+
       def cleanup
         FileUtils.rm("TestResult.xml") if File.exist?("TestResult.xml")
       end

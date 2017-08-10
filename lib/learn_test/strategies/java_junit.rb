@@ -1,6 +1,3 @@
-require 'crack'
-require 'json'
-
 module LearnTest
   module Strategies
     class JavaJunit < LearnTest::Strategy
@@ -18,6 +15,9 @@ module LearnTest
       end
 
       def run
+        require 'crack'
+        require 'json'
+
         clean_old_results
         run_ant
         make_json
