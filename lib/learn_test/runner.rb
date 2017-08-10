@@ -15,10 +15,13 @@ module LearnTest
       strategy.check_dependencies
       strategy.configure
       strategy.run
-      if !help_option_present? && strategy.push_results? && !local_test_run?
-        push_results(strategy)
+      pid = Process.fork do
+        if !help_option_present? && strategy.push_results? && !local_test_run?
+          push_results(strategy)
+        end
+        strategy.cleanup unless keep_results?
       end
-      strategy.cleanup unless keep_results?
+      Process.detach(pid)
     end
 
     def files
