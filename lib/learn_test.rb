@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'faraday'
 require 'oj'
 require 'colorize'
 
