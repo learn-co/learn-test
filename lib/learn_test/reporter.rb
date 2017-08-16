@@ -6,20 +6,19 @@ require_relative 'client'
 module LearnTest
   class Reporter
 
-    attr_accessor :output_path
+    attr_accessor :output_path, :debug
 
-    def self.report(strategy)
-      reporter = new(strategy)
+    def self.report(strategy, options = {})
+      reporter = new(strategy, options)
       reporter.report
       reporter.retry_failed_reports
     end
 
-    def initialize(strategy,
-                   output_path: File.join(Dir.home, '.learn.debug'),
-                   client: LearnTest::Client.new)
+    def initialize(strategy, options = {})
       @strategy = strategy
-      @output_path = output_path
-      @client = client
+      @output_path = options[:output_path] || File.join(Dir.home, '.learn.debug')
+      @client = options[:client] || LearnTest::Client.new
+      @debug = options[:debug]
     end
 
     def failed_reports
@@ -44,12 +43,15 @@ module LearnTest
       end
     end
 
-    def report
+    def report(out: STDOUT)
       results = strategy.results
       endpoint = strategy.service_endpoint
       augment_results!(results)
 
       unless client.post_results(endpoint, results)
+        if @debug
+          out.puts 'There was a problem connecting to Learn. Not pushing test results.'.red
+        end
         save_failed_attempt(endpoint, results)
       end
     end

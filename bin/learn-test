@@ -8,6 +8,10 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: learn [options]"
 
+  opts.on("-d", "--debug", "Output errors during results synchronization") do |d|
+    options[:debug] = d
+  end
+
   opts.on("-n", "--[no-]color", "Turn off color output") do |c|
     options[:color] = c
   end

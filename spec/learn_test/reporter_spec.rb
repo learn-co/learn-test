@@ -17,8 +17,10 @@ describe LearnTest::Reporter do
 
   def with_file(name, content = nil, &block)
     file = Tempfile.new(name)
-    file.write("#{JSON.dump(content)}\n") if content
-    file.flush
+    if content
+      file.write("#{JSON.dump(content)}\n")
+      file.flush
+    end
 
     block.call(file)
   ensure
@@ -28,6 +30,18 @@ describe LearnTest::Reporter do
   describe '#report' do
     let(:reporter) { described_class.new(strategy, client: client) }
 
+    context "with debug flag and failed attempt posting results" do
+      it "outputs an error message" do
+        allow(client).to receive(:post_results).and_return(false)
+        reporter.debug = true
+        io = StringIO.new
+
+        reporter.report(out: io)
+
+        expect(io.string).to_not be_empty
+      end
+    end
+
     it 'posts results to the service endpoint' do
       reporter.report
 
@@ -35,35 +49,50 @@ describe LearnTest::Reporter do
         .with(strategy.service_endpoint, strategy.results)
     end
 
+    it 'does not output an error message without debug' do
+      allow(client).to receive(:post_results).and_return(false)
+      io = StringIO.new
+
+      with_file('test_debug') do |tmp_file|
+        reporter.output_path = tmp_file.path
+
+        reporter.report(out: io)
+
+        expect(io.string).to be_empty
+      end
+    end
+
     it 'saves the failed attempt when the post results call fails' do
       allow(client).to receive(:post_results).and_return(false)
 
-      tmp_file = Tempfile.new('test')
-      reporter.output_path = tmp_file.path
-      reporter.report
+      with_file('test') do |tmp_file|
+        reporter.output_path = tmp_file.path
+        reporter.report
 
-      report = JSON.dump(strategy.results)
-      expect(File.exists?(tmp_file.path)).to be(true)
-      expect(reporter.failed_reports).to eq({
-        strategy.service_endpoint => [JSON.load(report)]
-      })
+        report = JSON.dump(strategy.results)
+        expect(File.exists?(tmp_file.path)).to be(true)
+        expect(reporter.failed_reports).to eq({
+          strategy.service_endpoint => [JSON.load(report)]
+        })
+      end
     end
 
     it 'appends multiple failed attempts' do
       allow(client).to receive(:post_results).and_return(false)
 
-      tmp_file = Tempfile.new('test')
-      reporter.output_path = tmp_file.path
+      with_file('test') do |tmp_file|
+        reporter.output_path = tmp_file.path
 
-      reporter.report
-      reporter.report
+        reporter.report
+        reporter.report
 
-      report = JSON.dump(strategy.results)
-      json_report = JSON.load(report)
-      expect(File.exists?(tmp_file.path)).to be(true)
-      expect(reporter.failed_reports).to eq({
-        strategy.service_endpoint => [json_report, json_report]
-      })
+        report = JSON.dump(strategy.results)
+        json_report = JSON.load(report)
+        expect(File.exists?(tmp_file.path)).to be(true)
+        expect(reporter.failed_reports).to eq({
+          strategy.service_endpoint => [json_report, json_report]
+        })
+      end
     end
   end
 

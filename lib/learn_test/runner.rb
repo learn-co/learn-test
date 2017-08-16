@@ -14,15 +14,13 @@ module LearnTest
       strategy.check_dependencies
       strategy.configure
       strategy.run
-      Process.detach(Process.fork do
-        require_relative 'reporter'
-
-        if !help_option_present? && strategy.push_results? && !local_test_run?
-          LearnTest::Reporter.report(strategy)
-        end
-
-        strategy.cleanup unless keep_results?
-      end)
+      if options[:debug]
+        report_and_clean
+      else
+        Process.detach(Process.fork do
+          report_and_clean
+        end)
+      end
     end
 
     def files
@@ -38,6 +36,16 @@ module LearnTest
     end
 
     private
+
+    def report_and_clean
+      require_relative 'reporter'
+
+      if !help_option_present? && strategy.push_results? && !local_test_run?
+        LearnTest::Reporter.report(strategy, options)
+      end
+
+      strategy.cleanup unless keep_results?
+    end
 
     def strategies
       [
