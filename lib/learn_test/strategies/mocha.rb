@@ -1,5 +1,3 @@
-require 'timeout'
-
 module LearnTest
   module Strategies
     class Mocha < LearnTest::Strategy
@@ -73,30 +71,26 @@ module LearnTest
       def run_browser_based_mocha
         write_auth_data_to_file
 
-        at_exit do
-          fork do
-            begin
-              Timeout.timeout(5) do
-                cleanup
-              end
-            rescue Timeout::Error
-              Process.kill("INT", 0)
-            end
-          end
-        end
-
         puts "Navigate to ".red + testing_address.blue + " in your browser to run the test suite.".red
         puts "As you write code in index.js, save your work often. With each save, the browser"
         puts "will automatically refresh and rerun the test suite against your updated code."
         puts "To exit the test suite and return to your terminal, press CTRL-C.".red
 
-        command = if browser_sync_executable?
-          "browser-sync start --config node_modules/learn-browser/bs-config.js"
-        else
-          "node_modules/browser-sync/bin/browser-sync.js start --config node_modules/learn-browser/bs-config.js"
-        end
+        begin
+          command = if browser_sync_executable?
+            "browser-sync start --config node_modules/learn-browser/bs-config.js"
+          else
+            "node_modules/browser-sync/bin/browser-sync.js start --config node_modules/learn-browser/bs-config.js"
+          end
 
-        system(command)
+          system(command)
+        rescue Interrupt
+          puts "\nExiting test suite...".red
+
+          cleanup
+
+          exit
+        end
       end
 
       def run_node_based_mocha
