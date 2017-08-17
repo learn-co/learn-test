@@ -65,7 +65,6 @@ module LearnTest
         LearnTest::Strategies::JavaJunit,
         LearnTest::Strategies::Mocha,
         LearnTest::Strategies::PythonUnittest,
-        LearnTest::Strategies::Jest
       ]
     end
 

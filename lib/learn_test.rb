@@ -37,7 +37,6 @@ require_relative 'learn_test/strategies/java_junit'
 require_relative 'learn_test/strategies/csharp_nunit'
 require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/green_onion'
-require_relative 'learn_test/strategies/jest'
 
 module LearnTest
 end
