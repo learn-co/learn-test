@@ -1,27 +1,16 @@
 module LearnTest
   module Strategies
     class Mocha < LearnTest::Strategy
+      include LearnTest::JsStrategy
+
       def service_endpoint
         '/e/flatiron_mocha'
       end
 
       def detect
-        package = File.exists?('package.json') ? Oj.load(File.read('package.json'), symbol_keys: true) : nil
-        return false if !package
+        return false if !js_package
 
-        if package[:scripts] && package[:scripts][:test]
-          return true if package[:scripts][:test].include?('mocha')
-        end
-
-        if package[:devDependencies] && package[:devDependencies][:mocha]
-          return true if (package[:devDependencies][:mocha].length > 0)
-        end
-
-        if package[:dependencies] && package[:dependencies][:mocha]
-          return true if (package[:dependencies][:mocha].length > 0)
-        end
-
-        return false
+        (has_js_dependency?(:mocha) || in_browser?) ? true : false
       end
 
       def check_dependencies
@@ -32,8 +21,16 @@ module LearnTest
         run_mocha
       end
 
-      def output
-        @output ||= File.exists?('.results.json') ? Oj.load(File.read('.results.json'), symbol_keys: true) : nil
+      def cleanup
+        if in_browser?
+          FileUtils.rm('learn.auth.data.json') if File.exist?('learn.auth.data.json')
+        else
+          FileUtils.rm('.results.json') if File.exist?('.results.json')
+        end
+      end
+
+      def push_results?
+        !in_browser?
       end
 
       def results
@@ -55,26 +52,49 @@ module LearnTest
         }
       end
 
-      def cleanup
-        FileUtils.rm('.results.json') if File.exist?('.results.json')
-      end
-
-      def missing_dependencies?(package)
-        return true if !File.exists?("node_modules")
-
-        [:dependencies, :devDependencies, :peerDependencies].any? do |d|
-          (package[d] || {}).any? { |p, v| !File.exists?("node_modules/#{p}") }
-        end
+      def output
+        @output ||= File.exist?('.results.json') ? Oj.load(File.read('.results.json'), symbol_keys: true) : nil
       end
 
       private
 
       def run_mocha
-        package = Oj.load(File.read('package.json'), symbol_keys: true)
+        npm_install
 
-        npm_install(package)
+        if in_browser?
+          run_browser_based_mocha
+        else
+          run_node_based_mocha
+        end
+      end
 
-        command = if (package[:scripts] && package[:scripts][:test] || "").include?(".results.json")
+      def run_browser_based_mocha
+        write_auth_data_to_file
+
+        puts "Navigate to ".red + testing_address.blue + " in your browser to run the test suite.".red
+        puts "As you write code in index.js, save your work often. With each save, the browser"
+        puts "will automatically refresh and rerun the test suite against your updated code."
+        puts "To exit the test suite and return to your terminal, press CTRL-C.".red
+
+        begin
+          command = if browser_sync_executable?
+            "browser-sync start --config node_modules/learn-browser/bs-config.js"
+          else
+            "node_modules/browser-sync/bin/browser-sync.js start --config node_modules/learn-browser/bs-config.js"
+          end
+
+          system(command)
+        rescue Interrupt
+          puts "\nExiting test suite...".red
+
+          cleanup
+
+          exit
+        end
+      end
+
+      def run_node_based_mocha
+        command = if (js_package[:scripts] && js_package[:scripts][:test] || "").include?(".results.json")
           "npm test"
         else
           install_mocha_multi
@@ -84,14 +104,43 @@ module LearnTest
         system(command)
       end
 
-      def install_mocha_multi
-        if !File.exists?('node_modules/mocha-multi')
-          run_install('npm install mocha-multi', npm_install: true)
+      def learn_auth_data
+        {
+          'username' => username,
+          'github_user_id' => user_id,
+          'learn_oauth_token' => learn_oauth_token,
+          'repo_name' => runner.repo,
+          'ruby_platform' => RUBY_PLATFORM,
+          'ide_container' => in_IDE?
+        }
+      end
+
+      def write_auth_data_to_file
+        File.open('learn.auth.data.json', 'w+') do |file|
+          File.write(file, Oj.dump(learn_auth_data))
         end
       end
 
-      def npm_install(package)
-        run_install('npm install', npm_install: true) if missing_dependencies?(package)
+      def in_IDE?
+        ENV['IDE_CONTAINER'] == 'true'
+      end
+
+      def in_browser?
+        @in_browser ||= has_js_dependency?(:'learn-browser')
+      end
+
+      def browser_sync_executable?
+        system("which browser-sync > /dev/null 2>&1")
+      end
+
+      def testing_address
+        in_IDE? ? "http://#{ENV['HOST_IP']}:#{ENV['MOCHA_PORT']}/" : "http://localhost:8000/"
+      end
+
+      def install_mocha_multi
+        if !File.exist?('node_modules/mocha-multi')
+          run_install('npm install mocha-multi', npm_install: true)
+        end
       end
     end
   end

@@ -22,7 +22,7 @@ And then execute:
 
 ## Usage
 
-From within a directory with an RSpec, Jasmine, or Python Unit Test test suite, run:
+From within a directory with an RSpec, Jasmine, Karma, Mocha, or Python Unit Test test suite, run:
 
 ```
 $ learn-test
