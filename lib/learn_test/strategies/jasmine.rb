@@ -1,8 +1,3 @@
-require 'crack'
-require 'erb'
-require 'yaml'
-require 'json'
-
 require_relative 'jasmine/initializer'
 
 module LearnTest
@@ -21,6 +16,11 @@ module LearnTest
       end
 
       def run
+        require 'crack'
+        require 'erb'
+        require 'yaml'
+        require 'json'
+
         if options[:init]
           LearnTest::Jasmine::Initializer.run
         else
