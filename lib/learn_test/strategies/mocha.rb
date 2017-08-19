@@ -70,21 +70,7 @@ module LearnTest
         puts "will automatically refresh and rerun the test suite against your updated code."
         puts "To exit the test suite and return to your terminal, press CTRL-C.".red
 
-        begin
-          command = if browser_sync_executable?
-            "browser-sync start --config node_modules/learn-browser/bs-config.js"
-          else
-            "node_modules/browser-sync/bin/browser-sync.js start --config node_modules/learn-browser/bs-config.js"
-          end
-
-          system(command)
-        rescue Interrupt
-          puts "\nExiting test suite...".red
-
-          cleanup
-
-          exit
-        end
+        system("npm test")
       end
 
       def run_node_based_mocha
@@ -104,10 +90,6 @@ module LearnTest
 
       def in_browser?
         @in_browser ||= has_js_dependency?(:'learn-browser')
-      end
-
-      def browser_sync_executable?
-        system("which browser-sync > /dev/null 2>&1")
       end
 
       def testing_address
