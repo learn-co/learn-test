@@ -70,7 +70,7 @@ module LearnTest
         puts "will automatically refresh and rerun the test suite against your updated code."
         puts "To exit the test suite and return to your terminal, press CTRL-C.".red
 
-        system("npm test")
+        exec("npm test")
       end
 
       def run_node_based_mocha
