@@ -111,7 +111,7 @@ module LearnTest
       end
 
       def testing_address
-        in_IDE? ? "http://#{ENV['HOST_IP']}:#{ENV['MOCHA_PORT']}/" : "http://localhost:8000/"
+        in_IDE? ? "http://#{ENV['HOST_IP']}:#{ENV['MOCHA_PORT'] || ENV['PORT']}/" : "http://localhost:8000/"
       end
 
       def install_mocha_multi
