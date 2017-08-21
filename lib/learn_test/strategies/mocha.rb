@@ -58,19 +58,10 @@ module LearnTest
         npm_install
 
         if in_browser?
-          run_browser_based_mocha
+          exec("npm test")
         else
           run_node_based_mocha
         end
-      end
-
-      def run_browser_based_mocha
-        puts "Navigate to ".red + testing_address.blue + " in your browser to run the test suite.".red
-        puts "As you write code in index.js, save your work often. With each save, the browser"
-        puts "will automatically refresh and rerun the test suite against your updated code."
-        puts "To exit the test suite and return to your terminal, press CTRL-C.".red
-
-        exec("npm test")
       end
 
       def run_node_based_mocha
@@ -90,10 +81,6 @@ module LearnTest
 
       def in_browser?
         @in_browser ||= has_js_dependency?(:'learn-browser')
-      end
-
-      def testing_address
-        in_IDE? ? "http://#{ENV['HOST_IP']}:#{ENV['MOCHA_PORT'] || ENV['PORT']}/" : "http://localhost:8000/"
       end
 
       def install_mocha_multi
