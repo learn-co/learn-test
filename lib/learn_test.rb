@@ -36,7 +36,7 @@ module LearnTest
     autoload :CSharp,         'learn_test/dependencies/csharp'
     autoload :Ant,            'learn_test/dependencies/ant'
     autoload :Imagemagick,    'learn_test/dependencies/imagemagick'
-    autoload :SeleniumDriver, 'learn_test/dependencies/selenium_server'
+    autoload :SeleniumServer, 'learn_test/dependencies/selenium_server'
     autoload :Firefox,        'learn_test/dependencies/firefox'
     autoload :GreenOnion,     'learn_test/dependencies/green_onion'
   end
