@@ -91,6 +91,7 @@ module LearnTest
 
       results[:created_at] = Time.now
       results[:ruby_platform] = RUBY_PLATFORM
+      results[:learning_environment] = ENV['LEARNING_ENVIRONMENT']
       results[:ide_container] = (ENV['IDE_CONTAINER'] == 'true')
     end
   end
