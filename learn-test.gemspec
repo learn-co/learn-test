@@ -26,9 +26,10 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "oj", "~> 2.9"
   spec.add_runtime_dependency "faraday", "~> 0.9"
   spec.add_runtime_dependency "crack", "~> 0.4.3"
-  spec.add_runtime_dependency "jasmine", "~> 2.6.0", '>= 2.6.0'
+  spec.add_runtime_dependency "jasmine", "~> 2.6.0", ">= 2.6.0"
+  spec.add_runtime_dependency "jasmine-core", "< 2.99.1"
   spec.add_runtime_dependency "colorize", "~> 0.8.1"
-  spec.add_runtime_dependency "webrick", "~> 1.3.1", '>= 1.3.1'
+  spec.add_runtime_dependency "webrick", "~> 1.3.1", ">= 1.3.1"
   spec.add_runtime_dependency "rainbow", "= 1.99.2"
   spec.add_runtime_dependency "selenium-webdriver", "~> 2.52.0", '>= 2.52.0'
 end
