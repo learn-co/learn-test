@@ -9,7 +9,7 @@ module LearnTest
       end
 
       def detect
-        runner.files.any? {|f| f.match(/.*.py$/) }
+        test_files.any? {|f| f.match(/.*\.py$/) }
       end
 
       def check_dependencies
@@ -23,6 +23,10 @@ module LearnTest
 
       def output
         @output ||= Oj.load(File.read('.results.json'), symbol_keys: true)
+      end
+
+      def test_files
+        @test_files ||= Dir.glob("**/*_test.py")
       end
 
       def results
