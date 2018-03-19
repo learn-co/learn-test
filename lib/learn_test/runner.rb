@@ -14,7 +14,7 @@ module LearnTest
       strategy.check_dependencies
       strategy.configure
       strategy.run
-      if options[:debug]
+      if options[:debug] || options[:sync]
         report_and_clean
       else
         Process.detach(Process.fork do
