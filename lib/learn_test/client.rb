@@ -3,7 +3,7 @@ require 'json'
 
 module LearnTest
   class Client
-    SERVICE_URL = 'http://ironbroker-v2.flatironschool.com'.freeze
+    SERVICE_URL = ENV.fetch('IRONBROKER_URL', 'http://ironbroker-v2.flatironschool.com').freeze
 
     def initialize(service_url = SERVICE_URL)
       @conn = Faraday.new(url: service_url) do |faraday|
