@@ -14,6 +14,8 @@ require_relative 'learn_test/runner'
 
 require_relative 'learn_test/dependency'
 
+require_relative 'learn_test/output_formatters/ex_unit_output'
+
 require_relative 'learn_test/strategy'
 require_relative 'learn_test/js_strategy'
 require_relative 'learn_test/strategies/jasmine'
@@ -25,6 +27,7 @@ require_relative 'learn_test/strategies/java_junit'
 require_relative 'learn_test/strategies/csharp_nunit'
 require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/green_onion'
+require_relative 'learn_test/strategies/ex_unit'
 
 module LearnTest
   module Dependencies

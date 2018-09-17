@@ -44,4 +44,5 @@ module LearnTest
         FileUtils.rm('.results.json') if File.exist?('.results.json')
       end
     end
+  end
 end
