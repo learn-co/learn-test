@@ -25,6 +25,7 @@ require_relative 'learn_test/strategies/java_junit'
 require_relative 'learn_test/strategies/csharp_nunit'
 require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/green_onion'
+require_relative 'learn_test/strategies/pytest'
 
 module LearnTest
   module Dependencies
@@ -39,5 +40,6 @@ module LearnTest
     autoload :SeleniumServer, 'learn_test/dependencies/selenium_server'
     autoload :Firefox,        'learn_test/dependencies/firefox'
     autoload :GreenOnion,     'learn_test/dependencies/green_onion'
+    autoload :Pytest,         'learn_test/dependencies/pytest'
   end
 end
