@@ -57,7 +57,7 @@ module LearnTest
         LearnTest::Strategies::Protractor,
         LearnTest::Strategies::JavaJunit,
         LearnTest::Strategies::Mocha,
-        LearnTest::Strategies::PythonUnittest,
+        # LearnTest::Strategies::PythonUnittest, # removed as curriculum switched entirely to Pytest and test file naming convention may intersect with pytest test file naming convention
         LearnTest::Strategies::Pytest,
       ]
     end

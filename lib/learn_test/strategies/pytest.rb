@@ -27,7 +27,6 @@ module LearnTest
 
       def test_files
         # pytest will run all files of the form test_*.py or *_test.py
-        # TODO: make beautiful with regex
         @test_files ||= Dir.glob("**/test_*.py") + Dir.glob("**/*_test.py")
       end
 
@@ -47,10 +46,10 @@ module LearnTest
               duration: output["time"]
             }]
           },
-          examples: output["tests"],
-          passing_count: passed_count,
-          pending_count: skipped_count,
-          failure_count: failed_count,
+          examples: output["tests"].to_i,
+          passing_count: passed_count
+          pending_count: skipped_count
+          failure_count: failed_count
           failure_descriptions: concat_failure_descriptions
         }
       end
