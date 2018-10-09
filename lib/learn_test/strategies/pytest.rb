@@ -47,9 +47,9 @@ module LearnTest
             }]
           },
           examples: output["tests"].to_i,
-          passing_count: passed_count
-          pending_count: skipped_count
-          failure_count: failed_count
+          passing_count: passed_count,
+          pending_count: skipped_count,
+          failure_count: failed_count,
           failure_descriptions: concat_failure_descriptions
         }
       end
