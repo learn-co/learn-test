@@ -16,44 +16,47 @@ describe LearnTest::Strategies::Mocha do
         }
       }
     end
+
     let(:runner) { double("Runner", options: {}) }
     let(:strategy) { LearnTest::Strategies::Mocha.new(runner) }
 
-    it "returns true if no node_modules directory" do
-      expect(File).to receive(:exists?).with("node_modules") { false }
-
-      expect(strategy.missing_dependencies?(package)).to eq(true)
+    context "node_modules/ does not exist" do
+      it "returns true if no node_modules directory" do
+        allow(File).to receive(:exist?).with("node_modules").and_return(false)
+        expect(strategy.missing_dependencies?).to eq(true)
+      end
     end
 
-    context "node_modules exists" do
+
+    context "node_modules/ exists" do
       before(:each) do
-        allow(File).to receive(:exists?) { true }
+        allow(File).to receive(:exist?).and_return(true)
+        allow(strategy).to receive(:js_package).and_return(package)
       end
 
       it "returns true if missing a dependency" do
-        expect(File).to receive(:exists?).with("node_modules/dep1") { true }
-        expect(File).to receive(:exists?).with("node_modules/dep2") { false }
-        expect(strategy.missing_dependencies?(package)).to eq(true)
+        allow(File).to receive(:exist?).with("node_modules/dep2").and_return(false)
+        expect(strategy.missing_dependencies?).to eq(true)
       end
 
       it "returns true if missing a devDependency" do
-        expect(File).to receive(:exists?).with("node_modules/devDep1") { true }
-        expect(File).to receive(:exists?).with("node_modules/devDep2") { false }
-        expect(strategy.missing_dependencies?(package)).to eq(true)
+        allow(File).to receive(:exist?).with("node_modules/devDep2").and_return(false)
+        expect(strategy.missing_dependencies?).to eq(true)
       end
 
       it "returns true if missing a peerDependency" do
-        expect(File).to receive(:exists?).with("node_modules/peerDep1") { true }
-        expect(File).to receive(:exists?).with("node_modules/peerDep2") { false }
-        expect(strategy.missing_dependencies?(package)).to eq(true)
+        allow(File).to receive(:exist?).with("node_modules/peerDep2").and_return(false)
+        expect(strategy.missing_dependencies?).to eq(true)
       end
 
       it "returns false if missing no dependencies" do
-        expect(strategy.missing_dependencies?(package)).to eq(false)
+        allow(File).to receive(:exist?).and_return(true)
+        expect(strategy.missing_dependencies?).to eq(false)
       end
 
       it "returns false if there are no dependencies" do
-        expect(strategy.missing_dependencies?({})).to eq(false)
+        allow(strategy).to receive(:js_package).and_return({})
+        expect(strategy.missing_dependencies?).to eq(false)
       end
     end
   end
