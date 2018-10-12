@@ -21,7 +21,7 @@ describe LearnTest::Strategies::Mocha do
     let(:strategy) { LearnTest::Strategies::Mocha.new(runner) }
 
     context "node_modules/ does not exist" do
-      it "returns true if no node_modules directory" do
+      it "returns true" do
         allow(File).to receive(:exist?).with("node_modules").and_return(false)
         expect(strategy.missing_dependencies?).to eq(true)
       end
