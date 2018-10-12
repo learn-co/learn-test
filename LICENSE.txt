@@ -1,4 +1,4 @@
-Copyright (c) 2014-2015 Flatiron School
+Copyright (c) 2014-2018 Flatiron School
 
 MIT License
 

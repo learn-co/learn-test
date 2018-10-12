@@ -1,6 +1,6 @@
 # learn-test
 
-Runs RSpec, Jasmine, and Python Unit Test test suites and uploads the results to Learn.
+Runs RSpec, Jasmine, and Python Pytest test suites and uploads the results to Learn.
 
 ## Installation
 
@@ -22,7 +22,7 @@ And then execute:
 
 ## Usage
 
-From within a directory with an RSpec, Jasmine, Karma, Mocha, or Python Unit Test test suite, run:
+From within a directory with an RSpec, Jasmine, Karma, Mocha, or Python Pytest test suite, run:
 
 ```
 $ learn-test
@@ -35,4 +35,3 @@ $ learn-test
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
-
