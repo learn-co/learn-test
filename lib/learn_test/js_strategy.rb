@@ -13,7 +13,7 @@ module LearnTest
     end
 
     def missing_dependencies?
-      return true if !File.exist?("node_modules") || !js_package
+      return true if !File.exist?("node_modules")
       [:dependencies, :devDependencies, :peerDependencies].any? do |dep_group|
         modules = js_package[dep_group] || {}
         modules_missing?(modules.keys)
