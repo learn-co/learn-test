@@ -8,11 +8,15 @@ module LearnTest
       [:dependencies, :devDependencies].any? { |key| js_package[key] && js_package[key][dep] }
     end
 
+    def modules_missing?(module_names)
+      module_names.any? { |name| !File.exist?("node_modules/#{name}") }
+    end
+
     def missing_dependencies?
       return true if !File.exist?("node_modules")
-
-      [:dependencies, :devDependencies, :peerDependencies].any? do |d|
-        (js_package[d] || {}).any? { |p, v| !File.exist?("node_modules/#{p}") }
+      [:dependencies, :devDependencies, :peerDependencies].any? do |dep_group|
+        modules = js_package[dep_group] || {}
+        modules_missing?(modules.keys)
       end
     end
 
