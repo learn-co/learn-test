@@ -67,6 +67,11 @@ module LearnTest
       end
 
       def concat_failure_descriptions
+        # if there is a single test the `testcase` xml parse turns out a hash
+        #   instead of an array with a single hash. this will make sure single
+        #   tests have the same output structure (Array) as multiple tests
+        output["testcase"] = [output["testcase"]].flatten
+
         output["testcase"].reduce([]) do |errors, example|
           if example.has_key?("failure")
             errors << example.map{|k, v| "#{k}: #{v}"}
