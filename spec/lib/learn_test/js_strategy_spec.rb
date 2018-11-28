@@ -1,0 +1,61 @@
+shared_examples_for "js_strategy" do
+  let(:runner) { double("Runner", options: {}) }
+  let(:strategy) { described_class.new(runner) }
+  let(:package) do
+    {
+      dependencies: {
+        dep1: "",
+        dep2: ""
+      },
+      devDependencies: {
+        devDep1: "",
+        devDep2: ""
+      },
+      peerDependencies: {
+        peerDep1: "",
+        peerDep2: ""
+      }
+    }
+  end
+
+  context "missing_dependencies?" do
+
+    before(:each) do
+      allow(File).to receive(:exist?).and_return(true)
+      allow(strategy).to receive(:js_package).and_return(package)
+    end
+
+    it "returns true if missing a dependency" do
+      allow(File).to receive(:exist?).with("node_modules/dep2").and_return(false)
+      expect(strategy.missing_dependencies?).to eq(true)
+    end
+
+    it "returns true if missing a devDependency" do
+      allow(File).to receive(:exist?).with("node_modules/devDep2").and_return(false)
+      expect(strategy.missing_dependencies?).to eq(true)
+    end
+
+    it "returns true if missing a peerDependency" do
+      allow(File).to receive(:exist?).with("node_modules/peerDep2").and_return(false)
+      expect(strategy.missing_dependencies?).to eq(true)
+    end
+
+    it "returns false if missing no dependencies" do
+      allow(File).to receive(:exist?).and_return(true)
+      expect(strategy.missing_dependencies?).to eq(false)
+    end
+
+    it "returns false if there are no dependencies" do
+      allow(strategy).to receive(:js_package).and_return({})
+      expect(strategy.missing_dependencies?).to eq(false)
+    end
+  end
+end
+
+describe LearnTest::Strategies::Mocha do
+  it_behaves_like "js_strategy"
+end
+
+describe LearnTest::Strategies::Jest do
+  it_behaves_like "js_strategy"
+end

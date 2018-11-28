@@ -3,6 +3,7 @@ require 'git'
 module LearnTest
   class RepoParser
     def self.get_repo
+
       begin
         repo = Git.open(FileUtils.pwd)
       rescue
