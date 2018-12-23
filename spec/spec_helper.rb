@@ -1,8 +1,3 @@
-require 'simplecov'
-SimpleCov.start do
-  add_filter '/spec/'
-end
-
 require_relative '../lib/learn_test'
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
