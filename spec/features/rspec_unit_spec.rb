@@ -3,7 +3,7 @@ describe "Running a RSpec Unit Test" do
     it 'runs the spec with 0 failures' do
       output = `cd ./spec/fixtures/rspec-unit-spec && ./../../../bin/learn-test --local --test`
 
-      expect(output).to include('2 examples, 0 failures')
+      expect(output).to include('3 examples, 0 failures')
       expect(output).to_not include('1 failures')
     end
   end
@@ -15,5 +15,13 @@ describe "Running a RSpec Unit Test" do
       expect(output).to include('1 example, 0 failures')
       expect(output).to_not include('2 examples')
     end
+
+     it 'accepts multiple examples' do
+      output = `cd ./spec/fixtures/rspec-unit-spec && ./../../../bin/learn-test --local --test --example multiple --example accepts`
+
+      expect(output).to include('2 examples, 0 failures')
+      expect(output).to_not include('3 examples')
+      expect(output).to_not include('1 example')
+    end 
   end
 end

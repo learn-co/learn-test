@@ -8,4 +8,8 @@ describe Dog do
   it 'has multiple specs' do
     expect(subject).not_to be_an_instance_of(String)
   end
+
+  it 'accepts more than one example' do
+    expect(subject).not_to be_an_instance_of(String)
+  end  
 end
