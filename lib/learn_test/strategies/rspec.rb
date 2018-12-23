@@ -26,7 +26,7 @@ module LearnTest
         end
 
         if example_option_present?
-          argv << "--example #{options[:example]}"
+          argv << options[:example].map{|e| "--example #{e}"}.join(" ")
         end
 
         # Don't pass the test/local flag from learn binary to rspec runner.

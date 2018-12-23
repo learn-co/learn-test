@@ -58,7 +58,7 @@ OptionParser.new do |opts|
   end
 
   opts.on("-e", "--example STRING", "Run examples whose full nested names include STRING (may be used more than once)") do |s|
-    options[:example] = s
+    (options[:example] ||= []) << s
   end
 
   if ARGV.any? { |arg| arg == "init" }
