@@ -25,6 +25,10 @@ module LearnTest
           argv << '--fail-fast'
         end
 
+        if example_option_present?
+          argv << options[:example].map{|e| "--example #{e}"}.join(" ")
+        end
+
         # Don't pass the test/local flag from learn binary to rspec runner.
         argv.delete("--test")
         argv.delete("-t")
@@ -81,6 +85,10 @@ module LearnTest
 
       def fail_fast_option_present?
         options[:fail_fast]
+      end
+
+      def example_option_present?
+        options[:example]
       end
 
       def dot_rspec
