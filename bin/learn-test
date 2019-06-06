@@ -61,6 +61,10 @@ OptionParser.new do |opts|
     (options[:example] ||= []) << s
   end
 
+  opts.on("-w", "--run-rspec-with-ruby-warnings-on", "Runs RSpec with Ruby warnings enabled ('-w')") do |w|
+    options[:ruby_warnings] = w
+  end
+
   if ARGV.any? { |arg| arg == "init" }
     options[:init] = true
   end
