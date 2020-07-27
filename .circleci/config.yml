@@ -17,7 +17,7 @@ jobs:
           name: install dependencies
           command: |
             gem install bundler
-            bundle config set path 'vendor/bundle'
+            bundle config set --local path 'vendor/bundle'
             bundle install --jobs=4 --retry=3
 
       - run:
