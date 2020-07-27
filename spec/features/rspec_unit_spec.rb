@@ -1,7 +1,7 @@
 describe "Running a RSpec Unit Test" do
   before(:all) do
     # While it doesn't cause these tests to fail, nasty messages occur, and more,
-    # occur when either a ~/.netrc entry or file exists. This aims to correct that,
+    # when either a ~/.netrc entry or file exists. This aims to correct that,
     # and will only ever be called once.
 
     LearnTest::UsernameParser.get_username
