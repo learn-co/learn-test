@@ -1,8 +1,14 @@
 describe "Running a RSpec Unit Test" do
+  before(:all) do
+    # While it doesn't cause these tests to fail, nasty messages occur, and more,
+    # occur when either a ~/.netrc entry or file exists. This aims to correct that,
+    # and will only ever be called once.
+
+    LearnTest::UsernameParser.get_username
+  end
+
   context 'a basic rspec unit test' do
     it 'runs the spec with 0 failures' do
-      allow($stdin).to receive(:gets).and_return('learn-co')
-
       output = `cd ./spec/fixtures/rspec-unit-spec && ./../../../bin/learn-test --local --test`
 
       expect(output).to include('3 examples, 0 failures')
@@ -12,8 +18,6 @@ describe "Running a RSpec Unit Test" do
 
   context 'with the --example flag' do
     it 'runs only the appropriate tests' do
-      allow($stdin).to receive(:gets).and_return('learn-co')
-
       output = `cd ./spec/fixtures/rspec-unit-spec && ./../../../bin/learn-test --local --test --example multiple`
 
       expect(output).to include('1 example, 0 failures')
@@ -21,8 +25,6 @@ describe "Running a RSpec Unit Test" do
     end
 
      it 'accepts multiple examples' do
-      allow($stdin).to receive(:gets).and_return('learn-co')
-
       output = `cd ./spec/fixtures/rspec-unit-spec && ./../../../bin/learn-test --local --test --example multiple --example accepts`
 
       expect(output).to include('2 examples, 0 failures')
