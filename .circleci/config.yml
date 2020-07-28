@@ -15,7 +15,9 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: gems-v1-{{ checksum "Gemfile.lock" }}
+          keys:
+            - gems-v2-{{ checksum "Gemfile.lock" }}
+            - gems-v2-
 
       - run:
           name: Force Bundler Version
@@ -27,14 +29,14 @@ jobs:
 
       - run:
           name: Install Dependencies
-          command: bundle install
+          command: |
+            bundle config set --local 'vendor/bundle'
+            bundle install
 
       - save_cache:
-          key: gems-v1-{{ checksum "Gemfile.lock" }}
+          key: gems-v2-{{ checksum "Gemfile.lock" }}
           paths:
-            - /usr/local/bin/gem
-            - /usr/local/bin/bundle
-            - .bundle
+            - vendor/bundle
 
       - run:
           name: Create ~/.netrc
