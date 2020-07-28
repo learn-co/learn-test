@@ -38,7 +38,9 @@ jobs:
 
       - run:
           name: Create ~/.netrc
-          command: cp spec/fixtures/.netrc ~/
+          command: | 
+            cp spec/fixtures/.netrc ~/
+            chmod 0600 ~/.netrc
 
       - run:
           name: Run tests
