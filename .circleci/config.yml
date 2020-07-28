@@ -1,32 +1,46 @@
-# Ruby CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-ruby/ for more details
-#
-version: 2
+version: 2.1
+
 jobs:
   build:
     docker:
-      # specify the version you desire here
-       - image: circleci/ruby:2.4.1-node-browsers
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
+       - image: circleci/ruby:2.5.8
 
     working_directory: ~/repo
 
     steps:
       - checkout
 
+      - restore_cache:
+          keys:
+            - gems-v3-{{ checksum "Gemfile.lock" }}
+            - gems-v3-
+
       - run:
-          name: install dependencies
+          name: Force Bundler Version
           command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-        
-      # run tests!
+            sudo gem update --system
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+            source $BASH_ENV
+
       - run:
-          name: run tests
+          name: Install Dependencies
+          command: |
+            bundle config --local set vendor/bundle
+            bundle install
+
+      - save_cache:
+          key: gems-v3-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Create ~/.netrc
+          command: | 
+            cp spec/fixtures/.netrc ~/
+            chmod 0600 ~/.netrc
+
+      - run:
+          name: Run tests
           command: |
             mkdir /tmp/test-results
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
@@ -37,9 +51,9 @@ jobs:
                             --format progress \
                             $TEST_FILES
 
-      # collect reports
       - store_test_results:
           path: /tmp/test-results
+
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results

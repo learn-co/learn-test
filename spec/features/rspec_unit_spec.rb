@@ -1,4 +1,12 @@
 describe "Running a RSpec Unit Test" do
+  before(:all) do
+    # While it doesn't cause these tests to fail, nasty messages occur (and more)
+    # when either a ~/.netrc entry or file itself doesn't exist. This aims to correct that,
+    # and will only ever be called once.
+
+    LearnTest::UsernameParser.get_username
+  end
+
   context 'a basic rspec unit test' do
     it 'runs the spec with 0 failures' do
       output = `cd ./spec/fixtures/rspec-unit-spec && ./../../../bin/learn-test --local --test`
