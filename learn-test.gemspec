@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "git", "~> 1.7"
   spec.add_runtime_dependency "oj", "~> 3.10"
   spec.add_runtime_dependency "faraday", "~> 1.0"
-  spec.add_runtime_dependency "crack", "~> 0.4.3" # XML Parsing
+  spec.add_runtime_dependency "crack", "~> 0.4.3"
   spec.add_runtime_dependency "colorize", "~> 0.8.1"
 end
