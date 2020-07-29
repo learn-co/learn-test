@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = LearnTest::VERSION
   spec.authors       = ["Flatiron School"]
   spec.email         = ["learn@flatironschool.com"]
-  spec.summary       = %q{Runs RSpec, Jasmine, Karma, Mocha, and Python Pytest Test builds and pushes JSON output to Learn.}
+  spec.summary       = %q{Runs RSpec, Karma, Mocha, and Python Pytest Test builds and pushes JSON output to Learn.}
   spec.homepage      = "https://github.com/learn-co/learn-test"
   spec.license       = "MIT"
 
@@ -28,7 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "oj", "~> 3.10"
   spec.add_runtime_dependency "faraday", "~> 1.0"
   spec.add_runtime_dependency "crack", "~> 0.4.3" # XML Parsing
-  spec.add_runtime_dependency "jasmine", "~> 2.6.0", ">= 2.6.0"
-  spec.add_runtime_dependency "jasmine-core", "< 2.99.1"
   spec.add_runtime_dependency "colorize", "~> 0.8.1"
 end
