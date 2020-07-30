@@ -25,6 +25,10 @@ module LearnTest
           argv << '--fail-fast'
         end
 
+        if warning_option_present?
+          argv << '-w'
+        end
+
         if example_option_present?
           argv << options[:example].map{|e| "--example #{e}"}.join(" ")
         end
@@ -89,6 +93,10 @@ module LearnTest
 
       def example_option_present?
         options[:example]
+      end
+
+      def warning_option_present?
+        options[:ruby_warnings]
       end
 
       def dot_rspec
