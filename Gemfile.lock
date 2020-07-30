@@ -4,15 +4,11 @@ PATH
     learn-test (2.7.0)
       colorize (~> 0.8.1)
       crack (~> 0.4.3)
-      faraday (~> 0.9)
-      git (~> 1.2)
-      jasmine (~> 2.6.0, >= 2.6.0)
-      jasmine-core (< 2.99.1)
+      faraday (~> 1.0)
+      git (~> 1.7)
       netrc (~> 0.11.0)
-      oj (~> 2.9)
-      rainbow (= 1.99.2)
+      oj (~> 3.10)
       rspec (~> 3.0)
-      webrick (~> 1.3.1, >= 1.3.1)
 
 GEM
   remote: https://rubygems.org/
@@ -21,22 +17,13 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     diff-lcs (1.4.4)
-    faraday (0.17.3)
+    faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     git (1.7.0)
       rchardet (~> 1.8)
-    jasmine (2.6.0)
-      jasmine-core (>= 2.6.0, < 3.0.0)
-      phantomjs
-      rack (>= 1.2.1)
-      rake
-    jasmine-core (2.99.0)
     multipart-post (2.1.1)
     netrc (0.11.0)
-    oj (2.18.5)
-    phantomjs (2.1.1.0)
-    rack (2.2.3)
-    rainbow (1.99.2)
+    oj (3.10.8)
     rake (13.0.1)
     rchardet (1.8.0)
     rspec (3.9.0)
@@ -55,7 +42,6 @@ GEM
     rspec_junit_formatter (0.4.1)
       rspec-core (>= 2, < 4, != 2.12.0)
     safe_yaml (1.0.5)
-    webrick (1.3.1)
 
 PLATFORMS
   ruby
