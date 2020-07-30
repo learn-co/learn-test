@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    learn-test (2.7.0)
+    learn-test (3.0.0)
       colorize (~> 0.8.1)
       crack (~> 0.4.3)
       faraday (~> 1.0)
