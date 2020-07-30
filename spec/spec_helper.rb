@@ -1,4 +1,9 @@
+require 'simplecov'
+SimpleCov.start
+
 require_relative '../lib/learn_test'
+require_relative '../lib/learn_test/client'
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
