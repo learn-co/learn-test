@@ -14,3 +14,4 @@
 mkmf.log
 learn-test-*.gem
 *.swp
+Gemfile.lock
