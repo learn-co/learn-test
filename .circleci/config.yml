@@ -11,6 +11,14 @@ jobs:
       - checkout
 
       - run:
+          name: Force Bundler Version
+          command: |
+            sudo gem update --system
+            echo 'export BUNDLER_VERSION="~> 2.1.4"' >> $BASH_ENV
+            source $BASH_ENV
+            gem install bundler
+
+      - run:
           name: Install Dependencies
           command: |
             bundle config --local set vendor/bundle
