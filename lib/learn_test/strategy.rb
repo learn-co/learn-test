@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   class Strategy
     attr_reader :runner, :options
@@ -11,11 +13,9 @@ module LearnTest
       raise NotImplementedError, 'you must add the service endpoint to the test strategy'
     end
 
-    def check_dependencies
-    end
+    def check_dependencies; end
 
-    def configure
-    end
+    def configure; end
 
     def run
       raise NotImplementedError, 'you must implement how this strategy runs its tests'
@@ -33,8 +33,7 @@ module LearnTest
       true
     end
 
-    def cleanup
-    end
+    def cleanup; end
 
     def username
       @username ||= LearnTest::UsernameParser.get_username

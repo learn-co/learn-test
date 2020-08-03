@@ -1,4 +1,6 @@
-describe "Running a RSpec Unit Test" do
+# frozen_string_literal: true
+
+describe 'Running a RSpec Unit Test' do
   before(:all) do
     # While it doesn't cause these tests to fail, nasty messages occur (and more)
     # when either a ~/.netrc entry or file itself doesn't exist. This aims to correct that,
@@ -30,6 +32,6 @@ describe "Running a RSpec Unit Test" do
       expect(output).to include('2 examples, 0 failures')
       expect(output).to_not include('3 examples')
       expect(output).to_not include('1 example')
-    end 
+    end
   end
 end

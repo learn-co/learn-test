@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   class UserIdParser
     def self.get_user_id
@@ -6,4 +8,3 @@ module LearnTest
     end
   end
 end
-

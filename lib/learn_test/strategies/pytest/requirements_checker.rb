@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open3'
 
 module LearnTest
@@ -13,7 +15,7 @@ module LearnTest
     class PythonChecker
       def self.check
         if !self.python_installed? || !self.correct_python_version?
-          puts "Please install python 2.7.x or 3.x.x"
+          puts 'Please install python 2.7.x or 3.x.x'
           exit
         end
       end
@@ -31,8 +33,8 @@ module LearnTest
 
     class PipChecker
       def self.check
-        if !self.pip_installed?
-          puts "Please ensure pip is installed"
+        unless self.pip_installed?
+          puts 'Please ensure pip is installed'
           exit
         end
       end
@@ -44,8 +46,8 @@ module LearnTest
 
     class PytestChecker
       def self.check
-        if !self.pytest_installed?
-          puts "Please ensure pytest is installed"
+        unless self.pytest_installed?
+          puts 'Please ensure pytest is installed'
           exit
         end
       end

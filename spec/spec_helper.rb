@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../lib/learn_test'
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

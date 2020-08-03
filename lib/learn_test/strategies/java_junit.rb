@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Strategies
     class JavaJunit < LearnTest::Strategy
@@ -72,7 +74,7 @@ module LearnTest
         if File.exists?(test_path)
           test_xml_files.each do |f|
             parsed = JSON.parse(Crack::XML.parse(File.read(f)).to_json)['testsuite']
-            next if !parsed
+            next unless parsed
 
             if parsed['testcase']
               parsed['testcase'].each do |test_case|

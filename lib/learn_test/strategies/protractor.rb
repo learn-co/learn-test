@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open3'
 
 module LearnTest
@@ -17,7 +19,7 @@ module LearnTest
       end
 
       def run
-        if !selenium_running?
+        unless selenium_running?
           stdin, stdout, stderr, wait_thr = Open3.popen3('webdriver-manager start')
           @pid = wait_thr.pid
 
@@ -88,14 +90,14 @@ module LearnTest
 
       def passing_count
         @passing_count ||= output.inject(0) do |count, test|
-          count += 1 if test[:assertions].all?{ |a| a[:passed] }
+          count += 1 if test[:assertions].all? { |a| a[:passed] }
           count
         end
       end
 
       def failure_count
         @failure_count ||= output.inject(0) do |count, test|
-          count += 1 if !test[:assertions].all? { |a| a[:passed] }
+          count += 1 unless test[:assertions].all? { |a| a[:passed] }
           count
         end
       end
@@ -114,14 +116,13 @@ module LearnTest
       end
 
       def selenium_running?
-        process = `ps aux | grep selenium`.split("\n").detect{ |p| p.include?('chromedriver') }
+        process = `ps aux | grep selenium`.split("\n").detect { |p| p.include?('chromedriver') }
         if process
           @selenium_pid = process.split[1].to_i
           return true
         end
-        return false
+        false
       end
-
     end
   end
 end

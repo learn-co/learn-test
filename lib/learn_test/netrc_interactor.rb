@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'netrc'
 
 module LearnTest
@@ -16,4 +18,3 @@ module LearnTest
     end
   end
 end
-

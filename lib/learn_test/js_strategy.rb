@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module JsStrategy
     def js_package
@@ -13,7 +15,7 @@ module LearnTest
     end
 
     def missing_dependencies?
-      return true if !File.exist?("node_modules")
+      return true unless File.exist?('node_modules')
       [:dependencies, :devDependencies, :peerDependencies].any? do |dep_group|
         modules = js_package[dep_group] || {}
         modules_missing?(modules.keys)

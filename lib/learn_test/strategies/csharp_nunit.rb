@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Strategies
     class CSharpNunit < LearnTest::Strategy
@@ -6,7 +8,7 @@ module LearnTest
       end
 
       def detect
-        runner.files.any? {|f| f.match(/project.json/)}
+        runner.files.any? { |f| f.match(/project.json/) }
       end
 
       def check_dependencies
@@ -17,7 +19,7 @@ module LearnTest
         require 'crack'
         require 'json'
 
-        system("dotnet test")
+        system('dotnet test')
         output
         cleanup
       end
@@ -46,7 +48,7 @@ module LearnTest
       end
 
       def cleanup
-        FileUtils.rm("TestResult.xml") if File.exist?("TestResult.xml")
+        FileUtils.rm('TestResult.xml') if File.exist?('TestResult.xml')
       end
     end
   end

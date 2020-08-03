@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   class LearnOauthTokenParser
     def self.get_learn_oauth_token

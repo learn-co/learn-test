@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../lib/dog'
 
 describe Dog do
@@ -11,5 +13,5 @@ describe Dog do
 
   it 'accepts more than one example' do
     expect(subject).not_to be_an_instance_of(String)
-  end  
+  end
 end

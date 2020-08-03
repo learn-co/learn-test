@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe LearnTest::UsernameParser do
   subject { LearnTest::UsernameParser }
 

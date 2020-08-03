@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Strategies
     class Karma < LearnTest::Strategy
@@ -17,7 +19,7 @@ module LearnTest
       def run
         run_karma
         if @missing_karma
-          puts "Installing local karma dependencies...".green
+          puts 'Installing local karma dependencies...'.green
           run_install('npm install')
           run_karma
         end

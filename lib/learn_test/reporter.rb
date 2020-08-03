@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 require 'json'
 
 require_relative 'client'
+require_relative 'git_wip'
 
 module LearnTest
   class Reporter
-
     attr_accessor :output_path, :debug
 
     def self.report(strategy, options = {})
@@ -37,21 +39,26 @@ module LearnTest
       if previous_reports.empty?
         FileUtils.rm_f(output_path)
       else
-        File.open(output_path, "w") do |file|
+        File.open(output_path, 'w') do |file|
           file.write("#{JSON.dump(previous_reports)}\n")
         end
       end
     end
 
-    def report(out: STDOUT)
+    def report
       results = strategy.results
       endpoint = strategy.service_endpoint
       augment_results!(results)
 
-      unless client.post_results(endpoint, results)
-        if @debug
-          out.puts 'There was a problem connecting to Learn. Not pushing test results.'.red
+      if client.post_results(endpoint, results)
+        if !LearnTest::GitWip.run! && @debug
+          puts 'There was a problem connecting to Github. Not pushing current branch state.'.red
         end
+      else
+        if @debug
+          puts 'There was a problem connecting to Learn. Not pushing test results.'.red
+        end
+
         save_failed_attempt(endpoint, results)
       end
     end
@@ -61,7 +68,7 @@ module LearnTest
     attr_reader :strategy, :client
 
     def save_failed_attempt(endpoint, results)
-      File.open(output_path, File::RDWR|File::CREAT, 0644) do |f|
+      File.open(output_path, File::RDWR | File::CREAT, 0644) do |f|
         if f.flock(File::LOCK_EX)
           begin
             reports = JSON.load(f)
@@ -84,7 +91,7 @@ module LearnTest
       if File.exist?("#{FileUtils.pwd}/.learn")
         dot_learn = YAML.load(File.read("#{FileUtils.pwd}/.learn"))
 
-        if !dot_learn['github'].nil?
+        unless dot_learn['github'].nil?
           results[:github] = dot_learn['github']
         end
       end

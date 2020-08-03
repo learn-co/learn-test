@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe LearnTest::GitWip do
   subject { described_class }
 
