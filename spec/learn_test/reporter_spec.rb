@@ -37,10 +37,10 @@ describe LearnTest::Reporter do
       it 'outputs an error message' do
         allow(client).to receive(:post_results).and_return(false)
 
-        expect {
+        expect do
           reporter.debug = true
           reporter.report
-        }.to output(/Learn/i).to_stdout
+        end.to output(/Learn/i).to_stdout
       end
     end
 
@@ -70,10 +70,10 @@ describe LearnTest::Reporter do
         expect(client).to receive(:post_results).and_return(true)
         expect(LearnTest::GitWip).to receive(:run!).and_return(false)
 
-        expect {
+        expect do
           reporter.debug = true
           reporter.report
-        }.to output(/Github/i).to_stdout
+        end.to output(/Github/i).to_stdout
       end
     end
 

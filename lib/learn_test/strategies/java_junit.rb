@@ -51,9 +51,8 @@ module LearnTest
       private
 
       def clean_old_results
-        if Dir.entries(lab_dir).any? { |f| f == 'junit' }
-          system("rm -rf #{lab_dir}/junit")
-        end
+        return unless Dir.entries(lab_dir).any? { |f| f == 'junit' }
+        system("rm -rf #{lab_dir}/junit")
       end
 
       def run_ant
@@ -99,10 +98,10 @@ module LearnTest
           results[:passing_count] = 0
         end
 
-        if runner.keep_results?
-          output_file = '.results.json'
-          write_json_output(output_file: output_file)
-        end
+        return unless runner.keep_results?
+
+        output_file = '.results.json'
+        write_json_output(output_file: output_file)
       end
 
       def write_json_output(output_file:)

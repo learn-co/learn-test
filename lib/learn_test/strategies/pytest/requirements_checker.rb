@@ -14,10 +14,10 @@ module LearnTest
 
     class PythonChecker
       def self.check
-        if !self.python_installed? || !self.correct_python_version?
-          puts 'Please install python 2.7.x or 3.x.x'
-          exit
-        end
+        return unless !self.python_installed? || !self.correct_python_version?
+
+        puts 'Please install python 2.7.x or 3.x.x'
+        exit
       end
 
       def self.python_installed?
@@ -33,10 +33,10 @@ module LearnTest
 
     class PipChecker
       def self.check
-        unless self.pip_installed?
-          puts 'Please ensure pip is installed'
-          exit
-        end
+        return if self.pip_installed?
+
+        puts 'Please ensure pip is installed'
+        exit
       end
 
       def self.pip_installed?
@@ -46,10 +46,10 @@ module LearnTest
 
     class PytestChecker
       def self.check
-        unless self.pytest_installed?
-          puts 'Please ensure pytest is installed'
-          exit
-        end
+        return if self.pytest_installed?
+
+        puts 'Please ensure pytest is installed'
+        exit
       end
 
       def self.pytest_installed?

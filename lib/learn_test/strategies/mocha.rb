@@ -86,9 +86,9 @@ module LearnTest
       end
 
       def install_mocha_multi
-        unless File.exist?('node_modules/mocha-multi')
-          run_install('npm install mocha-multi', npm_install: true)
-        end
+        return if File.exist?('node_modules/mocha-multi')
+
+        run_install('npm install mocha-multi', npm_install: true)
       end
     end
   end

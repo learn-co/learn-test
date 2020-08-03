@@ -18,11 +18,13 @@ module LearnTest
 
       def run
         run_karma
-        if @missing_karma
-          puts 'Installing local karma dependencies...'.green
-          run_install('npm install')
-          run_karma
-        end
+
+        return unless @missing_karma
+
+        puts 'Installing local karma dependencies...'.green
+        run_install('npm install')
+
+        run_karma
       end
 
       def output
