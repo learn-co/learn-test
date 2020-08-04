@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Dependencies
     class Ant < LearnTest::Dependency

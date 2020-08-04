@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   class Dependency
     attr_reader :options
@@ -14,11 +16,9 @@ module LearnTest
       false
     end
 
-    def install
-    end
+    def install; end
 
-    def die(message)
-    end
+    def die(message); end
 
     def mac?
       !!RUBY_PLATFORM.match(/darwin/)

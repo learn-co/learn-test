@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 
 module LearnTest
@@ -7,7 +9,7 @@ module LearnTest
     def initialize(repo, options = {})
       @repo = repo
       @options = options
-      die if !strategy
+      die unless strategy
     end
 
     def run
@@ -32,7 +34,7 @@ module LearnTest
     end
 
     def strategy
-      @strategy ||= strategies.map{ |s| s.new(self) }.detect(&:detect)
+      @strategy ||= strategies.map { |s| s.new(self) }.detect(&:detect)
     end
 
     private
@@ -55,7 +57,7 @@ module LearnTest
         LearnTest::Strategies::Protractor,
         LearnTest::Strategies::JavaJunit,
         LearnTest::Strategies::Mocha,
-        LearnTest::Strategies::Pytest,
+        LearnTest::Strategies::Pytest
       ]
     end
 

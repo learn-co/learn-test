@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   class FileFinder
     def self.location_to_dir(dir_name)
@@ -9,4 +11,3 @@ module LearnTest
     end
   end
 end
-

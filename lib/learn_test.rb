@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 require 'oj'
 require 'colorize'
 
 require_relative 'learn_test/version'
 require_relative 'learn_test/netrc_interactor'
+require_relative 'learn_test/git_wip'
 require_relative 'learn_test/github_interactor'
 require_relative 'learn_test/user_id_parser'
 require_relative 'learn_test/username_parser'

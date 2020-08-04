@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Dependencies
     class CSharp < LearnTest::Dependency
@@ -10,7 +12,7 @@ module LearnTest
       end
 
       def install
-        die("Please install the .NET core from https://www.microsoft.com/net/core")
+        die('Please install the .NET core from https://www.microsoft.com/net/core')
       end
 
       def die(message)

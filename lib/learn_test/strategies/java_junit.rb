@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Strategies
     class JavaJunit < LearnTest::Strategy
@@ -49,9 +51,8 @@ module LearnTest
       private
 
       def clean_old_results
-        if Dir.entries(lab_dir).any? { |f| f == 'junit' }
-          system("rm -rf #{lab_dir}/junit")
-        end
+        return unless Dir.entries(lab_dir).any? { |f| f == 'junit' }
+        system("rm -rf #{lab_dir}/junit")
       end
 
       def run_ant
@@ -72,7 +73,7 @@ module LearnTest
         if File.exists?(test_path)
           test_xml_files.each do |f|
             parsed = JSON.parse(Crack::XML.parse(File.read(f)).to_json)['testsuite']
-            next if !parsed
+            next unless parsed
 
             if parsed['testcase']
               parsed['testcase'].each do |test_case|
@@ -97,10 +98,10 @@ module LearnTest
           results[:passing_count] = 0
         end
 
-        if runner.keep_results?
-          output_file = '.results.json'
-          write_json_output(output_file: output_file)
-        end
+        return unless runner.keep_results?
+
+        output_file = '.results.json'
+        write_json_output(output_file: output_file)
       end
 
       def write_json_output(output_file:)

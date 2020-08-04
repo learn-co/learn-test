@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Strategies
     class Rspec < LearnTest::Strategy
@@ -11,8 +13,8 @@ module LearnTest
 
       def configure
         if format_option_present?
-          if dot_rspec.any? {|dot_opt| dot_opt.match(/--format|-f/)}
-            argv << dot_rspec.reject {|dot_opt| dot_opt.match(/--format|-f/)}
+          if dot_rspec.any? { |dot_opt| dot_opt.match(/--format|-f/) }
+            argv << dot_rspec.reject { |dot_opt| dot_opt.match(/--format|-f/) }
           else
             argv << dot_rspec
           end
@@ -26,14 +28,14 @@ module LearnTest
         end
 
         if example_option_present?
-          argv << options[:example].map{|e| "--example #{e}"}.join(" ")
+          argv << options[:example].map { |e| "--example #{e}" }.join(' ')
         end
 
         # Don't pass the test/local flag from learn binary to rspec runner.
-        argv.delete("--test")
-        argv.delete("-t")
-        argv.delete("-l")
-        argv.delete("--local")
+        argv.delete('--test')
+        argv.delete('-t')
+        argv.delete('-l')
+        argv.delete('--local')
       end
 
       def run
@@ -98,13 +100,12 @@ module LearnTest
       def failures
         if output
           output[:examples].select do |example|
-            example[:status] == "failed"
-          end.map { |ex| ex[:full_description] }.join(";")
+            example[:status] == 'failed'
+          end.map { |ex| ex[:full_description] }.join(';')
         else
           'A syntax error prevented RSpec from running.'
         end
       end
-
     end
   end
 end

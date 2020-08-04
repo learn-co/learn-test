@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Strategies
     class Mocha < LearnTest::Strategy
@@ -8,7 +10,7 @@ module LearnTest
       end
 
       def detect
-        return false if !js_package
+        return false unless js_package
 
         (has_js_dependency?(:mocha) || in_browser?) ? true : false
       end
@@ -58,18 +60,18 @@ module LearnTest
         npm_install
 
         if in_browser?
-          exec("npm test")
+          exec('npm test')
         else
           run_node_based_mocha
         end
       end
 
       def run_node_based_mocha
-        command = if (js_package[:scripts] && js_package[:scripts][:test] || "").include?(".results.json")
-          "npm test"
+        command = if (js_package[:scripts] && js_package[:scripts][:test] || '').include?('.results.json')
+          'npm test'
         else
           install_mocha_multi
-          "node_modules/.bin/mocha -R mocha-multi --reporter-options spec=-,json=.results.json"
+          'node_modules/.bin/mocha -R mocha-multi --reporter-options spec=-,json=.results.json'
         end
 
         system(command)
@@ -84,9 +86,9 @@ module LearnTest
       end
 
       def install_mocha_multi
-        if !File.exist?('node_modules/mocha-multi')
-          run_install('npm install mocha-multi', npm_install: true)
-        end
+        return if File.exist?('node_modules/mocha-multi')
+
+        run_install('npm install mocha-multi', npm_install: true)
       end
     end
   end

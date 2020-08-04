@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'optparse'
 require_relative '../lib/learn_test'
@@ -6,45 +7,45 @@ require_relative '../lib/learn_test'
 options = {}
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: learn [options]"
+  opts.banner = 'Usage: learn [options]'
 
-  opts.on("--sync", "Report test results synchronously") do |s|
+  opts.on('--sync', 'Report test results synchronously') do |s|
     options[:sync] = s
   end
 
-  opts.on("-d", "--debug", "Output errors during results synchronization") do |d|
+  opts.on('-d', '--debug', 'Output errors during results synchronization') do |d|
     options[:debug] = d
   end
 
-  opts.on("-n", "--[no-]color", "Turn off color output") do |c|
+  opts.on('-n', '--[no-]color', 'Turn off color output') do |c|
     options[:color] = c
   end
 
-  opts.on("-f", "--format") do |f|
+  opts.on('-f', '--format') do |f|
     options[:format] = f
   end
 
-  opts.on("-l", "--local", "Don't push results to Learn") do |l|
+  opts.on('-l', '--local', "Don't push results to Learn") do |l|
     options[:local] = l
   end
 
-  opts.on("-b", "--browser", "Run tests in browser") do |b|
+  opts.on('-b', '--browser', 'Run tests in browser') do |b|
     options[:browser] = b
   end
 
-  opts.on("-o", "--out FILE") do |o|
+  opts.on('-o', '--out FILE') do |o|
     options[:out] = o
   end
 
-  opts.on("-s", "--skip") do |s|
+  opts.on('-s', '--skip') do |s|
     options[:skip] = s
   end
 
-  opts.on("-t", "--test") do |t|
+  opts.on('-t', '--test') do |t|
     options[:test] = t
   end
 
-  opts.on("-v", "--version") do |v|
+  opts.on('-v', '--version') do |v|
     puts LearnTest::VERSION
     exit
   end
@@ -57,16 +58,16 @@ OptionParser.new do |opts|
     options[:fail_fast] = f
   end
 
-  opts.on("-e", "--example STRING", "Run examples whose full nested names include STRING (may be used more than once)") do |s|
+  opts.on('-e', '--example STRING', 'Run examples whose full nested names include STRING (may be used more than once)') do |s|
     (options[:example] ||= []) << s
   end
 
-  if ARGV.any? { |arg| arg == "init" }
+  if ARGV.any? { |arg| arg == 'init' }
     options[:init] = true
   end
 
   options[:argv] = ARGV
 end.parse!
 
-repo = options[:test] ? "git@github.com:flatiron-school/a-sample-repo.git" : LearnTest::RepoParser.get_repo
+repo = options[:test] ? 'git@github.com:flatiron-school/a-sample-repo.git' : LearnTest::RepoParser.get_repo
 LearnTest::Runner.new(repo, options).run
