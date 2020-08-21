@@ -46,7 +46,7 @@ source "$(git --exec-path)/git-sh-setup"
 require_work_tree
 
 TMP="$GIT_DIR/.git-wip.$$"
-trap 'rm -f "$TMP-*"' 0
+trap 'rm -f "$TMP-*"' EXIT
 
 WIP_INDEX="$TMP-INDEX"
 
