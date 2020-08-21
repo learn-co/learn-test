@@ -33,20 +33,17 @@ Options for save:
                                     'commit.gpgSign = true'
 
 Options for log:
-        -p --pretty               - show a pretty graph
+  -p --pretty               - show a pretty graph
 	-r --reflog               - show changes in reflog
 	-s --stat                 - show diffstat
 "
 
-SUBDIRECTORY_OK=Yes
-OPTIONS_SPEC=''
-
-source "$(git --exec-path)/git-sh-setup"
+. "$(git --exec-path)/git-sh-setup"
 
 require_work_tree
 
 TMP="$GIT_DIR/.git-wip.$$"
-trap 'rm -f "$TMP-*"' EXIT
+trap 'rm -f "$TMP-*"' 0
 
 WIP_INDEX="$TMP-INDEX"
 
