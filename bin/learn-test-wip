@@ -15,15 +15,12 @@
 # Please see http://www.gnu.org/licenses/gpl-2.0.txt
 #
 
-USAGE='[ info | save <message> [ --editor | --untracked | --no-gpg-sign ] | log [ --pretty ] | delete ] [ [--] <file>... ]'
+USAGE='[ save <message> [ --editor | --untracked | --no-gpg-sign ] | delete ] [ [--] <file>... ]'
 LONG_USAGE="Manage Work In Progress branches
 
 Commands:
         git wip                   - create a new WIP commit
         git wip save <message>    - create a new WIP commit with custom message
-        git wip info [<branch>]   - brief WIP info
-        git wip log [<branch>]    - show changes on the WIP branch
-        git wip delete [<branch>] - delete a WIP branch
 
 Options for save:
         -e --editor               - be less verbose, assume called from an editor
@@ -31,19 +28,19 @@ Options for save:
         -i --ignored              - capture also ignored files
         --no-gpg-sign             - do not sign commit; that is, countermand
                                     'commit.gpgSign = true'
-
-Options for log:
-  -p --pretty               - show a pretty graph
-	-r --reflog               - show changes in reflog
-	-s --stat                 - show diffstat
 "
 
 source "$(git --exec-path)/git-sh-setup"
 
 require_work_tree
 
-TMP="$GIT_DIR/.git-wip.$$"
-trap 'rm -f "$TMP-*"' 0
+TMP=$(mktemp -d -t .git-wip)
+
+cleanup () {
+	rm -f "$TMP-*"
+}
+
+trap cleanup 0
 
 WIP_INDEX="$TMP-INDEX"
 
@@ -65,10 +62,6 @@ report_soft_error () {
 	die "$@"
 }
 
-cleanup () {
-	rm -f "$TMP-*"
-}
-
 get_work_branch () {
 	ref=$(git symbolic-ref -q HEAD) \
 	|| report_soft_error "git-wip requires a branch"
@@ -80,10 +73,6 @@ get_work_branch () {
 	fi
 
 	echo $branch
-}
-
-get_wip_branch () {
-	return 0
 }
 
 check_files () {
@@ -220,86 +209,6 @@ do_save () {
 	dbg "SUCCESS"
 }
 
-do_info () {
-	local branch=$1
-
-	die "info not implemented"
-}
-
-do_log () {
-	local work_branch=$1
-	[ -z $branch ] && work_branch=$(get_work_branch)
-	local wip_branch="$WIP_PREFIX$work_branch"
-
-	local log_cmd="log"
-	local graph=""
-	local pretty=""
-	local stat=""
-	while [ -n "$1" ]
-	do
-		case "$1" in
-			-p|--pretty)
-				graph="--graph"
-				pretty="--pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
-				;;
-			-s|--stat)
-				stat="--stat"
-				;;
-			-r|--reflog)
-				log_cmd="reflog"
-				;;
-			*)
-				break
-				;;
-		esac
-		shift
-	done
-
-	if [ $log_cmd = reflog ]
-	then
-		echo git reflog $stat $pretty $wip_branch | sh
-		return $?
-	fi
-
-	if ! work_last=$(git rev-parse --verify $work_branch)
-	then
-		die "'$work_branch' branch has no commits."
-	fi
-
-	dbg work_last=$work_last
-
-	if ! wip_last=$(git rev-parse --quiet --verify $wip_branch)
-	then
-		die "'$work_branch' branch has no commits."
-	fi
-
-	dbg wip_last=$wip_last
-
-	local base=$(git merge-base $wip_last $work_last)
-
-	dbg base=$base
-
-	echo git log $graph $stat $pretty $@ $wip_last $work_last "^$base~1" | sh
-}
-
-do_delete () {
-	local branch=$1
-
-	die "delete not implemented"
-}
-
-do_help () {
-	local rc=$1
-
-	cat <<END
-Usage: git wip $USAGE
-
-$LONG_USAGE
-END
-	exit $rc
-}
-
-
 if test $# -eq 0
 then
 	dbg "no arguments"
@@ -320,13 +229,6 @@ save)
 		shift
 	fi
 	;;
-info|log|delete)
-	WIP_COMMAND=$1
-	shift
-	;;
-help)
-	do_help 0
-	;;
 --*)
 	;;
 *)
@@ -337,15 +239,6 @@ esac
 case $WIP_COMMAND in
 save)
 	do_save "$WIP_MESSAGE" $@
-	;;
-info)
-	do_info $@
-	;;
-log)
-	do_log $@
-	;;
-delete)
-	do_delete $@
 	;;
 *)
 	usage
