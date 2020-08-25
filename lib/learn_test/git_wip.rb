@@ -9,7 +9,7 @@ module LearnTest
         git = Git.open('./', log: log)
         working_branch = git.current_branch
 
-        Open3.popen3('./bin/learn-test-wip save "Automatic test submission" --editor') do |_stdin, _stdout, stderr, wait_thr|
+        Open3.popen3('learn-test-wip save "Automatic test submission" --editor') do |_stdin, _stdout, stderr, wait_thr|
           # while out = stdout.gets do
           #   puts out
           # end
