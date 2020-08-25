@@ -38,7 +38,7 @@ Options for log:
 	-s --stat                 - show diffstat
 "
 
-. "$(git --exec-path)/git-sh-setup"
+source "$(git --exec-path)/git-sh-setup"
 
 require_work_tree
 
