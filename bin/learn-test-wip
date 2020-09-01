@@ -30,7 +30,7 @@ Options for save:
                                     'commit.gpgSign = true'
 "
 
-source "$(git --exec-path)/git-sh-setup"
+. "$(git --exec-path)/git-sh-setup"
 
 require_work_tree
 
