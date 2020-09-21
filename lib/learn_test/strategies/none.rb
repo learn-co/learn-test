@@ -12,7 +12,7 @@ module LearnTest
       end
 
       def run
-        puts "This directory doesn't appear to have any specs but a submission will be made."
+        puts 'Your assignment was submitted. You can resubmit by running `learn test` again.'
       end
 
       def results

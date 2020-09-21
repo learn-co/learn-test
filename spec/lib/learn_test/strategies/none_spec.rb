@@ -27,7 +27,7 @@ describe LearnTest::Strategies::None do
   describe '#run' do
     it 'prints a message' do
       strategy = LearnTest::Strategies::None.new(double(:runner, options: {}))
-      msg = "This directory doesn't appear to have any specs but a submission will be made.\n"
+      msg = "Your assignment was submitted. You can resubmit by running `learn test` again.\n"
 
       expect { strategy.run }.to output(msg).to_stdout
     end
