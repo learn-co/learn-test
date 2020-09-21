@@ -26,6 +26,7 @@ require_relative 'learn_test/strategies/java_junit'
 require_relative 'learn_test/strategies/csharp_nunit'
 require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/pytest'
+require_relative 'learn_test/strategies/none'
 
 module LearnTest
   module Dependencies
