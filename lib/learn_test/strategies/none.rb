@@ -22,11 +22,7 @@ module LearnTest
           learn_oauth_token: learn_oauth_token,
           repo_name: runner.repo,
           build: {
-            test_suite: [{
-              framework: 'none',
-              formatted_output: '',
-              duration: nil
-            }]
+            test_suite: [{ framework: 'none' }]
           },
           examples: 0,
           passing_count: 0,
