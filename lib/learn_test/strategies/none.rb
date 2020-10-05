@@ -7,10 +7,6 @@ module LearnTest
         '/e/flatiron_none'
       end
 
-      def detect
-        runner.files.include?('.canvas')
-      end
-
       def run
         puts 'Your assignment was submitted. You can resubmit by running `learn test` again.'
       end

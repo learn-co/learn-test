@@ -9,7 +9,6 @@ module LearnTest
     def initialize(repo, options = {})
       @repo = repo
       @options = options
-      die unless strategy
     end
 
     def run
@@ -34,7 +33,11 @@ module LearnTest
     end
 
     def strategy
-      @strategy ||= strategies.map { |s| s.new(self) }.detect(&:detect)
+      return @strategy if @strategy
+
+      detected = strategies.map { |s| s.new(self) }.detect(&:detect)
+
+      @strategy = detected || LearnTest::Strategies::None.new(self)
     end
 
     private
@@ -57,8 +60,7 @@ module LearnTest
         LearnTest::Strategies::Protractor,
         LearnTest::Strategies::JavaJunit,
         LearnTest::Strategies::Mocha,
-        LearnTest::Strategies::Pytest,
-        LearnTest::Strategies::None
+        LearnTest::Strategies::Pytest
       ]
     end
 
@@ -68,11 +70,6 @@ module LearnTest
 
     def local_test_run?
       options.include?('-h') || options.include?('--local')
-    end
-
-    def die
-      puts "This directory doesn't appear to have any specs in it."
-      exit
     end
   end
 end

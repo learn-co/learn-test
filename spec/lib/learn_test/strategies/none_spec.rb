@@ -1,29 +1,6 @@
 # frozen_string_literal: true
 
 describe LearnTest::Strategies::None do
-  describe '#detect' do
-    context 'there is a .canvas file' do
-      before { FileUtils.touch('.canvas') }
-      after { FileUtils.rm('.canvas') }
-
-      it 'is true' do
-        runner = LearnTest::Runner.new(double(:repo), {})
-        strategy = LearnTest::Strategies::None.new(runner)
-
-        expect(strategy.detect).to eq(true)
-      end
-    end
-
-    context 'there is no .canvas file' do
-      it 'is false' do
-        runner = LearnTest::Runner.new(double(:repo), {})
-        strategy = LearnTest::Strategies::None.new(runner)
-
-        expect(strategy.detect).to eq(false)
-      end
-    end
-  end
-
   describe '#run' do
     it 'prints a message' do
       strategy = LearnTest::Strategies::None.new(double(:runner, options: {}))
