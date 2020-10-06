@@ -4,7 +4,12 @@ describe LearnTest::Strategies::None do
   describe '#run' do
     it 'prints a message' do
       strategy = LearnTest::Strategies::None.new(double(:runner, options: {}))
-      msg = "Your assignment was submitted. You can resubmit by running `learn test` again.\n"
+
+      msg = <<~MSG
+        This directory doesn't appear to have any specs in it, so there’s no test to run.
+
+        If you are working on Canvas, this assignment has been submitted. You can resubmit by running `learn test` again.
+      MSG
 
       expect { strategy.run }.to output(msg).to_stdout
     end
