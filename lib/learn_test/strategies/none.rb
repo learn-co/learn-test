@@ -7,12 +7,12 @@ module LearnTest
         '/e/flatiron_none'
       end
 
-      def detect
-        runner.files.include?('.canvas')
-      end
-
       def run
-        puts 'Your assignment was submitted. You can resubmit by running `learn test` again.'
+        puts <<~MSG
+          This directory doesn't appear to have any specs in it, so there’s no test to run.
+
+          If you are working on Canvas, this assignment has been submitted. You can resubmit by running `learn test` again.
+        MSG
       end
 
       def results
