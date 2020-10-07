@@ -4,6 +4,8 @@ require 'fileutils'
 require 'oj'
 require 'colorize'
 
+require_relative 'learn_test/git/wip'
+
 require_relative 'learn_test/version'
 require_relative 'learn_test/netrc_interactor'
 require_relative 'learn_test/git_wip'
