@@ -6,7 +6,6 @@ require 'colorize'
 
 require_relative 'learn_test/version'
 require_relative 'learn_test/netrc_interactor'
-require_relative 'learn_test/git_wip'
 require_relative 'learn_test/github_interactor'
 require_relative 'learn_test/user_id_parser'
 require_relative 'learn_test/username_parser'
@@ -27,6 +26,8 @@ require_relative 'learn_test/strategies/csharp_nunit'
 require_relative 'learn_test/strategies/mocha'
 require_relative 'learn_test/strategies/pytest'
 require_relative 'learn_test/strategies/none'
+
+require_relative 'learn_test/git'
 
 module LearnTest
   module Dependencies
