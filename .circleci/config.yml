@@ -29,6 +29,12 @@ jobs:
             chmod 0600 ~/.netrc
 
       - run:
+          name: Set .git/config
+          command: |
+            git config --global user.email "info@flatironschool.com"
+            git config --global user.name "Flatiron School"
+
+      - run:
           name: Run tests
           command: |
             mkdir /tmp/test-results

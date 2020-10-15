@@ -12,6 +12,7 @@ describe 'Running a RSpec Unit Test', type: :aruba do
   before :each do
     copy '%/rspec-unit-spec', 'example'
     cd 'example'
+
     run_command_and_stop 'git init'
     run_command_and_stop 'git add .'
     run_command_and_stop 'git commit -m "Initial Commit"'
