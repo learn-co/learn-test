@@ -39,7 +39,7 @@ describe 'Running a RSpec Unit Test', type: :aruba do
       expect(output).to_not include('2 examples')
     end
 
-     it 'accepts multiple examples' do
+    it 'accepts multiple examples' do
       output = run(' --local --test --example multiple --example accepts')
 
       expect(output).to include('2 examples, 0 failures')

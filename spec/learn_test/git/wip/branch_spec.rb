@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe LearnTest::Git::Wip::Branch do
   let(:base) { LearnTest::Git::Base.open('./') }
   let(:name) { base.current_branch }
@@ -9,8 +11,10 @@ describe LearnTest::Git::Wip::Branch do
   end
 
   let(:sha1) { Digest::SHA1.new.hexdigest }
-  let(:no_commits_error_msg) { "fatal: ambiguous argument '#{name}': unknown revision or path not in the working tree." }
   let(:nothing_to_commit_error_msg) { 'nothing to commit, working directory clean' }
+  let(:no_commits_error_msg) do
+    "fatal: ambiguous argument '#{name}': unknown revision or path not in the working tree."
+  end
 
   describe 'accessors' do
     it 'should have :parent, :parent=' do
@@ -47,11 +51,11 @@ describe LearnTest::Git::Wip::Branch do
 
       it 'should only run revparse once' do
         expect(base)
-        .to receive(:revparse)
-        .with(name)
-        .and_return(sha1)
-        .once
-        
+          .to receive(:revparse)
+          .with(name)
+          .and_return(sha1)
+          .once
+
         expect(branch.last_revision).to eq(sha1)
         expect(branch.last_revision).to eq(sha1)
       end
@@ -86,7 +90,9 @@ describe LearnTest::Git::Wip::Branch do
 
         expect do
           branch.last_revision(raise_no_commits: true)
-        end.to raise_error(LearnTest::Git::Wip::NoCommitsError, "Branch `#{name}` doesn't have any commits. Please commit and try again.")
+        end.to raise_error(
+          LearnTest::Git::Wip::NoCommitsError, "Branch `#{name}` doesn't have any commits. Please commit and try again."
+        )
       end
     end
 

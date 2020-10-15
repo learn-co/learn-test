@@ -4,7 +4,6 @@ describe LearnTest::Git do
   describe '.open' do
     context 'defaults' do
       it 'should instantiate LearnTest::Git::Base' do
-
         expect(LearnTest::Git::Base).to receive(:open).with('./', {})
         LearnTest::Git.open
       end
@@ -36,7 +35,7 @@ describe LearnTest::Git do
       let!(:wip) { double(LearnTest::Git::Wip::Base) }
 
       it 'should require a :message' do
-        expect { repo.wip() }.to raise_error(ArgumentError)
+        expect { repo.wip }.to raise_error(ArgumentError)
       end
 
       it 'should instantiate and run .process!' do

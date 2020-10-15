@@ -33,7 +33,7 @@ describe LearnTest::Git::Wip::Base do
       write_file 'README.md', 'Hello World'
       run_command_and_stop 'git init'
 
-      if commit
+      if commit # rubocop:disable Style/GuardClause
         run_command_and_stop 'git add .'
         run_command_and_stop 'git commit -m "Initial Commit"'
       end
@@ -87,4 +87,3 @@ describe LearnTest::Git::Wip::Base do
     end
   end
 end
-

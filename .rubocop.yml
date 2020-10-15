@@ -1,0 +1,16 @@
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Metrics/BlockLength:
+  Enabled: false
+
+  

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 describe LearnTest::Git::Wip do
-  let(:branch) { rand(0..999999).to_s }
+  let(:branch) { rand(0..999_999).to_s }
 
   describe LearnTest::Git::Wip::Error do
     it 'should inherit from StandardError' do
@@ -18,7 +20,7 @@ describe LearnTest::Git::Wip do
 
     it 'should have the correct messaging' do
       error = described_class.new(branch)
-      expect(error.message).to eq "No changes found on `#{branch}`" 
+      expect(error.message).to eq "No changes found on `#{branch}`"
     end
   end
 
@@ -33,7 +35,7 @@ describe LearnTest::Git::Wip do
 
     it 'should have the correct messaging' do
       error = described_class.new(branch)
-      expect(error.message).to eq "Branch `#{branch}` doesn't have any commits. Please commit and try again." 
+      expect(error.message).to eq "Branch `#{branch}` doesn't have any commits. Please commit and try again."
     end
   end
 end
