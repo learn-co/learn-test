@@ -68,7 +68,7 @@ module LearnTest
         repo.push('origin', "#{res.wip_branch}:refs/heads/fis-wip", { force: true })
       rescue ::Git::GitExecuteError => e
         if @debug
-          puts 'There was a problem connecting to Github. Not pushing current branch state.'.red
+          puts 'There was a problem connecting to GitHub. Not pushing current branch state.'.red
           puts e.message
         end
       end
