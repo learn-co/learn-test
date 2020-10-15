@@ -8,6 +8,9 @@ SimpleCov.start
 
 require_relative '../lib/learn_test'
 
+support_dir = File.join('./', 'spec', 'support', '**', '*.rb')
+Dir.glob(support_dir).each { |f| require f }
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

@@ -13,9 +13,9 @@ describe 'Running a RSpec Unit Test', type: :aruba do
     copy '%/rspec-unit-spec', 'example'
     cd 'example'
 
-    run_command_and_stop 'git init'
-    run_command_and_stop 'git add .'
-    run_command_and_stop 'git commit -m "Initial Commit"'
+    git_init
+    git_add
+    git_commit 'Initial Commit'
   end
 
   def run(flags = '')

@@ -31,11 +31,11 @@ describe LearnTest::Git::Wip::Base do
       create_directory 'example'
       cd 'example'
       write_file 'README.md', 'Hello World'
-      run_command_and_stop 'git init'
+      git_init
 
       if commit # rubocop:disable Style/GuardClause
-        run_command_and_stop 'git add .'
-        run_command_and_stop 'git commit -m "Initial Commit"'
+        git_add
+        git_commit 'Initial Commit'
       end
     end
 
@@ -74,8 +74,8 @@ describe LearnTest::Git::Wip::Base do
           initialize_repo
           write_file 'test.rb', ''
 
-          run_command_and_stop 'git add .'
-          run_command_and_stop 'git commit -m "foo"'
+          git_add
+          git_commit 'foo'
         end
 
         it 'should process successfully' do
