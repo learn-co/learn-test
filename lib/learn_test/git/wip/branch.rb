@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LearnTest
   module Git
     module Wip
@@ -15,7 +17,7 @@ module LearnTest
               @base.revparse(@name)
             rescue ::Git::GitExecuteError => e
               if raise_no_commits
-                raise e.message.match(NoCommitsError::REGEX) ? NoCommitsError.new(@name) : e 
+                raise e.message.match(NoCommitsError::REGEX) ? NoCommitsError.new(@name) : e
               end
 
               raise unless e.message.match(NoCommitsError::REGEX)

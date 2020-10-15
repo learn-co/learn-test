@@ -100,7 +100,7 @@ module LearnTest
 
     def augment_results!(results)
       if File.exist?("#{FileUtils.pwd}/.learn")
-        dot_learn = YAML.load(File.read("#{FileUtils.pwd}/.learn"))
+        dot_learn = YAML.safe_load(File.read("#{FileUtils.pwd}/.learn"))
 
         unless dot_learn['github'].nil?
           results[:github] = dot_learn['github']

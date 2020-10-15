@@ -9,8 +9,8 @@ module LearnTest
   module Git
     module Wip
       class Base < ::Git::Path
-        TEMPFILE = '.wip'.freeze
-        PREFIX = 'refs/wip/'.freeze
+        TEMPFILE = '.wip'
+        PREFIX = 'refs/wip/'
 
         attr_reader :working_branch, :wip_branch
 
@@ -32,10 +32,11 @@ module LearnTest
           if @wip_branch.last_revision
             merge = @base.merge_base(@wip_branch.last_revision, @working_branch.last_revision)
 
-            @wip_branch.parent =
-              merge == @working_branch.last_revision ? 
-                @wip_branch.last_revision :
-                @working_branch.last_revision
+            @wip_branch.parent = if merge == @working_branch.last_revision
+                                   @wip_branch.last_revision
+                                 else
+                                   @working_branch.last_revision
+                                 end
           else
             @wip_branch.parent = @working_branch.last_revision
           end

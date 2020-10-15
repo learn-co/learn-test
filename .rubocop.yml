@@ -10,7 +10,18 @@ Layout/SpaceAroundMethodCallOperator:
 Lint/RaiseException:
   Enabled: true
 
+Metrics/AbcSize:
+  Enabled: false
+
 Metrics/BlockLength:
   Enabled: false
 
-  
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+# TODO: Add top-level module documentation
+Style/Documentation:
+  Enabled: false
