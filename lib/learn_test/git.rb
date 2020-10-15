@@ -1,5 +1,4 @@
 require 'git'
-require_relative 'git/wip/base'
 
 module LearnTest
   module Git

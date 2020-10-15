@@ -5,15 +5,15 @@ module LearnTest
 
       class NoChangesError < Error
         def initialize(branch)
-          super 'No changes found'
+          super "No changes found on `#{branch}`"
         end
       end
 
       class NoCommitsError < Error
-        REGEX = /unknown revision or path not in the working tree/.freeze
+        REGEX = /unknown revision or path not in the working tree/i.freeze
 
         def initialize(branch)
-          super "Branch `#{branch}` doesn't have any commits"
+          super "Branch `#{branch}` doesn't have any commits. Please commit and try again."
         end
       end
     end

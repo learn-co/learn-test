@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "faraday", "~> 1.0"
   spec.add_runtime_dependency "crack", "~> 0.4.3"
   spec.add_runtime_dependency "colorize", "~> 0.8.1"
+  spec.add_runtime_dependency "zeitwerk", "~> 2.4.0"
 end

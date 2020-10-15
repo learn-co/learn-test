@@ -3,9 +3,6 @@
 require 'fileutils'
 require 'json'
 
-require_relative 'client'
-require_relative 'git_wip'
-
 module LearnTest
   class Reporter
     attr_accessor :output_path, :debug
@@ -50,16 +47,30 @@ module LearnTest
       endpoint = strategy.service_endpoint
       augment_results!(results)
 
-      if client.post_results(endpoint, results)
-        if !LearnTest::GitWip.run! && @debug
-          puts 'There was a problem connecting to Github. Not pushing current branch state.'.red
-        end
-      else
-        if @debug
-          puts 'There was a problem connecting to Learn. Not pushing test results.'.red
-        end
+      unless client.post_results(endpoint, results)
+        puts 'There was a problem connecting to Learn. Not pushing test results.'.red if @debug
 
         save_failed_attempt(endpoint, results)
+        return
+      end
+
+      logger = @debug ? Logger.new(STDOUT, level: Logger::DEBUG) : false
+      repo = LearnTest::Git.open(options: { log: logger })
+
+      res = repo.wip(message: 'Automatic test submission')
+
+      unless res.success?
+        puts 'There was a problem creating your WIP branch. Not pushing current branch state.'.red if @debug
+        return
+      end
+
+      begin
+        repo.push('origin', "#{res.wip_branch}:refs/heads/fis-wip", { force: true })
+      rescue ::Git::GitExecuteError => e
+        if @debug
+          puts 'There was a problem connecting to Github. Not pushing current branch state.'.red
+          puts e.message
+        end
       end
     end
 

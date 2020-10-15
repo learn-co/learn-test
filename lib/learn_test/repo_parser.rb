@@ -6,7 +6,7 @@ module LearnTest
   class RepoParser
     def self.get_repo
       begin
-        repo = Git.open(FileUtils.pwd)
+        repo = ::Git.open(FileUtils.pwd)
       rescue
         puts "You don't appear to be in a Learn lesson's directory. Please enter 'learn open' or cd to an appropriate directory and try again."
         die

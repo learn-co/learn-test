@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 require 'aruba/rspec'
+require 'digest'
+require 'simplecov'
+
+SimpleCov.start
 
 require_relative '../lib/learn_test'
 
