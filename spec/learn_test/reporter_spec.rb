@@ -96,6 +96,20 @@ describe LearnTest::Reporter do
     end
 
     it 'posts results to the service endpoint' do
+      branch = double(LearnTest::Git::Wip::Branch)
+      branch_name = 'bar'
+
+      expect(LearnTest::Git).to receive(:open).and_return(git_base)
+      expect(git_base).to receive(:wip).and_return(git_wip)
+      expect(git_wip).to receive(:success?).and_return(true)
+
+      expect(branch).to receive(:to_s).and_return(branch_name)
+      expect(git_wip).to receive(:wip_branch).and_return(branch)
+
+      expect(git_base)
+        .to receive(:push)
+        .with('origin', "#{branch_name}:refs/heads/fis-wip", { force: true })
+
       reporter.report
 
       expect(client).to have_received(:post_results)
