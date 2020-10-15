@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 require 'git'
 require 'logger'
@@ -39,8 +41,9 @@ module LearnTest
           end
 
           new_tree = build_new_tree(@wip_branch.parent)
-          tree_diff = @base.diff(new_tree, @wip_branch.parent)
+          @base.diff(new_tree, @wip_branch.parent)
 
+          # tree_diff = @base.diff(new_tree, @wip_branch.parent)
           # raise NoChangesError, @wip_branch if tree_diff.count.zero?
 
           commit = @base.commit_tree(new_tree, parent: @wip_branch.parent)

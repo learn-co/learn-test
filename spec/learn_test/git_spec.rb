@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-# logger = Logger.new(STDOUT, level: Logger::WARN)
-# repo = LearnTest::Git.open(options: { log: logger })
-
-# res = repo.wip(message: 'Testing')
-# # repo.push('origin', "#{res.wip_branch}:refs/heads/fis-wip", { force: true }) if res
-
 describe LearnTest::Git do
   describe '.open' do
     context 'defaults' do

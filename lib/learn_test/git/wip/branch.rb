@@ -12,13 +12,14 @@ module LearnTest
         def last_revision(raise_no_commits: false)
           @last_revision ||= begin
             begin
-              res = @base.revparse(@name)
+              @base.revparse(@name)
             rescue ::Git::GitExecuteError => e
               if raise_no_commits
                 raise e.message.match(NoCommitsError::REGEX) ? NoCommitsError.new(@name) : e 
               end
 
               raise unless e.message.match(NoCommitsError::REGEX)
+
               false
             end
           end
