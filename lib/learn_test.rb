@@ -8,7 +8,9 @@ require 'zeitwerk'
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   'csharp' => 'CSharp',
-  'csharp_nunit' => 'CSharpNunit'
+  'csharp_nunit' => 'CSharpNunit',
+  'nodejs' => 'NodeJS',
+  'phantomjs' => 'PhantomJS'
 )
 loader.setup
 
