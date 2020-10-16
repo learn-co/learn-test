@@ -39,19 +39,24 @@ describe LearnTest::Git::Wip::Base do
       end
     end
 
+    context 'no refs/wip' do
+      before(:each) { initialize_repo }
+
+      it 'should create refs/wip' do
+        expect(FileUtils)
+          .to receive(:mkdir_p)
+          .with("#{path}/.git/refs/wip/", { mode: 0755 })
+          .and_call_original
+
+        instance.process!
+      end
+    end
+
     context 'no commits' do
       before(:each) { initialize_repo(commit: false) }
 
       it 'should raise' do
-        expect { instance.process! }.to raise_error(LearnTest::Git::Wip::NoCommitsError)
-      end
-    end
-
-    xcontext 'no changes' do
-      before(:each) { initialize_repo }
-
-      it 'should raise' do
-        expect { instance.process! }.to raise_error(LearnTest::Git::Wip::NoChangesError)
+        expect { instance.process! }.to raise_error(LearnTest::Git::Wip::Errors::NoCommitsError)
       end
     end
 

@@ -12,6 +12,8 @@ support_dir = File.join('./', 'spec', 'support', '**', '*.rb')
 Dir.glob(support_dir).each { |f| require f }
 
 RSpec.configure do |config|
+  config.filter_run focus: true
+
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end

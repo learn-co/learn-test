@@ -16,11 +16,13 @@ module LearnTest
             begin
               @base.revparse(@name)
             rescue ::Git::GitExecuteError => e
+              regex = Errors::NoCommitsError::REGEX
+
               if raise_no_commits
-                raise e.message.match(NoCommitsError::REGEX) ? NoCommitsError.new(@name) : e
+                raise e.message.match(regex) ? Errors::NoCommitsError.new(@name) : e
               end
 
-              raise unless e.message.match(NoCommitsError::REGEX)
+              raise unless e.message.match(regex)
 
               false
             end

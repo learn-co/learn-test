@@ -91,7 +91,7 @@ describe LearnTest::Git::Wip::Branch do
         expect do
           branch.last_revision(raise_no_commits: true)
         end.to raise_error(
-          LearnTest::Git::Wip::NoCommitsError, "Branch `#{name}` doesn't have any commits. Please commit and try again."
+          LearnTest::Git::Wip::Errors::NoCommitsError, "Branch `#{name}` doesn't have any commits. Please commit and try again."
         )
       end
     end

@@ -10,7 +10,6 @@ module LearnTest
     module Wip
       class Base < ::Git::Path
         TEMPFILE = '.wip'
-        PREFIX = 'refs/wip/'
 
         attr_reader :working_branch, :wip_branch
 
@@ -21,11 +20,11 @@ module LearnTest
 
           current_branch = @base.current_branch
 
-          raise NoCommitsError, 'master' if current_branch.nil? # TODO: Swap to `main`?
+          raise Errors::NoCommitsError, 'master' if current_branch.nil? # TODO: Swap to `main`?
 
           @tmp = Tempfile.new(TEMPFILE)
           @working_branch = Branch.new(base: @base, name: current_branch)
-          @wip_branch = Branch.new(base: @base, name: "#{PREFIX}#{current_branch}")
+          @wip_branch = Reference.new(base: @base, name: current_branch)
         end
 
         def process!
@@ -43,9 +42,6 @@ module LearnTest
 
           new_tree = build_new_tree(@wip_branch.parent)
           @base.diff(new_tree, @wip_branch.parent)
-
-          # tree_diff = @base.diff(new_tree, @wip_branch.parent)
-          # raise NoChangesError, @wip_branch if tree_diff.count.zero?
 
           commit = @base.commit_tree(new_tree, parent: @wip_branch.parent)
 
