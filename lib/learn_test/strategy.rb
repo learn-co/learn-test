@@ -63,7 +63,7 @@ module LearnTest
       if npm_install
         system(command)
       else
-        Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+        Open3.popen3(command) do |_, stdout, stderr, wait_thr|
           while out = stdout.gets do
             puts out
           end

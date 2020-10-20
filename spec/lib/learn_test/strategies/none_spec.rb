@@ -34,7 +34,6 @@ describe LearnTest::Strategies::None do
       expect(LearnTest::LearnOauthTokenParser).to receive(:get_learn_oauth_token)
         .and_return(oauth_token)
 
-
       expect(strategy.results).to eq(
         username: username,
         github_user_id: user_id,
