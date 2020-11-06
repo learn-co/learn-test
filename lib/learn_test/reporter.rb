@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'json'
+require 'logger'
 
 module LearnTest
   class Reporter
@@ -54,7 +55,7 @@ module LearnTest
         return
       end
 
-      logger = @debug ? Logger.new(STDOUT, level: Logger::DEBUG) : false
+      logger = @debug ? ::Logger.new($stdout, level: ::Logger::DEBUG) : false
       repo = LearnTest::Git.open(options: { log: logger })
 
       res = repo.wip(message: 'Automatic test submission')
