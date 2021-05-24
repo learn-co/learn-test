@@ -71,7 +71,7 @@ module LearnTest
           'npm test'
         else
           install_mocha_multi
-          'node_modules/.bin/mocha -R mocha-multi --reporter-options spec=-,json=.results.json'
+          'node_modules/.bin/mocha -R mocha-multi --reporter-options spec=-,json=.results.json --exit'
         end
 
         system(command)
